@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\film;
+use App\Models\Acteurs;
+use App\Models\categories;
 use App\Models\realisateurs;
 use Illuminate\Http\Request;
 use Psy\Readline\Hoa\Console;
@@ -36,22 +38,39 @@ class panneauCtrlController extends Controller
             $film=Http::get("https://api.themoviedb.org/3/movie/$filmId?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json(); 
             $traillerYtb=Http::get("https://api.themoviedb.org/3/movie/$filmId/videos?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json()['results'];
             $credits =Http::get("https://api.themoviedb.org/3/movie/$filmId/credits?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-
+            $idTMDBrealisateur=0;
             foreach($credits['crew'] as $findDirector){
                 if ($findDirector['job']=="Director") {
                     $directorName=$findDirector['original_name'];
+                    $idTMDBrealisateur=$findDirector['id'];
                     break;
                 }
             }
             if (empty($directorName)) {
                 $directorName="N/A";
+            }else{
+                if (realisateurs::Where('name','=',$directorName)->count() > 0) {
+                    $realisateurId=realisateurs::whereName($directorName)->first();
+                }else{
+                    $realInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBrealisateur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
+                    $realisateurId=realisateurs::firstOrCreate([
+                        'name'=>$realInfo['name'],
+                        'bio'=>$realInfo['biography'],
+                        'image'=>$realInfo['profile_path'],
+                        'dateNaissance'=>$realInfo['birthday']
+                    ]);
+                }  
             }
-            $realisateurId=realisateurs::firstOrCreate([
-                'name'=>$directorName
-            ]);
-            $realisateurId=realisateurs::whereName($directorName)->first();
+           
+
+            $castFilm=null;
+            for ($i=0; $i < 30; $i++) { 
+                if (!empty($credits['cast'][$i])) {
+                    $castFilm[]=$credits['cast'][$i];
+                }
+                
+            }
             
-            //dd($realisateurId);
             foreach ($traillerYtb as $trYtb) {
                 if ($trYtb['site']=="YouTube") {
                     $trailler=$trYtb['key'];
@@ -74,8 +93,30 @@ class panneauCtrlController extends Controller
 
             $id_film=film::create($data);
             $id_film=DB::getPdo()->lastInsertId();
+
+            foreach ($castFilm as $acteur) {
+                $idTMDBacteur=$acteur['id'];
+                if (Acteurs::Where('name','=',$acteur['name'])->count() > 0) {
+                    $acteurId=Acteurs::whereName($acteur['name'])->first();
+                }else{
+                    $acteurInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBacteur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
+                    $acteurId=Acteurs::firstOrCreate([
+                        'name'=>$acteurInfo['name'],
+                        'bio'=>$acteurInfo['biography'],
+                        'image'=>$acteurInfo['profile_path'],
+                        'dateNaissance'=>$acteurInfo['birthday']
+                    ]);
+                }        
+                DB::insert('Insert into acteurs_film (film_id,acteurs_id) VALUES(?,?)', [$id_film ,$acteurId->id]);
+            }
+            
             foreach ($film['genres'] as $genreFilm) {
-                DB::insert('Insert into categories_film (film_id,categories_id) VALUES(?,?)', [$id_film ,$genreFilm['id']] );
+                $categId=categories::firstOrCreate([
+                    'nom'=>$genreFilm['name']
+                ]);
+
+                $categId=categories::whereNom($genreFilm['name'])->first();
+                DB::insert('Insert into categories_film (film_id,categories_id) VALUES(?,?)', [$id_film ,$categId->id]);
             }
         }
         return view("adminV/ajoutFilm");

@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Acteurs extends Model
 {
+    protected $guarded =[];
     public function acteursFilms(){
         return $this->belongsToMany(film::class);
     }
+    
 }

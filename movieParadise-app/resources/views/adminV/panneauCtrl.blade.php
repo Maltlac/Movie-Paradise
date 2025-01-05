@@ -6,7 +6,7 @@
  
   
 </div>
-<div class="container text-center">
+<div class="container text-center" style=" color: whitesmoke;">
     <h1 class="me-auto">Bienvenue sur le panneau de controle</h1>
 
     <div class="row">

@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('realisateurs', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->text('bio');
+            $table->string('image');
+            $table->date('dateNaissance');
             $table->timestamps();
         });
     }

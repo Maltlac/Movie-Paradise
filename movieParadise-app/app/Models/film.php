@@ -11,7 +11,7 @@ class film extends Model
     protected $guarded =[];
 
     public function filmsActeurs(){
-        return $this->belongsToMany(Acteurs::class);
+        return $this->belongsToMany(Acteurs::class)->limit(10);
     }
 
     public  function filmCategories(){
@@ -22,7 +22,6 @@ class film extends Model
         $films= Http::withToken(config('services.tmdb.token'))
             ->get('https://api.themoviedb.org/3/search/movie?api_key=cffc672e34d23c4c89487652fccefd28&query='.$nomFilm.'&language=fr-FR')
             ->json();
-        dd($films);
             if($films)
             {
                 foreach($films['results'] as $film){

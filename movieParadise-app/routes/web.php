@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\User;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ActeurController;
 use App\Http\Controllers\StreamingController;
 use App\Http\Controllers\panneauCtrlController;
 
@@ -35,6 +36,11 @@ Route::get('/streaming', [StreamingController::class, 'index'])->name('streaming
 Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
 Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name('film.show');
 
+
+/**
+ * this one is for the bio of the cast and crew
+ */
+Route::get('/bio/{bio}/type/{type}', [ActeurController::class, 'showBio'])->name('Acteurs.showBio');
 /**
  * this one is for the E-tickets
  */

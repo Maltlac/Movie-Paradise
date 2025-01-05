@@ -23,12 +23,12 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body >
-    <div id="app">
+    <div id="app" >
         <nav class="navbar navbar-expand-md navbar-light shadow-sm" id="headerApp" style="background-color: #1a242f" >
             <div class="container">
                 <a class="navbar-brand d-flex"  href="{{ url('/') }}">
                     <img src="/images/LogoSite.jpg" style="height:50px;" class="pr-4">
-                    <div class="pl-1 pt-4">Movie Paradise</div> 
+                    <div class="pl-1 pt-4" style=" color: whitesmoke;">Movie Paradise</div> 
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -59,7 +59,7 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a style=" color: whitesmoke;" id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
@@ -77,7 +77,7 @@
                                 
                             </li>
                             @if(Auth::user()->role=="admin")
-                            <a href="/panneauCtrl" class="navbar-brand pt-4">panneau de controle</a>
+                            <a href="/panneauCtrl" class="navbar-brand pt-4" style=" color: grey;">panneau de controle</a>
                         @endif 
                         @endguest
                     </ul>

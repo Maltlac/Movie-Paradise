@@ -1,7 +1,7 @@
 @extends('layouts.app')
 <?php  setlocale(LC_TIME, "fr_FR", "French");?>
 @section('content')
-<div class="container">
+<div class="container" style=" color: whitesmoke;">
     <i class="bi bi-arrow-left"></i><a href="{{ url()->previous() }}">retour</a>
    <h1>{{ $film->titre }}</h1>
    
@@ -9,18 +9,29 @@
     <div>durée du film: {{ $film->duree }}</div>
 
     <div>Acteurs:
-        <?php foreach ($film->filmsActeurs as $acteur) {
-            echo $acteur->nom." ".$acteur->prenom." ";
-        }
-        ?>
+            <?php
+                $i = 0;
+                $len = count($film->filmsActeurs);
+                foreach ($film->filmsActeurs as $acteur) { 
+                    echo '<a href="/bio/'.$acteur->id.'/type/acteur">';       
+                    echo $acteur->name.'</a> ' ;
+                    if ($i == $len - 1) {
+                        echo ' ';
+                    }else {
+                        echo ', ';
+                    }
+                    $i++;
+            }
+            ?>
+        
      </div>
      <div>Catégories: 
         <?php foreach ($film->filmCategories as $categorie) {
-            echo $categorie->nomCategorie." ";
+            echo $categorie->nom.", ";
         }
         ?>
      </div>
-    <div>Réalisateur: {{ $real->Name ?? "N/A" }}</div>
+    <div>Réalisateur: <a href="/bio/{{$real->id}}/type/realisateur">{{ $real->name ?? "N/A" }} </a> </div>
     <div>Date de sortie: {{strftime("%d %B %G", strtotime($film->dateSortie)) }}</div>
     <div>Synopsis: {{ $film->resume }}</div>
 
