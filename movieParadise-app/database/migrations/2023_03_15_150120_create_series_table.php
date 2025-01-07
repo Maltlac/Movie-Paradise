@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('series', function (Blueprint $table) {
             $table->id();
-            $table->String('nomSerie');
-            $table->unsignedBigInteger('realisateurs_id');
+            $table->String('titre');
+          //  $table->unsignedBigInteger('realisateurs_id');
             $table->date('dateSortie');
-            $table->String('resume');
-            $table->String('affiche');
+            $table->text('resume');
+            $table->String('image');
+            $table->unsignedBigInteger('tmdb_id');
+            $table->String('urlTrailler');
             $table->timestamps();
+
+            $table->index('realisateurs_id');
         });
     }
 

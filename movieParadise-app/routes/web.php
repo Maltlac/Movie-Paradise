@@ -53,9 +53,18 @@ Route::get('/bio/{bio}/type/{type}', [ActeurController::class, 'showBio'])->name
   
   Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/panneauCtrl', [panneauCtrlController::class, 'index'])->name('panneauCtrl.index');
-    Route::get('/ajoutFilm', [panneauCtrlController::class, 'ajoutFilm'])->name('panneauCtrl.ajoutFilm');
-    Route::get('/search', [panneauCtrlController::class, 'searchBarFilm'])->name('searchBarFilm.index');
+
+    ///Films
     Route::post('/ajoutFilm', [panneauCtrlController::class, 'storeFilm'])->name('storeFilm.store');
+    Route::get('/ajoutFilm', [panneauCtrlController::class, 'ajoutFilm'])->name('panneauCtrl.ajoutFilm');
+    Route::get('/searchFilm', [panneauCtrlController::class, 'searchBarFilm'])->name('searchBarFilm.index');
+    
+    ////Series
+    Route::post('/ajoutSerie', [panneauCtrlController::class, 'storeSerie'])->name('storeSerie.store');
+    Route::get('/ajoutSerie', [panneauCtrlController::class, 'ajoutSerie'])->name('panneauCtrl.ajoutSerie');
+    Route::get('/searchSerie', [panneauCtrlController::class, 'searchBarSerie'])->name('searchBarSerie.index');
+
+    
 
 
 });

@@ -32,7 +32,7 @@
         </div>
 
         <div class="col">
-            <a href="">Ajout Séries </a>
+            <a href="/ajoutSerie">Ajout Séries </a>
           </div>
 
           <div class="col">

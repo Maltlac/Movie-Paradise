@@ -1,58 +1,105 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <div>
-
-            <div id="carouselFilms" class="carousel slide row">
-
-                    <!-- Les indicateurs (slide actif) du carousel -->
-                <div class="carousel-indicators hide" >
-
-                    @foreach ($film->chunk(5) as $film_chunk)
-
-                    <button type="button" data-bs-target="#carouselFilms" data-bs-slide-to="{{ $loop->index }}" @if(!$loop->index) class="active" @endif aria-current="true" aria-label="Slide {{ $loop->iteration }}"></button>
-                    @endforeach
-                    
+        <div class="owl-carousel owl-theme">
+            
+            @foreach ($film as $lesFilms2)
+                <div class="item">
+                    <a id="imgCardStreaming" href="/film/{{ $lesFilms2->id }}" class="card col-sm-4 ">
+                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesFilms2->image }}" alt="Card image cap">
+                    </a>
                 </div>
-                
-                    <!-- Les slides du carousel -->
-                <div class="carousel-inner">
+            @endforeach               
+        </div>   
 
-                <!-- On parcourt les parties (chunks) de la table "users" -->
-                @foreach ($film->chunk(5) as $lesFilms2)
-
-                <!-- On ajoute la classe "active" sur le premier slide (chunk) -->
-                <div class="carousel-item @if($loop->first) active @endif ">
-
-                    <!-- La row -->
-                    <div >
-
-                        <!-- On affiche chaque "user" dans une colonne responsive -->
-                        @foreach ($lesFilms2 as $lesFilms)
-                        <a id="imgCardStreaming" href="/film/{{ $lesFilms->id }}" class="card col-sm-4 ">
-                            <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesFilms->image }}" alt="Card image cap">
-                        </a>
-
-                        @endforeach
-
-                    </div>
-
+        <div class="owl-carousel owl-theme">
+          
+            
+            @foreach ($serie as $lesSeries)
+                <div class="item">
+                    <a id="imgCardStreaming" href="/film/{{ $lesSeries->id }}" class="card col-sm-4 ">
+                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesSeries->image }}" alt="Card image cap">
+                    </a>
                 </div>
-                @endforeach
+            @endforeach               
+        </div>   
 
-            </div>
-            <!-- Les boutons suivant et pécédent -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselFilms" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"  style="background-color:black; z-index:2"></span>
-                <span class="visually-hidden" >Previous</span>
-            </button>
-
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselFilms" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true" style="background-color:black; z-index:2"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-
-        </div>
+        <div class="owl-carousel owl-theme">
+            
+            @foreach ($film as $lesFilms2)
+                <div class="item">
+                    <a id="imgCardStreaming" href="/film/{{ $lesFilms2->id }}" class="card col-sm-4 ">
+                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesFilms2->image }}" alt="Card image cap">
+                    </a>
+                </div>
+            @endforeach               
+        </div>   
+        <div class="owl-carousel owl-theme">
+            
+            @foreach ($film as $lesFilms2)
+                <div class="item">
+                    <a id="imgCardStreaming" href="/film/{{ $lesFilms2->id }}" class="card col-sm-4 ">
+                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesFilms2->image }}" alt="Card image cap">
+                    </a>
+                </div>
+            @endforeach               
+        </div>   
+        <div class="owl-carousel owl-theme">
+            
+            @foreach ($film as $lesFilms2)
+                <div class="item">
+                    <a id="imgCardStreaming" href="/film/{{ $lesFilms2->id }}" class="card col-sm-4 ">
+                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesFilms2->image }}" alt="Card image cap">
+                    </a>
+                </div>
+            @endforeach               
+        </div>   
     </div>
+
+    <!--Jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <!-- Owl Carousel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- custom JS code after importing jquery and owl -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".owl-carousel").owlCarousel();
+        });
+
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            pagination: false,
+            margin: 10,
+            nav: false,
+            axis:"x",
+            lazyLoad : true,
+            theme:"dark",
+            responsive: {
+                0: {
+                    items: 1
+                },
+                250: {
+                    items: 2
+                },
+                500: {
+                    items: 3
+                },
+                750: {
+                    items: 4
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        })
+/*
+        $(".owl-carousel").mCustomScrollbar({
+            axis:"x", // horizontal scrollbar
+            theme:"dark",
+            mouseWheel:{
+            enable: false
+            }
+        });*/
+    </script>
 
 @endsection

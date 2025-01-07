@@ -9,8 +9,7 @@
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-heading d-flex align-items-baseline justify-content-between">
-                <h3>Films </h3>
-                <i class="bi bi-arrow-left"></i><a class="" href="{{ url()->previous() }}">retour</a>
+                <h3>Series </h3>
             </div>
             <div class="panel-body">
 
@@ -18,13 +17,13 @@
                     <input type="text" class="form-controller" id="search" name="search">
                 </div>
 
-                <form action="ajoutFilm" method="POST">
+                <form action="ajoutSerie" method="POST">
                     @csrf
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th style="width: 1rem">Poster</th>
-                                <th style="width: 15rem">Titre film</th>
+                                <th style="width: 15rem">Titre Series</th>
                                 <th  style="width: 35rem">Description</th>
                                 <th style="width: 15rem">Date de sortie</th>
                                 <th style="width: 10rem">Note</th>
@@ -50,7 +49,7 @@
         $value=$(this).val();
             $.ajax({
             type : 'get',
-            url : '{{URL::to('searchFilm')}}',
+            url : '{{URL::to('searchSerie')}}',
             data:{'search':$value},
             success:function(data){
                 $('tbody').html(data);
