@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <?php use App\Models\film;
-//dd(film::searchBarFilm("iron"))
+
 
 ?>
 

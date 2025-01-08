@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Models\film;
+use App\Models\saison;
 use App\Models\series;
-use App\Models\Acteurs;
+use App\Models\episode;
+use App\Models\Personnes;
 use App\Models\categories;
-use App\Models\realisateurs;
 use Illuminate\Http\Request;
 use Psy\Readline\Hoa\Console;
 use Illuminate\Support\Facades\DB;
@@ -53,11 +54,11 @@ class panneauCtrlController extends Controller
             if (empty($directorName)) {
                 $directorName="N/A";
             }else{
-                if (realisateurs::Where('name','=',$directorName)->count() > 0) {
-                    $realisateurId=realisateurs::whereName($directorName)->first();
+                if (Personnes::Where('name','=',$directorName)->count() > 0) {
+                    $realisateurId=Personnes::whereName($directorName)->first();
                 }else{
                     $realInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBrealisateur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-                    $realisateurId=realisateurs::firstOrCreate([
+                    $realisateurId=Personnes::firstOrCreate([
                         'name'=>$realInfo['name'],
                         'bio'=>$realInfo['biography'],
                         'image'=>$realInfo['profile_path'],
@@ -100,18 +101,18 @@ class panneauCtrlController extends Controller
 
             foreach ($castFilm as $acteur) {
                 $idTMDBacteur=$acteur['id'];
-                if (Acteurs::Where('name','=',$acteur['name'])->count() > 0) {
-                    $acteurId=Acteurs::whereName($acteur['name'])->first();
+                if (Personnes::Where('name','=',$acteur['name'])->count() > 0) {
+                    $acteurId=Personnes::whereName($acteur['name'])->first();
                 }else{
                     $acteurInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBacteur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-                    $acteurId=Acteurs::firstOrCreate([
+                    $acteurId=Personnes::firstOrCreate([
                         'name'=>$acteurInfo['name'],
                         'bio'=>$acteurInfo['biography'],
                         'image'=>$acteurInfo['profile_path'],
                         'dateNaissance'=>$acteurInfo['birthday']
                     ]);
                 }        
-                DB::insert('Insert into acteurs_film (film_id,acteurs_id) VALUES(?,?)', [$id_film ,$acteurId->id]);
+                DB::insert('Insert into film_personnes (film_id,personnes_id) VALUES(?,?)', [$id_film ,$acteurId->id]);
             }
             
             foreach ($film['genres'] as $genreFilm) {
@@ -140,30 +141,22 @@ class panneauCtrlController extends Controller
             $serie=Http::get("https://api.themoviedb.org/3/tv/$serieId?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json(); 
             $traillerYtb=Http::get("https://api.themoviedb.org/3/tv/$serieId/videos?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json()['results'];
             $credits =Http::get("https://api.themoviedb.org/3/tv/$serieId/credits?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-            $idTMDBrealisateur=0;
-           // dd($serie, $traillerYtb,$credits);
-            foreach($credits['crew'] as $findDirector){
-                if ($findDirector['job']=="Producer") {
-                    $directorName=$findDirector['original_name'];
-                    $idTMDBrealisateur=$findDirector['id'];
-                    break;
-                }
-            }
-            if (empty($directorName)) {
-                $directorName="N/A";
+            $createur=Http::get("https://api.themoviedb.org/3/person/".$serie['created_by'][0]['id']."?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
+            if (empty($createur)) {
+                $createur="N/A";
             }else{
-                if (realisateurs::Where('name','=',$directorName)->count() > 0) {
-                    $realisateurId=realisateurs::whereName($directorName)->first();
+                if (Personnes::Where('name','=',$createur['name'])->count() > 0) {
+                    $createur=Personnes::whereName($createur['name'])->first();
                 }else{
-                    $realInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBrealisateur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-                    $realisateurId=realisateurs::firstOrCreate([
-                        'name'=>$realInfo['name'],
-                        'bio'=>$realInfo['biography'],
-                        'image'=>$realInfo['profile_path'],
-                        'dateNaissance'=>$realInfo['birthday']
+                    $createur=Personnes::firstOrCreate([
+                        'name'=>$createur['name'],
+                        'bio'=>$createur['biography'],
+                        'image'=>$createur['profile_path'],
+                        'dateNaissance'=>$createur['birthday']
                     ]);
                 }  
             }
+
            
 
             $castFilm=null;
@@ -186,7 +179,7 @@ class panneauCtrlController extends Controller
             
             $data=[
                 'titre'=>$serie['name'],
-                //'realisateurs_id'=>$realisateurId->id,
+                'createur_id'=>$createur->id,
                 'resume'=>$serie['overview'],
                 'image'=>$serie['poster_path'],
                 'dateSortie'=>$serie['first_air_date'],
@@ -197,20 +190,54 @@ class panneauCtrlController extends Controller
             $id_serie=series::create($data);
             $id_serie=DB::getPdo()->lastInsertId();
 
+            foreach ($serie['seasons'] as $saison) {
+                $dataSaison=[
+                    'titre'=>$saison['name'],
+                    'resume'=>$saison['overview'],
+                    'image'=>$saison['poster_path'],
+                    'dateSortie'=>$saison['air_date'],
+                    'numeroSaison'=>$saison['season_number'],
+                    'tmdb_id'=>$saison['id'],
+                    'series_id'=>$id_serie,
+                ];
+                $saisonNb=$saison['season_number'];
+               
+                if ($saisonNb>0) {
+                    $saisonId=saison::create($dataSaison);
+                    $saisonId=DB::getPdo()->lastInsertId();
+                    $episodes=Http::get("https://api.themoviedb.org/3/tv/$serieId/season/$saisonNb?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
+                   
+                    if (isset($episodes['id'])) {
+                        foreach ($episodes['episodes'] as $episode) {
+                            $dataEp=[
+                                'titre'=>$episode['name'],
+                                'resume'=>$episode['overview'],
+                                'image'=>$episode['still_path'],
+                                'dateSortie'=>$episode['air_date'],
+                                'numeroEpisode'=>$episode['episode_number'],
+                                'tmdb_id'=>$episode['id'],
+                                'saisons_id'=>$saisonId,
+                            ];
+                            episode::create($dataEp);
+                        }
+                    }                
+                }
+           }
+
             foreach ($castFilm as $acteur) {
                 $idTMDBacteur=$acteur['id'];
-                if (Acteurs::Where('name','=',$acteur['name'])->count() > 0) {
-                    $acteurId=Acteurs::whereName($acteur['name'])->first();
+                if (Personnes::Where('name','=',$acteur['name'])->count() > 0) {
+                    $acteurId=Personnes::whereName($acteur['name'])->first();
                 }else{
                     $acteurInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBacteur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-                    $acteurId=Acteurs::firstOrCreate([
+                    $acteurId=Personnes::firstOrCreate([
                         'name'=>$acteurInfo['name'],
                         'bio'=>$acteurInfo['biography'],
                         'image'=>$acteurInfo['profile_path'],
                         'dateNaissance'=>$acteurInfo['birthday']
                     ]);
                 }        
-                DB::insert('Insert into acteurs_series (series_id,acteurs_id) VALUES(?,?)', [$id_serie ,$acteurId->id]);
+                DB::insert('Insert into personnes_series (series_id,personnes_id) VALUES(?,?)', [$id_serie ,$acteurId->id]);
             }
             
             foreach ($serie['genres'] as $genrSerie) {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Personnes;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,8 +11,8 @@ class film extends Model
 {
     protected $guarded =[];
 
-    public function filmsActeurs(){
-        return $this->belongsToMany(Acteurs::class)->limit(10);
+    public function filmsPersonnes(){
+        return $this->belongsToMany(Personnes::class)->limit(10);
     }
 
     public  function filmCategories(){

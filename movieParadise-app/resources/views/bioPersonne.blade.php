@@ -18,12 +18,12 @@ $interval = date_diff($dt, $dt2);
     <br>
     <?php
        
-       if (!empty($tab1)) {
-         echo "<h4>$type1</h4>";
+       if (null!=$tabFilms) {
+         echo "<h4>Films</h4>";
             echo'<table class="table table-bordered table-hover" style=" color: whitesmoke;">';
                 echo'<tbody>';
 
-                    foreach($tab1 as $tab){
+                    foreach($tabFilms as $tab){
                         echo '<tr id="'.$tab['id'].'">';
                             echo'<td> <a  href="/film/'.$tab['id'].'">'.$tab['titre'].'</a></td>';
                         echo '</tr>';
@@ -31,12 +31,26 @@ $interval = date_diff($dt, $dt2);
                 echo"</tbody>";
             echo "</table>";
         } 
-        if (!empty($tab2)) {
-            echo "<h4>$type2</h4>";
+        if (null!=$tabSeries) {
+            echo "<h4> Séries</h4>";
             echo'<table class="table table-bordered table-hover" style=" color: whitesmoke;">';
                 echo'<tbody>';
 
-                    foreach($tab2 as $tab){
+                    foreach($tabSeries as $tab){
+                        echo '<tr id="'.$tab['id'].'">';
+                            echo'<td> <a  href="/serie/'.$tab['id'].'">'.$tab['titre'].'</a></td>';
+                        echo '</tr>';
+                    }
+                echo"</tbody>";
+            echo "</table>";
+        }    
+
+        if (null!=$tabReal) {
+            echo "<h4> Réalisation</h4>";
+            echo'<table class="table table-bordered table-hover" style=" color: whitesmoke;">';
+                echo'<tbody>';
+
+                    foreach($tabReal as $tab){
                         echo '<tr id="'.$tab['id'].'">';
                             echo'<td> <a  href="/film/'.$tab['id'].'">'.$tab['titre'].'</a></td>';
                         echo '</tr>';

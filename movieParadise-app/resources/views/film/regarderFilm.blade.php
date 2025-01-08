@@ -11,8 +11,8 @@
     <div>Acteurs:
             <?php
                 $i = 0;
-                $len = count($film->filmsActeurs);
-                foreach ($film->filmsActeurs as $acteur) { 
+                $len = count($film->filmsPersonnes);
+                foreach ($film->filmsPersonnes as $acteur) { 
                     echo '<a href="/bio/'.$acteur->id.'/type/acteur">';       
                     echo $acteur->name.'</a> ' ;
                     if ($i == $len - 1) {

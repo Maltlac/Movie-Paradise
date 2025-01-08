@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ActeurController;
+use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\StreamingController;
 use App\Http\Controllers\panneauCtrlController;
 
@@ -35,12 +36,22 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
 Route::get('/streaming', [StreamingController::class, 'index'])->name('streaming.index');
 Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
 Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name('film.show');
+Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name('series.show');
+Route::get('/serie/{serie}/saison/{saison}', [SeriesController::class, 'voirSaison'])->name('saison.show');
+Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [SeriesController::class, 'voirEpisode'])->name('episode.show');
+//Route::get('/autocomplete/Film', [StreamingController::class, 'autocompleteFilm'])->name('autocompleteFilm.action');
+//Route::get('/autocomplete/Série', [StreamingController::class, 'autocompleteSerie'])->name('autocompleteSerie.action');
+
+Route::controller(StreamingController::class)->group(function(){
+    Route::get('autocompleteF', 'autocompleteF')->name('autocompleteF');
+    Route::get('autocompleteS', 'autocompleteS')->name('autocompleteS');
+});
 
 
 /**
  * this one is for the bio of the cast and crew
  */
-Route::get('/bio/{bio}/type/{type}', [ActeurController::class, 'showBio'])->name('Acteurs.showBio');
+Route::get('/bio/{bio}', [PersonnesController::class, 'showBio'])->name('personnes.showBio');
 /**
  * this one is for the E-tickets
  */
