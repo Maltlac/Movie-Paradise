@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\film;
+use App\Models\Personnes;
 use App\Models\series;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
+
 
 class StreamingController extends Controller
 {
@@ -20,22 +23,30 @@ class StreamingController extends Controller
     }
 
     
-    public function autocompleteF(Request $request): JsonResponse
+    public function search(Request $request)
     {
-        $data = film::select("titre")
-                    ->where('titre', 'LIKE', '%'. $request->get('query'). '%')
-                    ->get();
-         
-        return response()->json($data);
-    }
+          $search = $request->get('titre');
+      
+          $result = film::where('titre', 'LIKE', '%'. $search. '%')->get();
 
-    
-    public function autocompleteS(Request $request): JsonResponse
-    {
-        $data = series::select("titre")
-                    ->where('titre', 'LIKE', '%'. $request->get('query'). '%')
-                    ->get();
-         
-        return response()->json($data);
-    }
+          $result2 = series::where('titre', 'LIKE', '%'. $search. '%')->get();
+
+          $result3 = Personnes::where('name', 'LIKE', '%'. $search. '%')->get();
+          $data = array();
+          foreach ($result as $hsl)
+              {
+                  $data[] = $hsl->titre;
+              }
+            foreach ($result2 as $hsl)
+              {
+                  $data[] = $hsl->titre;
+              }
+              foreach ($result3 as $hsl)
+              {
+                  $data[] = $hsl->name;
+              }
+          return response()->json($data);
+            
+    } 
+
 }

@@ -2,20 +2,18 @@
 @section('content')
 
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-    </head>
     <div class="container">
 
-        <div class="form-group">
-            
-            <input class="typeahead form-control" id="search" type="text" placeholder="Rechercher" >
+        <div id="custom-search-input">
+                <div class="input-group">
+                    <input id="search" name="search" type="text" class="form-control" placeholder="Search" style="color:whitesmoke" />
+                    
+                </div>
 
-            <select name="Streaming" onChange="combo(this)"  >
-                <option id="F">Film</option>
-                <option id="S">Série</option>
-              </select> 
-        </div>
+            </div>
+
+            
+        
 
 
         <h2 style="color:whiteSmoke">Films</h2>
@@ -48,12 +46,11 @@
         
     </div>
 
-    <!--Jquery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
     <!-- Owl Carousel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <!-- custom JS code after importing jquery and owl -->
-    <script type="text/javascript">
+    <script type="text/javascript" >
         
         $(document).ready(function() {
             $(".owl-carousel").owlCarousel();
@@ -85,28 +82,12 @@
                 }
             }
         })
-
-
-        var path = "{{ route('autocompleteF') }}";
-        function combo(elem) {
-            console.log(elem.value)
-            if (elem.value=="Film") {
-                path='{{ route("autocompleteF") }}';
-            }else{
-                path='{{ route("autocompleteS") }}';
-            }
-            
-
-        }
-        
-
+        var route = "{{ url('autocomplete') }}";
         
         $('#search').typeahead({
-            source: function (query, process) {
-                console.log('heeeelp')
-                return $.get(path, {
-                    query: query
-                }, function (data) {
+            source:  function (term, process) {
+            return $.get(route, { term: term }, function (data) {
+
                     return process(data);
                 });
             }

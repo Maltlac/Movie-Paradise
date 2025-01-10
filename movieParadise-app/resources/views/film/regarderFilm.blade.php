@@ -13,7 +13,7 @@
                 $i = 0;
                 $len = count($film->filmsPersonnes);
                 foreach ($film->filmsPersonnes as $acteur) { 
-                    echo '<a href="/bio/'.$acteur->id.'/type/acteur">';       
+                    echo '<a href="/bio/'.$acteur->id.'">';       
                     echo $acteur->name.'</a> ' ;
                     if ($i == $len - 1) {
                         echo ' ';
@@ -31,7 +31,7 @@
         }
         ?>
      </div>
-    <div>Réalisateur: <a href="/bio/{{$real->id}}/type/realisateur">{{ $real->name ?? "N/A" }} </a> </div>
+    <div>Réalisateur: <a href="/bio/{{$real->id}}" >{{ $real->name ?? "N/A" }} </a> </div>
     <div>Date de sortie: {{strftime("%d %B %G", strtotime($film->dateSortie)) }}</div>
     <div>Synopsis: {{ $film->resume }}</div>
 

@@ -30,6 +30,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('Home.show');
 
 Route::get('/test', [HomeController::class, 'test'])->name('test.show');
 
+
 /**
  * this part is for the streaming vues
  */
@@ -42,10 +43,7 @@ Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [SeriesController
 //Route::get('/autocomplete/Film', [StreamingController::class, 'autocompleteFilm'])->name('autocompleteFilm.action');
 //Route::get('/autocomplete/Série', [StreamingController::class, 'autocompleteSerie'])->name('autocompleteSerie.action');
 
-Route::controller(StreamingController::class)->group(function(){
-    Route::get('autocompleteF', 'autocompleteF')->name('autocompleteF');
-    Route::get('autocompleteS', 'autocompleteS')->name('autocompleteS');
-});
+Route::get('autocomplete', [StreamingController::class, 'search']);
 
 
 /**
