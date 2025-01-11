@@ -31,15 +31,21 @@
 </div>
  
 <script type="text/javascript">
-    var route = "{{ url('autocompletes') }}";
+    var route = "{{ url('autocomplete') }}";
     $('#search').typeahead({
+        hint: true,
+            highlight: true,
+            minLength: 1,
         source:  function (term, process) {
         return $.get(route, { term: term }, function (data) {
-
+            console.log(data)
                 return process(data);
             });
         }
+
     });
+    
+    
 </script>
    
 </body>

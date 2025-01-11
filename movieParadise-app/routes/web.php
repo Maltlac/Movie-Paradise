@@ -40,9 +40,7 @@ Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name('film.show
 Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name('series.show');
 Route::get('/serie/{serie}/saison/{saison}', [SeriesController::class, 'voirSaison'])->name('saison.show');
 Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [SeriesController::class, 'voirEpisode'])->name('episode.show');
-//Route::get('/autocomplete/Film', [StreamingController::class, 'autocompleteFilm'])->name('autocompleteFilm.action');
-//Route::get('/autocomplete/Série', [StreamingController::class, 'autocompleteSerie'])->name('autocompleteSerie.action');
-
+Route::get('/searchStreaming', [StreamingController::class, 'searchStreaming']);
 Route::get('autocomplete', [StreamingController::class, 'search']);
 
 

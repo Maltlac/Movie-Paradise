@@ -7,7 +7,7 @@
         <div id="custom-search-input">
                 <div class="input-group">
                     <form action="/searchStreaming" method="get" style="width:100%">
-                        <input id="search" name="search" type="text" class="form-control " placeholder="Search" style="color:whitesmoke;width:95%" autocomplete="off"/>
+                        <input id="search" name="search" type="text" class="form-control " placeholder="Search" style="color:whitesmoke;width:97%"  autocomplete="off"/>
                         <button class="btn btn-outline-secondary bg-white border-start-0 border ms-n3" type="submit" style="width:3%">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -22,49 +22,56 @@
             
         
 
-
-        <h2 style="color:whiteSmoke">Films</h2>
-        <div class="owl-carousel owl-theme">
+        @if (count($data[0])!=0)
+            <h2 style="color:whiteSmoke">Films</h2>
+            <div class="owl-carousel owl-theme">
            
-            @foreach ($film as $lesFilms2)
-                <div class="item">
-                    <a id="imgCardStreaming" href="/film/{{ $lesFilms2->id }}" class="card col-sm-4 ">
-                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesFilms2->image }}" alt="Card image cap">
-                    </a>
-                </div>
-            @endforeach               
-        </div>   
-
-        <h2 style="color:whiteSmoke">Series</h2>
-        <div class="owl-carousel owl-theme">
+                @foreach ($data[0] as $lesFilms2)
+                    <div class="item">
+                        <a id="imgCardStreaming" href="/film/{{ $lesFilms2->id }}" class="card col-sm-4 ">
+                            <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesFilms2->image }}" alt="Card image cap">
+                        </a>
+                    </div>
+                @endforeach  
           
-            
-            @foreach ($serie as $lesSeries)
-            
-                <div class="item">
-                    <a id="imgCardStreaming" href="/serie/{{ $lesSeries->id }}" class="card col-sm-4 ">
-                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesSeries->image }}" alt="Card image cap">
-                    </a>
-                </div>
-            @endforeach               
-        </div>   
+                         
+            </div> 
+        @endif  
+        @if (count($data[1])!=0)
 
-        <h2 style="color:whiteSmoke">récemment ajouté</h2>
-        <div class="owl-carousel owl-theme">
-           
-            @foreach ($lastAdd as $filmSerie)
-                <div class="item">
-                    @if (count($filmSerie)==11)
-                        <a id="imgCardStreaming" href="/film/{{ $filmSerie['id'] }}" class="card col-sm-4 ">
-                    @else
-                        <a id="imgCardStreaming" href="/serie/{{ $filmSerie['id'] }}" class="card col-sm-4 ">
-                    @endif
-                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $filmSerie['image'] }}" alt="Card image cap">
-                    </a>
-                </div>
-            @endforeach               
-        </div>   
+            <h2 style="color:whiteSmoke">Series</h2>
+            <div class="owl-carousel owl-theme">
+            
+                
+                @foreach ($data[1] as $lesSeries)
+                
+                    <div class="item">
+                        <a id="imgCardStreaming" href="/serie/{{ $lesSeries->id }}" class="card col-sm-4 ">
+                            <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesSeries->image }}" alt="Card image cap">
+                        </a>
+                    </div>
+                @endforeach               
+            </div>   
+        @endif  
+        @if (count($data[2])!=0)
 
+            <h2 style="color:whiteSmoke">Artistes</h2>
+            <div class="owl-carousel owl-theme">
+            
+                
+                @foreach ($data[2] as $Artiste)
+                
+                    <div class="item">
+                        
+                        <a id="imgCardStreaming" href="/bio/{{ $Artiste->id }}" class="card col-sm-4 ">
+                            <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $Artiste->image }}" alt="Card image cap">
+                            {{$Artiste->name}}
+
+                        </a>
+                    </div>
+                @endforeach               
+            </div>   
+        @endif   
           
         
     </div>
@@ -80,7 +87,6 @@
         });
 
         $('.owl-carousel').owlCarousel({
-            loop: true,
             pagination: false,
             margin: 10,
             nav: false,
