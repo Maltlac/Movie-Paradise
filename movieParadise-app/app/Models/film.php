@@ -39,5 +39,9 @@ class film extends Model
             }
 
     }
+
+    public function getCommentFilm(){
+        return commantaire::where('film_id',$this->id)->get();
+    }
 }
 

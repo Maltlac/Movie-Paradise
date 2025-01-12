@@ -81,11 +81,8 @@
 
         $('.owl-carousel').owlCarousel({
             loop: true,
-            pagination: false,
             margin: 10,
-            nav: false,
             axis:"x",
-            lazyLoad : true,
             theme:"dark",
             responsive: {
                 0: {
