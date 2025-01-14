@@ -60,6 +60,14 @@
                 <form id="algin-form">
                     <div class="form-group">
                         <h4>Leave a comment</h4>
+                        <div class="rating"> 
+                              <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                              <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> 
+                              <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                              <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                              <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                          </div>
+
                         <label for="message">Message</label>
                         <textarea name="msg" id=""msg cols="30" rows="5" class="form-control" style="background-color: black;"></textarea>
                     </div>
@@ -134,4 +142,42 @@
     .comment p,.comment span,.darker p,.darker span{
         color: rgb(184, 183, 183);
     }
+    .rating {
+ display: flex;
+        margin-top: -10px;
+    flex-direction: row-reverse;
+    margin-left: -4px;
+        float: left;
+}
+
+.rating>input {
+    display: none
+}
+
+.rating>label {
+        position: relative;
+    width: 19px;
+    font-size: 25px;
+    color: #ff0000;
+    cursor: pointer;
+}
+
+.rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before {
+    opacity: 1 !important
+}
+
+.rating>input:checked~label:before {
+    opacity: 1
+}
+
+.rating:hover>input:checked~label:before {
+    opacity: 0.4
+}
 </style>
