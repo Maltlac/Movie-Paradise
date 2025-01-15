@@ -1,3 +1,6 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 @extends('layouts.app')
 <?php  setlocale(LC_TIME, "fr_FR", "French");?>
 @section('content')
@@ -46,27 +49,50 @@
                 @foreach ($com as $unCom)
                     <div class="comment mt-4 text-justify float-left">
                         <h4> {{$UsersCom[$countUser]->name}} </h4>
-                        <span>-{{ strftime("%d %B %G", strtotime($unCom->datePost))}} </span>
+                        <span>-{{ strftime("%d %B %G", strtotime($unCom->created_at))}} </span>
                         <br>
                         <p> {{$unCom->Corp}} </p>
                     </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
                     <?php $countUser++?>
                     
                 @endforeach
-                
+
                
             </div>
             <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
-                <form id="algin-form">
+                <form id="algin-form"  action="/PostCommentFilm/{{$film->id}}" method="POST">
+                    @csrf
                     <div class="form-group">
                         <h4>Leave a comment</h4>
-                        <div class="rating"> 
-                              <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-                              <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> 
-                              <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                              <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                              <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
-                          </div>
+                        <div class="form-group" id="rating-ability-wrapper">
+                            <label class="control-label" for="rating">
+                            <span class="field-label-info"></span>
+                            <input type="hidden" id="selected_rating" name="selected_rating" value="" required="required">
+                            </label>
+                            <h2 class="bold rating-header" style="">Note
+                            <span class="selected-rating">0</span><small> / 5</small>
+                            </h2>
+                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="1" id="rating-star-1" name="rating">
+                                <i class="fa fa-star" aria-hidden="true">★</i>
+                            </button>
+                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="2" id="rating-star-2" name="rating">
+                                <i class="fa fa-star" aria-hidden="true">★</i>
+                            </button>
+                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="3" id="rating-star-3" name="rating">
+                                <i class="fa fa-star" aria-hidden="true">★</i>
+                            </button>
+                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="4" id="rating-star-4" name="rating">
+                                <i class="fa fa-star" aria-hidden="true">★</i>
+                            </button>
+                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="5" id="rating-star-5" name="rating">
+                                <i class="fa fa-star" aria-hidden="true">★</i>
+                            </button>
+                        </div>
+                          
 
                         <label for="message">Message</label>
                         <textarea name="msg" id=""msg cols="30" rows="5" class="form-control" style="background-color: black;"></textarea>
@@ -74,7 +100,7 @@
                    
                     
                     <div class="form-group">
-                        <button type="button" id="post" class="btn">Post Comment</button>
+                        <button type="submit" id="post" class="btn">Post Comment</button>
                     </div>
                 </form>
             </div>
@@ -100,10 +126,31 @@
         border-radius: 13px;
         width: 50%;
     }
+    .comments{
+        margin-top: 5%;
+        margin-left: 20px;
+    }
+    .comment{
+    border: 1px solid rgb(16, 18, 46);
+    background-color: rgba(16, 18, 46, 0.973);
+    float: left;
+    border-radius: 5px;
+    padding-left: 40px;
+    padding-right: 30px;
+    padding-top: 10px;
+    
+    }
+    .comment h4,.comment span,.darker h4,.darker span{
+        display: inline;
+    }
+
+    .comment p,.comment span,.darker p,.darker span{
+        color: rgb(184, 183, 183);
+    }
 
     .form-group input,.form-group textarea{
         background-color: black;
-        border: 1px solid rgba(16, 46, 46, 1);
+        border: 1px solid rgba(16, 18, 46, 1);
         border-radius: 12px;
     }
     form{
@@ -125,59 +172,36 @@
         padding-top: 10px;
     }
 
-    .comment{
-        border: 1px solid rgba(16, 46, 46, 1);
-        background-color: rgba(16, 46, 46, 0.973);
-        float: left;
-        border-radius: 5px;
-        padding-left: 40px;
-        padding-right: 30px;
-        padding-top: 10px;
-        
-    }
-    .comment h4,.comment span,.darker h4,.darker span{
-        display: inline;
-    }
 
-    .comment p,.comment span,.darker p,.darker span{
-        color: rgb(184, 183, 183);
-    }
-    .rating {
- display: flex;
-        margin-top: -10px;
-    flex-direction: row-reverse;
-    margin-left: -4px;
-        float: left;
-}
 
-.rating>input {
-    display: none
-}
-
-.rating>label {
-        position: relative;
-    width: 19px;
-    font-size: 25px;
-    color: #ff0000;
-    cursor: pointer;
-}
-
-.rating>label::before {
-    content: "\2605";
-    position: absolute;
-    opacity: 0
-}
-
-.rating>label:hover:before,
-.rating>label:hover~label:before {
-    opacity: 1 !important
-}
-
-.rating>input:checked~label:before {
-    opacity: 1
-}
-
-.rating:hover>input:checked~label:before {
-    opacity: 0.4
-}
 </style>
+
+<script type="text/javascript">
+    	jQuery(document).ready(function($){
+	    
+        $(".btnrating").on('click',(function(e) {
+        
+        var previous_value = $("#selected_rating").val();
+        
+        var selected_value = $(this).attr("data-attr");
+        $("#selected_rating").val(selected_value);
+        
+        $(".selected-rating").empty();
+        $(".selected-rating").html(selected_value);
+        
+        for (i = 1; i <= selected_value; ++i) {
+        $("#rating-star-"+i).toggleClass('btn-warning');
+        $("#rating-star-"+i).toggleClass('btn-default');
+        }
+        
+        for (ix = 1; ix <= previous_value; ++ix) {
+        $("#rating-star-"+ix).toggleClass('btn-warning');
+        $("#rating-star-"+ix).toggleClass('btn-default');
+        }
+        
+        }));
+        
+            
+    });
+    
+</script>

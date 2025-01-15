@@ -8,7 +8,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\StreamingController;
+use App\Http\Controllers\commantaireController;
 use App\Http\Controllers\panneauCtrlController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +44,7 @@ Route::get('/serie/{serie}/saison/{saison}', [SeriesController::class, 'voirSais
 Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [SeriesController::class, 'voirEpisode'])->name('episode.show');
 Route::get('/searchStreaming', [StreamingController::class, 'searchStreaming']);
 Route::get('autocomplete', [StreamingController::class, 'search']);
+Route::post('/PostCommentFilm/{idFilm}',[commantaireController::class,'postCommentMovie']);
 
 
 /**
@@ -76,9 +79,5 @@ Route::get('/bio/{bio}', [PersonnesController::class, 'showBio'])->name('personn
 
 });
     
-  
-                     
-
-//Route::get('/search','film@searchBarFilm');
 
 

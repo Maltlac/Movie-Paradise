@@ -19,8 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('film_id')->nullable();
             $table->unsignedBigInteger('series_id')->nullable();
-            $table->date('datePost');
-
+            
             $table->index('film_id');
             $table->index('series_id');
 
