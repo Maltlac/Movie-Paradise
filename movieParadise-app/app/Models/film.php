@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Personnes;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,14 @@ class film extends Model
 
     public function getCommentFilm(){
         return commantaire::where('film_id',$this->id)->get();
+    }
+
+    public function getFilm($filmId){
+        return film::where('film_id',$filmId)->get();
+    }
+
+    public function FilmUser(){
+        return $this->belongsToMany(User::class);
     }
 }
 

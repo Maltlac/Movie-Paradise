@@ -28,7 +28,7 @@
     
     
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js','resources/css/app.css'])
 </head>
 <body >
     <div id="app" >

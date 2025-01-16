@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <?php use App\Models\film;
-//dd(film::searchBarFilm("iron"))
+
 
 ?>
 
@@ -10,12 +10,11 @@
         <div class="panel panel-default">
             <div class="panel-heading d-flex align-items-baseline justify-content-between">
                 <h3>Films </h3>
-                <i class="bi bi-arrow-left"></i><a class="" href="{{ url()->previous() }}">retour</a>
             </div>
             <div class="panel-body">
 
                 <div class="form-group">
-                    <input type="text" class="form-controller" id="search" name="search">
+                    <input type="text" class="form-controller" id="search" name="search" style="background-color:white">
                 </div>
 
                 <form action="ajoutFilm" method="POST">

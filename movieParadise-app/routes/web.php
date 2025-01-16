@@ -36,16 +36,24 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
 /**
  * this part is for the streaming vues
  */
-Route::get('/streaming', [StreamingController::class, 'index'])->name('streaming.index');
-Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
-Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name('film.show');
+
+ ////Streaming 
+ Route::get('/streaming', [StreamingController::class, 'index'])->name('streaming.index');
+ Route::get('/searchStreaming', [StreamingController::class, 'searchStreaming']);
+ Route::get('autocomplete', [StreamingController::class, 'search']);
+ ///Films
+ Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
+ Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name('film.show');
+ Route::post('/PostCommentFilm/{idFilm}',[commantaireController::class,'postCommentMovie']);
+ Route::post('/ajoutMalisteFilm',[FilmController::class,'ajoutMalisteFilm'])->name('ajoutMalisteFilm.post');
+ Route::post('/suppMalisteFilm',[FilmController::class,'suppMalisteFilm'])->name('suppMalisteFilm.Delete');
+ ////Series
 Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name('series.show');
 Route::get('/serie/{serie}/saison/{saison}', [SeriesController::class, 'voirSaison'])->name('saison.show');
 Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [SeriesController::class, 'voirEpisode'])->name('episode.show');
-Route::get('/searchStreaming', [StreamingController::class, 'searchStreaming']);
-Route::get('autocomplete', [StreamingController::class, 'search']);
-Route::post('/PostCommentFilm/{idFilm}',[commantaireController::class,'postCommentMovie']);
-
+Route::post('/postCommentSerie/{idSeries}',[commantaireController::class,'postCommentSerie']);
+Route::post('/ajoutMalisteSerie',[SeriesController::class,'ajoutMalisteSerie'])->name('ajoutMalisteSerie.post');
+Route::post('/suppMalisteSerie',[SeriesController::class,'suppMalisteSerie'])->name('suppMalisteSerie.Delete');
 
 /**
  * this one is for the bio of the cast and crew

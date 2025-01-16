@@ -9,7 +9,19 @@
    <h1>{{ $film->titre }}</h1>
    
    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ $film->urlTrailler }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    <div>durée du film: {{ $film->duree }}</div>
+        <div class="mb-3">
+            @csrf
+            <label class="visually-hidden" for="inputName" id="inputHidden" value="{{$film->id}}">Hidden input label</label>
+            @if (!$IsInlist)
+            <button id="AjoutListeButtonFilm" type="submit" style="color:black;">Ajouter à ma liste</button>
+            <button id="SuppListeButtonFilm" type="submit" style="color:black; display:none">Supprimer de ma liste</button>
+            @else
+            <button id="AjoutListeButtonFilm" type="submit" style="color:black; display:none">Ajouter à ma liste</button>
+            <button id="SuppListeButtonFilm" type="submit" style="color:black;">Supprimer de ma liste</button>
+            @endif
+        </div>
+        
+   <div>durée du film: {{ $film->duree }}</div>
 
     <div>Acteurs:
             <?php
@@ -48,7 +60,7 @@
                 <?php $countUser=0?>
                 @foreach ($com as $unCom)
                     <div class="comment mt-4 text-justify float-left">
-                        <h4> {{$UsersCom[$countUser]->name}} </h4>
+                        <h4> {{$UsersCom[$countUser]->username}} </h4>
                         <span>-{{ strftime("%d %B %G", strtotime($unCom->created_at))}} </span>
                         <br>
                         <p> {{$unCom->Corp}} </p>
@@ -95,7 +107,7 @@
                           
 
                         <label for="message">Message</label>
-                        <textarea name="msg" id=""msg cols="30" rows="5" class="form-control" style="background-color: black;"></textarea>
+                        <textarea name="msg" id="msg" cols="30" rows="5" class="form-control" style="background-color: black; color: whitesmoke;"></textarea>
                     </div>
                    
                     
@@ -111,97 +123,62 @@
 </div>
 @endsection
 
-<style>
-        #post{
-        margin: 10px;
-        padding: 6px;
-        padding-top: 2px;
-        padding-bottom: 2px;
-        text-align: center;
-        background-color: #ecb21f;
-        border-color: #a88734 #9c7e31 #846a29;
-        color: black;
-        border-width: 1px;
-        border-style: solid;
-        border-radius: 13px;
-        width: 50%;
-    }
-    .comments{
-        margin-top: 5%;
-        margin-left: 20px;
-    }
-    .comment{
-    border: 1px solid rgb(16, 18, 46);
-    background-color: rgba(16, 18, 46, 0.973);
-    float: left;
-    border-radius: 5px;
-    padding-left: 40px;
-    padding-right: 30px;
-    padding-top: 10px;
-    
-    }
-    .comment h4,.comment span,.darker h4,.darker span{
-        display: inline;
-    }
 
-    .comment p,.comment span,.darker p,.darker span{
-        color: rgb(184, 183, 183);
-    }
-
-    .form-group input,.form-group textarea{
-        background-color: black;
-        border: 1px solid rgba(16, 18, 46, 1);
-        border-radius: 12px;
-    }
-    form{
-
-        padding: 20px;
-    }
-    .comments{
-        margin-top: 5%;
-        margin-left: 20px;
-    }
-
-    .darker{
-        border: 1px solid #ecb21f;
-        background-color: black;
-        float: right;
-        border-radius: 5px;
-        padding-left: 40px;
-        padding-right: 30px;
-        padding-top: 10px;
-    }
-
-
-
-</style>
 
 <script type="text/javascript">
     	jQuery(document).ready(function($){
 	    
-        $(".btnrating").on('click',(function(e) {
-        
-        var previous_value = $("#selected_rating").val();
-        
-        var selected_value = $(this).attr("data-attr");
-        $("#selected_rating").val(selected_value);
-        
-        $(".selected-rating").empty();
-        $(".selected-rating").html(selected_value);
-        
-        for (i = 1; i <= selected_value; ++i) {
-        $("#rating-star-"+i).toggleClass('btn-warning');
-        $("#rating-star-"+i).toggleClass('btn-default');
-        }
-        
-        for (ix = 1; ix <= previous_value; ++ix) {
-        $("#rating-star-"+ix).toggleClass('btn-warning');
-        $("#rating-star-"+ix).toggleClass('btn-default');
-        }
+            $(".btnrating").on('click',(function(e) {
+            
+            var previous_value = $("#selected_rating").val();
+            
+            var selected_value = $(this).attr("data-attr");
+            $("#selected_rating").val(selected_value);
+            
+            $(".selected-rating").empty();
+            $(".selected-rating").html(selected_value);
+            
+            for (i = 1; i <= selected_value; ++i) {
+            $("#rating-star-"+i).toggleClass('btn-warning');
+            $("#rating-star-"+i).toggleClass('btn-default');
+            }
+            
+            for (ix = 1; ix <= previous_value; ++ix) {
+            $("#rating-star-"+ix).toggleClass('btn-warning');
+            $("#rating-star-"+ix).toggleClass('btn-default');
+            }
         
         }));
         
             
     });
-    
+    $(document).ready(function(){
+        $('#AjoutListeButtonFilm').on('click',function(e){
+            e.preventDefault();
+            $idFilm=$("#inputHidden").attr('value');
+            $("#SuppListeButtonFilm").show();
+            $("#AjoutListeButtonFilm").hide();
+            $url="{{ url('/ajoutMalisteFilm') }}"
+                console.log($url)
+            $.ajax({
+                method: 'post',
+                url: $url,
+                data: { idFilm: $idFilm, _token:@json(csrf_token()) },
+        });    
+        });
+        $('#SuppListeButtonFilm').on('click',function(e){
+            e.preventDefault();
+            $idFilm=$("#inputHidden").attr('value');
+            $("#SuppListeButtonFilm").hide();
+            $("#AjoutListeButtonFilm").show();
+            $url="{{ url('/suppMalisteFilm') }}"
+                console.log($url)
+            $.ajax({
+                method: 'post',
+                url: $url,
+                data: { idFilm: $idFilm, _token:@json(csrf_token()) },
+        });        
+        });
+    });
+
 </script>

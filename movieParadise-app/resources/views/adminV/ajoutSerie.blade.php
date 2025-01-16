@@ -14,7 +14,7 @@
             <div class="panel-body">
 
                 <div class="form-group">
-                    <input type="text" class="form-controller" id="search" name="search">
+                    <input type="text" class="form-controller" id="search" name="search" style="background-color:white">
                 </div>
 
                 <form action="ajoutSerie" method="POST">

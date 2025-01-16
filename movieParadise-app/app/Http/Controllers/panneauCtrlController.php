@@ -191,16 +191,21 @@ class panneauCtrlController extends Controller
             $id_serie=DB::getPdo()->lastInsertId();
 
             foreach ($serie['seasons'] as $saison) {
-                $dataSaison=[
-                    'titre'=>$saison['name'],
-                    'resume'=>$saison['overview'],
-                    'image'=>$saison['poster_path'],
-                    'dateSortie'=>$saison['air_date'],
-                    'numeroSaison'=>$saison['season_number'],
-                    'tmdb_id'=>$saison['id'],
-                    'series_id'=>$id_serie,
-                ];
-                $saisonNb=$saison['season_number'];
+                $saisonNb=0;
+                if ($saison['air_date']!="") {
+                    $dataSaison=[
+                        'titre'=>$saison['name'],
+                        'resume'=>$saison['overview'],
+                        'image'=>$saison['poster_path'],
+                        'dateSortie'=>$saison['air_date'],
+                        'numeroSaison'=>$saison['season_number'],
+                        'tmdb_id'=>$saison['id'],
+                        'series_id'=>$id_serie,
+                    ];
+                    $saisonNb=$saison['season_number'];
+                }
+                
+                
                
                 if ($saisonNb>0) {
                     $saisonId=saison::create($dataSaison);

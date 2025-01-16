@@ -22,9 +22,23 @@
             
         
 
+        <h2 style="color:whiteSmoke">Ma liste</h2>
+        <div class="owl-carousel ">    
+            @foreach ($maListe as $filmSerie)
+                <div class="item">
+                    @if (count($filmSerie)==11)
+                        <a id="imgCardStreaming" href="/serie/{{ $filmSerie['id'] }}" class="card col-sm-4 ">
+                    @else
+                        <a id="imgCardStreaming" href="/film/{{ $filmSerie['id'] }}" class="card col-sm-4 ">
+                    @endif
+                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $filmSerie['image'] }}" alt="Card image cap">
+                    </a>
+                </div>
+            @endforeach               
+        </div>  
 
         <h2 style="color:whiteSmoke">Films</h2>
-        <div class="owl-carousel owl-theme">
+        <div class="owl-carousel ">
            
             @foreach ($film as $lesFilms2)
                 <div class="item">
@@ -36,7 +50,7 @@
         </div>   
 
         <h2 style="color:whiteSmoke">Series</h2>
-        <div class="owl-carousel owl-theme">
+        <div class="owl-carousel ">
           
             
             @foreach ($serie as $lesSeries)
@@ -48,9 +62,10 @@
                 </div>
             @endforeach               
         </div>   
+        
 
         <h2 style="color:whiteSmoke">récemment ajouté</h2>
-        <div class="owl-carousel owl-theme">
+        <div class="owl-carousel ">
            
             @foreach ($lastAdd as $filmSerie)
                 <div class="item">
@@ -64,6 +79,8 @@
                 </div>
             @endforeach               
         </div>   
+
+        
 
           
         

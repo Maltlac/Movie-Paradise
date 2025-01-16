@@ -48,4 +48,16 @@ class User extends Authenticatable
     {
         return $this->role == $role;
     }
+
+    public function UserFilm(){
+        return $this->belongsToMany(film::class);
+    }
+
+    public function UserPersonne(){
+        return $this->belongsToMany(Personnes::class);
+    }
+
+    public function UserSerie(){
+        return $this->belongsToMany(series::class);
+    }
 }

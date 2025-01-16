@@ -18,6 +18,10 @@ class series extends Model
         return $this->belongsToMany(categories::class);
     }
 
+    public function getCommentSerie(){
+        return commantaire::where('series_id',$this->id)->get();
+    }
+
     
 
 }

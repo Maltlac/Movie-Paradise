@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\film;
+use App\Models\User;
 use App\Models\series;
 use App\Models\Personnes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PersonnesController extends Controller
 {
@@ -29,5 +31,19 @@ class PersonnesController extends Controller
             'tabReal'=>$tabReal,
             'apparitions'=>$apparitions,
         ] );
+    }
+    public function ajoutMalistePersonne($Personne)
+    {
+        $userId=Auth::user()->id;
+        $user=User::find($userId);
+        $user->UserPersonne()->attach($Personne);
+
+    }
+    public function suppMalistePersonne($Personne)
+    {
+        $userId=Auth::user()->id;
+        $user=User::find($userId);
+        $user->UserPersonne()->detach($Personne);
+
     }
 }

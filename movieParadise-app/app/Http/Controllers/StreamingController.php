@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\categories;
 use App\Models\film;
+use App\Models\User;
 use App\Models\series;
 use App\Models\Personnes;
+use App\Models\categories;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
 
 
@@ -16,18 +18,25 @@ class StreamingController extends Controller
 {
     public function index()
     {
+        $userId=Auth::user()->id;
+        $user=User::find($userId);
         $film=film::inRandomOrder()->limit(20)->get();
         $serie=series::inRandomOrder()->limit(20)->get();
         $categ=categories::all();
         $lastAdd=film::latest()->take(10)->get()->toArray();
         $lastAdd2=series::latest()->take(10)->get()->toArray();
+        $listeFilm=$user->UserFilm()->get()->toArray();
+        $listeSerie=$user->UserSerie()->get()->toArray();
+        $maListe=array_merge($listeFilm,$listeSerie);
         $merge = array_merge($lastAdd2,$lastAdd);
         shuffle($merge);
+        shuffle($maListe);
         return view('/streaming/voirTout',[
             'film'=>$film,
             'serie'=>$serie,
             'categ'=>$categ,
             'lastAdd'=>$merge,
+            'maListe'=>$maListe,
         ]);
     }
 

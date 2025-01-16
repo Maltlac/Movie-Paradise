@@ -20,7 +20,20 @@ class commantaireController extends Controller
         'film_id'=>$idFilm,
       ];
       commantaire::create($data);
-    
+      return redirect("/film/$idFilm");
+    }
 
+    public function postCommentSerie(Request $request, $idSeries){
+      $rating = $request->get('selected_rating');
+      $msg = $request->get('msg');
+      $idUser=Auth::user()->id;
+      $data=[
+        'Corp'=>$msg,
+        'note'=>$rating,
+        'user_id'=>$idUser,
+        'Series_id'=>$idSeries,
+      ];
+      commantaire::create($data);
+      return redirect("/serie/$idSeries");
     }
 }
