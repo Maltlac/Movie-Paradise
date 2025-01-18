@@ -10,12 +10,17 @@ use App\Models\categories;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Console\Input\Input;
 
 
 class StreamingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $userId=Auth::user()->id;
@@ -29,6 +34,7 @@ class StreamingController extends Controller
         $listeSerie=$user->UserSerie()->get()->toArray();
         $maListe=array_merge($listeFilm,$listeSerie);
         $merge = array_merge($lastAdd2,$lastAdd);
+        $categ=categories::all();
         shuffle($merge);
         shuffle($maListe);
         return view('/streaming/voirTout',[
@@ -37,10 +43,10 @@ class StreamingController extends Controller
             'categ'=>$categ,
             'lastAdd'=>$merge,
             'maListe'=>$maListe,
+            'listeCateg'=>$categ,
         ]);
     }
-
-    
+  
     public function search(Request $request)
     {
           $search = $request->get('titre');
@@ -83,5 +89,35 @@ class StreamingController extends Controller
             'data'=>$result,
         ]);
 
+    }
+
+    public function searchCateg($p,$idCateg,$year)
+    {
+        $categAll=categories::all();
+        $categ=categories::find($idCateg);
+
+        $yearFilm=DB::table('films')->select('dateSortie')->distinct()->get();
+        dd($yearFilm);
+        if ($p=="film") {
+            if($year=="tous"){
+                $requete=$categ->categoriesFilm()->get();
+            }else{
+                $requete=$categ->categoriesFilm()->whereYear("dateSortie",'=',$year)->get();
+            }
+        }else if($p=="series"){
+            if($year=="tous"){
+                $requete=$categ->categoriesSerie()->get();
+            }else{
+                $requete=$categ->categoriesSerie()->whereYear("dateSortie",'=',$year)->get();
+            }      
+        }
+
+        //dd($requete);
+        return view("streaming/searchCategYear",[
+            "search"=>$requete,
+            'listeCateg'=>$categAll,
+            'p'=>$p,
+            'categSearch'=>$idCateg,
+        ]);
     }
 }

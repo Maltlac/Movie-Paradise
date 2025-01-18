@@ -23,6 +23,8 @@ class FilmController extends Controller
         $coms=$film->getCommentFilm();
         $userId=Auth::user()->id;
         $user=User::find($userId);
+
+        
         foreach ($coms as $com) {
             $usersName[]=User::find($com->user_id); 
         }

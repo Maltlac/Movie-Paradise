@@ -12,4 +12,7 @@ class categories extends Model
     public function categoriesFilm(){
         return $this->belongsToMany(film::class);
     }
+    public function categoriesSerie(){
+        return $this->belongsToMany(series::class);
+    }
 }

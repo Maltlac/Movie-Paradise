@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class series extends Model
 {
     protected $guarded =[];
-    use HasFactory;
+
     public function SeriesPersonnes(){
         return $this->belongsToMany(Personnes::class)->limit(10);
     }
@@ -21,7 +21,5 @@ class series extends Model
     public function getCommentSerie(){
         return commantaire::where('series_id',$this->id)->get();
     }
-
-    
 
 }

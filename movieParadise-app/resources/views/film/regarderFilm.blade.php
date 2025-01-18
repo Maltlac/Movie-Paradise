@@ -163,7 +163,7 @@
             $.ajax({
                 method: 'post',
                 url: $url,
-                data: { idFilm: $idFilm, _token:@json(csrf_token()) },
+                data: { idFilm: $idFilm, _token:@json(csrf_token())},
         });    
         });
         $('#SuppListeButtonFilm').on('click',function(e){
@@ -178,7 +178,7 @@
                 url: $url,
                 data: { idFilm: $idFilm, _token:@json(csrf_token()) },
         });        
-        });
+        
     });
-
+    });
 </script>

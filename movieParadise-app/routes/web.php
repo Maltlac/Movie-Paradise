@@ -41,6 +41,7 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
  Route::get('/streaming', [StreamingController::class, 'index'])->name('streaming.index');
  Route::get('/searchStreaming', [StreamingController::class, 'searchStreaming']);
  Route::get('autocomplete', [StreamingController::class, 'search']);
+ Route::get('/p/{p}/categ/{categ}/year/{year}', [StreamingController::class, 'searchCateg']);
  ///Films
  Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
  Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name('film.show');
