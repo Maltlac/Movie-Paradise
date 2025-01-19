@@ -12,6 +12,16 @@ $body-bg: #0f171e;
     border-radius: 30px;
 }
 
+#imgCardStreamingCateg{
+    z-index:10;
+    background-color:transparent;
+    width: 200px; 
+    height:300px; 
+    border-color:transparent;
+    border-radius: 30px;
+}
+
+
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 1.5rem;

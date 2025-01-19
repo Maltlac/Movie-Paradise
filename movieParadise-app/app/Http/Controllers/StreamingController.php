@@ -96,8 +96,11 @@ class StreamingController extends Controller
         $categAll=categories::all();
         $categ=categories::find($idCateg);
 
-        $yearFilm=DB::table('films')->select('dateSortie')->distinct()->get();
-        dd($yearFilm);
+        $yearFilm=DB::table('films')->selectRaw('YEAR(dateSortie) AS year')->orderBy('year')->distinct()->pluck('year')->toArray();
+        $yearSerie=DB::table('series')->selectRaw('YEAR(dateSortie) AS year')->orderBy('year')->distinct()->pluck('year')->toArray();
+        $years = array_merge($yearSerie, $yearFilm);
+        $sortedYear = array_unique($years);
+        sort($sortedYear);
         if ($p=="film") {
             if($year=="tous"){
                 $requete=$categ->categoriesFilm()->get();
@@ -118,6 +121,15 @@ class StreamingController extends Controller
             'listeCateg'=>$categAll,
             'p'=>$p,
             'categSearch'=>$idCateg,
+            'years'=>$sortedYear,
+            'yearSelected'=>$year
         ]);
+    }
+
+    public function searchCategVars(Request $request){
+       $p=$request['p'];
+       $categ=$request['categ'];
+       $year=$request['year'];
+        return redirect("/p/$p/categ/$categ/year/$year");
     }
 }
