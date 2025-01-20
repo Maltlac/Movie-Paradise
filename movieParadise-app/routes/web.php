@@ -61,6 +61,8 @@ Route::post('/suppMalisteSerie',[SeriesController::class,'suppMalisteSerie'])->n
  * this one is for the bio of the cast and crew
  */
 Route::get('/bio/{bio}', [PersonnesController::class, 'showBio'])->name('personnes.showBio');
+Route::post('/ajoutMalistePersonne',[PersonnesController::class,'ajoutMalistePersonne'])->name('ajoutMalistePersonne.post');
+Route::post('/suppMalistePersonne',[PersonnesController::class,'suppMalistePersonne'])->name('suppMalistePersonne.Delete');
 /**
  * this one is for the E-tickets
  */
@@ -71,7 +73,7 @@ Route::get('/bio/{bio}', [PersonnesController::class, 'showBio'])->name('personn
   */
 
   
-  Route::group(['middleware' => ['auth', 'admin']], function() {
+    Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/panneauCtrl', [panneauCtrlController::class, 'index'])->name('panneauCtrl.index');
 
     ///Films

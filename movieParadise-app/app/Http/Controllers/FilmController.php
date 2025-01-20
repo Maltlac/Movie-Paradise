@@ -18,6 +18,7 @@ class FilmController extends Controller
     }
     public function voirfilm($idfilm)
     {
+        //film_vue
         $film =film::find($idfilm);
         $real=Personnes::find($film->realisateurs_id);
         $coms=$film->getCommentFilm();

@@ -8,6 +8,16 @@ $interval = date_diff($dt, $dt2);
 <div class="container" style=" color: whitesmoke;">
    <h1>{{ $bio->name }}</h1>
    <img class="card-img-center" src="https://image.tmdb.org/t/p/w300{{ $bio->image }}" alt="Card image cap">
+   <label class="visually-hidden" for="inputName" id="inputHidden" value="{{$bio->id}}"></label>
+   @csrf
+   @if (!$IsInlist)
+   <input id="AjoutListeButtonPersonne" type="image" src="/images/icons8-aimer-96.png" style="width: 50px" alt="">
+   <input id="suppListeButtonPersonne" type="image" src="/images/icons8-aimer-100.png" style="width: 50px;display:none" alt="">
+   @else
+   <input id="AjoutListeButtonPersonne" type="image" src="/images/icons8-aimer-96.png" style="width: 50px;display:none" alt="">
+   <input id="suppListeButtonPersonne" type="image" src="/images/icons8-aimer-100.png" style="width: 50px;" alt="">
+   @endif
+
    <h3>Biographie:</h3>
     <div>{{ $bio->bio ?? "N/A" }}</div>
     <br>
@@ -62,4 +72,35 @@ $interval = date_diff($dt, $dt2);
     ?>
 
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#AjoutListeButtonPersonne').on('click',function(e){
+            e.preventDefault();
+            $idPersonne=$("#inputHidden").attr('value');
+            $("#suppListeButtonPersonne").show();
+            $("#AjoutListeButtonPersonne").hide();
+            $url="{{ url('/ajoutMalistePersonne') }}"
+                console.log($url)
+            $.ajax({
+                method: 'post',
+                url: $url,
+                data: { idPersonne: $idPersonne, _token:@json(csrf_token())},
+        });    
+        });
+        $('#suppListeButtonPersonne').on('click',function(e){
+            e.preventDefault();
+            $idPersonne=$("#inputHidden").attr('value');
+            $("#suppListeButtonPersonne").hide();
+            $("#AjoutListeButtonPersonne").show();
+            $url="{{ url('/suppMalistePersonne') }}"
+                console.log($url)
+            $.ajax({
+                method: 'post',
+                url: $url,
+                data: { idPersonne: $idPersonne, _token:@json(csrf_token()) },
+        });        
+        
+    });
+    });
+</script>
 @endsection

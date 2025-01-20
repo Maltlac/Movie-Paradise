@@ -18,10 +18,14 @@ class PersonnesController extends Controller
         $tabSeries=$personne->acteursSeries;
         $tabReal=film::where('realisateurs_id','=',$personne->id)->get();
         $apparitions=count($tabFilms)+count($tabReal)+count($tabSeries);
+        $userId=Auth::user()->id;
+        $user=User::find($userId);
 
         if (count($tabFilms)==0) {$tabFilms=null;}
         if (count($tabSeries)==0) {$tabSeries=null;}
         if (count($tabReal)==0) {$tabReal=null;}
+
+        $hasPersonne = $user->UserPersonne()->where('personnes_id', $idPers)->exists();
 
         //dd($tabFilms,$tabReal,$tabSeries,$personne,$apparitions);
         return view('/bioPersonne', [
@@ -30,20 +34,24 @@ class PersonnesController extends Controller
             'tabSeries'=>$tabSeries,
             'tabReal'=>$tabReal,
             'apparitions'=>$apparitions,
+            'IsInlist'=>$hasPersonne,
         ] );
     }
-    public function ajoutMalistePersonne($Personne)
+
+    public function ajoutMalistePersonne(Request $request)
     {
+        $idPersonne=$request->idPersonne;
         $userId=Auth::user()->id;
         $user=User::find($userId);
-        $user->UserPersonne()->attach($Personne);
+        $user->UserPersonne()->attach($idPersonne);
 
     }
-    public function suppMalistePersonne($Personne)
+    public function suppMalistePersonne(Request $request)
     {
+        $idPersonne=$request->idPersonne; 
         $userId=Auth::user()->id;
         $user=User::find($userId);
-        $user->UserPersonne()->detach($Personne);
+        $user->UserPersonne()->detach($idPersonne);
 
     }
 }
