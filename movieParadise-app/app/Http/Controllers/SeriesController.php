@@ -32,6 +32,7 @@ class SeriesController extends Controller
         }
         $userId=Auth::user()->id;
         $user=User::find($userId);
+        $user->UserSerieVue()->attach($idSerie);
         $hasSerie = $user->UserSerie()->where('series_id', $idSerie)->exists();
         return view('/serie/regarderSerie', [
             'serie' => $serie,

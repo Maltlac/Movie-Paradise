@@ -50,7 +50,7 @@ class User extends Authenticatable
     }
 
     public function UserFilm(){
-        return $this->belongsToMany(film::class);
+        return $this->belongsToMany(film::class,'film_user');
     }
 
     public function UserPersonne(){
@@ -58,6 +58,13 @@ class User extends Authenticatable
     }
 
     public function UserSerie(){
-        return $this->belongsToMany(series::class);
+        return $this->belongsToMany(series::class,'series_user');
+    }
+
+    public function UserFilmVue(){
+        return $this->belongsToMany(film::class,'film_vue');
+    }
+    public function UserSerieVue(){
+        return $this->belongsToMany(series::class,'series_vue');
     }
 }

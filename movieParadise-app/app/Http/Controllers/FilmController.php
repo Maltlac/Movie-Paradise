@@ -25,6 +25,8 @@ class FilmController extends Controller
         $userId=Auth::user()->id;
         $user=User::find($userId);
 
+        $user->UserFilmVue()->attach($idfilm);
+
         
         foreach ($coms as $com) {
             $usersName[]=User::find($com->user_id); 

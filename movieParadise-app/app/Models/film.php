@@ -50,7 +50,11 @@ class film extends Model
     }
 
     public function FilmUser(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class,'film_user');
+    }
+
+    public function FilmUserVue(){
+        return $this->belongsToMany(User::class,'film_vue');
     }
 }
 
