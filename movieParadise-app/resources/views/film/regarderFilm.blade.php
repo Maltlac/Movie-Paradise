@@ -1,7 +1,6 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 @extends('layouts.app')
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+@vite(['resources/css/commentsStyle.css'])
 <?php  setlocale(LC_TIME, "fr_FR", "French");?>
 @section('content')
 <div class="container" style=" color: whitesmoke;">
@@ -121,64 +120,64 @@
 </section>
 
 </div>
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+    
+        $(".btnrating").on('click',(function(e) {
+        
+        var previous_value = $("#selected_rating").val();
+        
+        var selected_value = $(this).attr("data-attr");
+        $("#selected_rating").val(selected_value);
+        
+        $(".selected-rating").empty();
+        $(".selected-rating").html(selected_value);
+        
+        for (i = 1; i <= selected_value; ++i) {
+        $("#rating-star-"+i).toggleClass('btn-warning');
+        $("#rating-star-"+i).toggleClass('btn-default');
+        }
+        
+        for (ix = 1; ix <= previous_value; ++ix) {
+        $("#rating-star-"+ix).toggleClass('btn-warning');
+        $("#rating-star-"+ix).toggleClass('btn-default');
+        }
+    
+    }));
+    
+        
+});
+$(document).ready(function(){
+    $('#AjoutListeButtonFilm').on('click',function(e){
+        e.preventDefault();
+        $idFilm=$("#inputHidden").attr('value');
+        $("#SuppListeButtonFilm").show();
+        $("#AjoutListeButtonFilm").hide();
+        $url="{{ url('/ajoutMalisteFilm') }}"
+            console.log($url)
+        $.ajax({
+            method: 'post',
+            url: $url,
+            data: { idFilm: $idFilm, _token:@json(csrf_token())},
+    });    
+    });
+    $('#SuppListeButtonFilm').on('click',function(e){
+        e.preventDefault();
+        $idFilm=$("#inputHidden").attr('value');
+        $("#SuppListeButtonFilm").hide();
+        $("#AjoutListeButtonFilm").show();
+        $url="{{ url('/suppMalisteFilm') }}"
+            console.log($url)
+        $.ajax({
+            method: 'post',
+            url: $url,
+            data: { idFilm: $idFilm, _token:@json(csrf_token()) },
+    });        
+    
+});
+});
+</script>
 @endsection
 
 
 
-<script type="text/javascript">
-    	jQuery(document).ready(function($){
-	    
-            $(".btnrating").on('click',(function(e) {
-            
-            var previous_value = $("#selected_rating").val();
-            
-            var selected_value = $(this).attr("data-attr");
-            $("#selected_rating").val(selected_value);
-            
-            $(".selected-rating").empty();
-            $(".selected-rating").html(selected_value);
-            
-            for (i = 1; i <= selected_value; ++i) {
-            $("#rating-star-"+i).toggleClass('btn-warning');
-            $("#rating-star-"+i).toggleClass('btn-default');
-            }
-            
-            for (ix = 1; ix <= previous_value; ++ix) {
-            $("#rating-star-"+ix).toggleClass('btn-warning');
-            $("#rating-star-"+ix).toggleClass('btn-default');
-            }
-        
-        }));
-        
-            
-    });
-    $(document).ready(function(){
-        $('#AjoutListeButtonFilm').on('click',function(e){
-            e.preventDefault();
-            $idFilm=$("#inputHidden").attr('value');
-            $("#SuppListeButtonFilm").show();
-            $("#AjoutListeButtonFilm").hide();
-            $url="{{ url('/ajoutMalisteFilm') }}"
-                console.log($url)
-            $.ajax({
-                method: 'post',
-                url: $url,
-                data: { idFilm: $idFilm, _token:@json(csrf_token())},
-        });    
-        });
-        $('#SuppListeButtonFilm').on('click',function(e){
-            e.preventDefault();
-            $idFilm=$("#inputHidden").attr('value');
-            $("#SuppListeButtonFilm").hide();
-            $("#AjoutListeButtonFilm").show();
-            $url="{{ url('/suppMalisteFilm') }}"
-                console.log($url)
-            $.ajax({
-                method: 'post',
-                url: $url,
-                data: { idFilm: $idFilm, _token:@json(csrf_token()) },
-        });        
-        
-    });
-    });
-</script>

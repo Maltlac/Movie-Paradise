@@ -80,6 +80,8 @@ Route::post('/suppMalistePersonne',[PersonnesController::class,'suppMalistePerso
     Route::post('/ajoutFilm', [panneauCtrlController::class, 'storeFilm'])->name('storeFilm.store');
     Route::get('/ajoutFilm', [panneauCtrlController::class, 'ajoutFilm'])->name('panneauCtrl.ajoutFilm');
     Route::get('/searchFilm', [panneauCtrlController::class, 'searchBarFilm'])->name('searchBarFilm.index');
+    Route::get('/gererFilm', [panneauCtrlController::class, 'gererFilm'])->name('gererFilm.index');
+
     
     ////Series
     Route::post('/ajoutSerie', [panneauCtrlController::class, 'storeSerie'])->name('storeSerie.store');

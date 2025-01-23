@@ -11,10 +11,16 @@ use Illuminate\Http\Request;
 use Psy\Readline\Hoa\Console;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Kyslik\ColumnSortable\Sortable;
 
 
 class panneauCtrlController extends Controller
 {
+    use Sortable;
+
+
+
+    public $sortable = ['id', 'titre', 'dateSortie' ];
     public function __construct()
     {
         $this->middleware('auth');
@@ -315,5 +321,22 @@ class panneauCtrlController extends Controller
 
     }
         
+    public function gererFilm(Request $request){
+        $items = $request->items ?? 10;  
+        if (request()->has('search')) {
+            $films=film::where('titre', 'LIKE', '%'. $request->search. '%')->sortable()->paginate($items);
+        }
+        else{
+            $films=film::sortable()->paginate($items);
+        }
+        
+        return view('adminV/gererFilm',compact('films','items'));
+    }
+    public function gererFilmItems(Request $request){
+        $items = $request->pagination;
+        dd($items);
+        return redirect("/gererFilm/25");
+        
+    }
     
 }

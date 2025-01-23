@@ -4,14 +4,16 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Personnes;
+use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class film extends Model
 {
+    use Sortable;
     protected $guarded =[];
-
+    public $sortable = ['id', 'titre', 'dateSortie' ];
     public function filmsPersonnes(){
         return $this->belongsToMany(Personnes::class)->limit(10);
     }

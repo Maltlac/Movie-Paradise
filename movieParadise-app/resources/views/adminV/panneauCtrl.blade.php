@@ -20,7 +20,7 @@
       </div>
 
       <div class="col">
-        <a href="">Gérer les films </a>
+        <a href="/gererFilm">Gérer les films </a>
       </div>
 
     </div>

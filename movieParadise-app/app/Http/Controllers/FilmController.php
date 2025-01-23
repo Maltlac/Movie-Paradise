@@ -59,7 +59,6 @@ class FilmController extends Controller
         $userId=Auth::user()->id;
         $user=User::find($userId);
         $user->UserFilm()->detach($idFilm);
-
     }
 
 
