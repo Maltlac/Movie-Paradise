@@ -11,14 +11,10 @@ use Illuminate\Http\Request;
 use Psy\Readline\Hoa\Console;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Kyslik\ColumnSortable\Sortable;
 
 
 class panneauCtrlController extends Controller
 {
-    use Sortable;
-
-
 
     public $sortable = ['id', 'titre', 'dateSortie' ];
     public function __construct()
