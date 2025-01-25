@@ -115,7 +115,6 @@ class StreamingController extends Controller
             }      
         }
 
-        //dd($requete);
         return view("streaming/searchCategYear",[
             "search"=>$requete,
             'listeCateg'=>$categAll,

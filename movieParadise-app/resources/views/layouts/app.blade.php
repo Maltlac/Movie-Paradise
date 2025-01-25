@@ -26,7 +26,7 @@
     
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    @vite(['resources/sass/app.scss', 'resources/js/app.js','resources/css/app.css'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body >
     <div id="app" >
