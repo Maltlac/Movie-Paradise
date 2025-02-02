@@ -328,11 +328,18 @@ class panneauCtrlController extends Controller
         
         return view('adminV/gererFilm',compact('films','items'));
     }
-    public function gererFilmItems(Request $request){
-        $items = $request->pagination;
-        dd($items);
-        return redirect("/gererFilm/25");
+
+    public function gererSeries(Request $request){
+        $items = $request->items ?? 10;  
+        if (request()->has('search')) {
+            $films=film::where('titre', 'LIKE', '%'. $request->search. '%')->sortable()->paginate($items);
+        }
+        else{
+            $films=film::sortable()->paginate($items);
+        }
         
+        return view('adminV/gererFilm',compact('films','items'));
     }
+
     
 }
