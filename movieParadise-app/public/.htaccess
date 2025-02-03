@@ -4,10 +4,10 @@
     </IfModule>
 
     RewriteEngine On
-
+    Header add Content-Security-Policy "upgrade-insecure-requests"
     # Handle Authorization Header
-    RewriteCond %{HTTPS:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTPS:Authorization}]
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
