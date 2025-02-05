@@ -8,7 +8,6 @@ export default defineConfig({
             input: [
                 'resources/sass/commentsStyle.scss',
                 'resources/sass/styleAdmin.scss',
-                'resources/sass/app.scss',
                 'resources/js/app.js',
             ],
             refresh: true,
