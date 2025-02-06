@@ -6,8 +6,9 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/sass/commentsStyle.scss',
-                'resources/sass/styleAdmin.scss',
+                'resources/css/commentsStyle.css',
+                'resources/css/styleAdmin.css',
+                'resources/sass/app.scss',
                 'resources/js/app.js',
             ],
             refresh: true,
