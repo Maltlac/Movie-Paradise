@@ -2,7 +2,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <?php  setlocale(LC_TIME, "fr_FR", "French");?>
 @section('content')
-@vite('resources/js/commentaires.js')
+<link rel="stylesheet" href="{{ asset('public/build/assets/commentsStyle-242b3d6d.css') }}">
 <div class="container" style=" color: whitesmoke;">
    <h1>{{ $serie->titre }}</h1>
    

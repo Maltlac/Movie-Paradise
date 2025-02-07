@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @vite('resources/js/adminScript.js')
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="{{ asset('public/build/assets/styleAdmin-71647c9a.css') }}">
 <div class="container">
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
