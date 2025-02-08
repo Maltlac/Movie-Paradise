@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-@vite('resources/js/adminScript.js')
+
 <link rel="stylesheet" href="{{ asset('public/build/assets/styleAdmin-71647c9a.css') }}">
 <div class="container">
     <div class="row">
