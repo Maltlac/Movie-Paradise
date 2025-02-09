@@ -88,7 +88,7 @@ class panneauCtrlController extends Controller
             $hours = floor($time / 60);
             $minutes = ($time % 60);
             $data=[
-                'titre'=>$film['original_title'],
+                'titre'=>$film['title'],
                 'realisateurs_id'=>$realisateurId->id,
                 'duree'=>"$hours:$minutes:00",
                 'resume'=>$film['overview'],
@@ -97,7 +97,7 @@ class panneauCtrlController extends Controller
                 'urlTrailler'=>$trailler,
                 'tmdb_id'=>$filmId
             ];
-
+          
             $id_film=film::create($data);
             $id_film=DB::getPdo()->lastInsertId();
 

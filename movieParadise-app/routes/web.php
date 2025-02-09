@@ -45,7 +45,7 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
  Route::post('/searchCategVars', [StreamingController::class, 'searchCategVars']);
  ///Films
  Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
- Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name('film.show');
+ Route::get('/film/{film}', [FilmController::class, 'voirfilm']);
  Route::post('/PostCommentFilm/{idFilm}',[commantaireController::class,'postCommentMovie']);
  Route::post('/ajoutMalisteFilm',[FilmController::class,'ajoutMalisteFilm'])->name('ajoutMalisteFilm.post');
  Route::post('/suppMalisteFilm',[FilmController::class,'suppMalisteFilm'])->name('suppMalisteFilm.Delete');
@@ -81,7 +81,9 @@ Route::post('/suppMalistePersonne',[PersonnesController::class,'suppMalistePerso
     Route::get('/ajoutFilm', [panneauCtrlController::class, 'ajoutFilm'])->name('panneauCtrl.ajoutFilm');
     Route::get('/searchFilm', [panneauCtrlController::class, 'searchBarFilm'])->name('searchBarFilm.index');
     Route::get('/gererFilm', [panneauCtrlController::class, 'gererFilm'])->name('gererFilm.index');
-
+    Route::get('/edit/film/{film}', [FilmController::class, 'showFilmInfo'])->name('film.show');
+    Route::post('/panneauCtrl/update/film',[FilmController::class,'updateFilm']);
+    Route::get('/panneauCtrl/delete/film/{film}',[FilmController::class,'deleteFilm'])->name('delFilm');
     
     ////Series
     Route::post('/ajoutSerie', [panneauCtrlController::class, 'storeSerie'])->name('storeSerie.store');

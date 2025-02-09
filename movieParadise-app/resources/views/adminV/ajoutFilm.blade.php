@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <?php use App\Models\film;
-
-
 ?>
 
 <div class="container">

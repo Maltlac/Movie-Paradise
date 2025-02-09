@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Personnes;
 use App\Models\commantaire;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class FilmController extends Controller
@@ -60,7 +61,26 @@ class FilmController extends Controller
         $user=User::find($userId);
         $user->UserFilm()->detach($idFilm);
     }
+    public function showFilmInfo($id)
+    {
+        $film = film::find($id);
+  
+        return response()->json($film);
+    }
+    public function updateFilm(Request $request){
+        $time=$request->duree;
+        DB::statement('UPDATE films SET titre = "'.$request->titre.'",resume="'.$request->resume.'",dateSortie="'.date("Y-m-d ",strtotime($request->dateSortie)).'",duree="'.$time.'" WHERE id ='.$request->filmUpdate_id);
+        return redirect()->back()->withErrors(['Changements sauvegarder']);;
 
+    }
+    
+    public function deleteFilm($id){
+        $film=film::find($id);
+        $film->filmsActeurs()->delete();
+        $film->delete();
+
+        return redirect()->back()->withErrors(['Film suprimé avec succès']);
+    }
 
    
     

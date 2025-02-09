@@ -13,7 +13,7 @@ class film extends Model
 {
     use Sortable;
     protected $guarded =[];
-    public $sortable = ['id', 'titre', 'dateSortie' ];
+    public $sortable = ['id', 'titre', 'dateSortie','duree'];
     public function filmsPersonnes(){
         return $this->belongsToMany(Personnes::class)->limit(10);
     }
@@ -57,6 +57,9 @@ class film extends Model
 
     public function FilmUserVue(){
         return $this->belongsToMany(User::class,'film_vue');
+    }
+    public function filmsActeurs(){
+        return $this->belongsToMany(Personnes::class);
     }
 }
 
