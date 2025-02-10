@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('saisons', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tmdb_id');
+            $table->unsignedBigInteger('tmdb_id')->nullable();
             $table->unsignedBigInteger('series_id');
             $table->string('titre')->nullable();
             $table->text('resume')->nullable();

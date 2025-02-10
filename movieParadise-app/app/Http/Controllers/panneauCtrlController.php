@@ -332,14 +332,34 @@ class panneauCtrlController extends Controller
     public function gererSeries(Request $request){
         $items = $request->items ?? 10;  
         if (request()->has('search')) {
-            $films=film::where('titre', 'LIKE', '%'. $request->search. '%')->sortable()->paginate($items);
+            $series=series::where('titre', 'LIKE', '%'. $request->search. '%')->sortable()->paginate($items);
         }
         else{
-            $films=film::sortable()->paginate($items);
+            $series=series::sortable()->paginate($items);
         }
         
-        return view('adminV/gererFilm',compact('films','items'));
+        return view('adminV/gererSeries',compact('series','items'));
     }
+
+    public function gererSeriesSaison(Request $request, $id){
+        $items = $request->items ?? 10;  
+        $serie =series::find($id);
+        $saisonsSerie=saison::where('series_id',$serie->id)->sortable()->paginate($items);
+        $saison=saison::sortable()->paginate($items);
+        
+        return view('adminV/gererSeriesSaison',compact('serie','items','saisonsSerie'));
+    }
+    public function gererSeriesSaisonEpisode(Request $request,$idSerie, $idSaison){
+        $items = $request->items ?? 10;  
+        $serie =series::find($idSerie);
+        $saisonsSerie=saison::find($idSaison);
+        $episodes=episode::where('saisons_id',$saisonsSerie->id)->sortable()->paginate($items);
+        $saison=saison::sortable()->paginate($items);
+        
+        return view('adminV/gererSeriesSaisonEpisode',compact('serie','items','saisonsSerie','episodes'));
+    }
+    
+    
 
     
 }

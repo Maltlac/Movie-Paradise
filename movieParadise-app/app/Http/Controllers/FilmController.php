@@ -77,6 +77,7 @@ class FilmController extends Controller
     public function deleteFilm($id){
         $film=film::find($id);
         $film->filmsActeurs()->delete();
+        $film->filmCategories()->delete();
         $film->delete();
 
         return redirect()->back()->withErrors(['Film suprimé avec succès']);

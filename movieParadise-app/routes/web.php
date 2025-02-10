@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\saisonController;
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\episodeController;
 use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\StreamingController;
 use App\Http\Controllers\commantaireController;
@@ -51,8 +53,8 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
  Route::post('/suppMalisteFilm',[FilmController::class,'suppMalisteFilm'])->name('suppMalisteFilm.Delete');
  ////Series
 Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name('series.show');
-Route::get('/serie/{serie}/saison/{saison}', [SeriesController::class, 'voirSaison'])->name('saison.show');
-Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [SeriesController::class, 'voirEpisode'])->name('episode.show');
+Route::get('/serie/{serie}/saison/{saison}', [saisonController::class, 'voirSaison'])->name('saison.show');
+Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [episodeController::class, 'voirEpisode'])->name('episode.show');
 Route::post('/postCommentSerie/{idSeries}',[commantaireController::class,'postCommentSerie']);
 Route::post('/ajoutMalisteSerie',[SeriesController::class,'ajoutMalisteSerie'])->name('ajoutMalisteSerie.post');
 Route::post('/suppMalisteSerie',[SeriesController::class,'suppMalisteSerie'])->name('suppMalisteSerie.Delete');
@@ -89,6 +91,27 @@ Route::post('/suppMalistePersonne',[PersonnesController::class,'suppMalistePerso
     Route::post('/ajoutSerie', [panneauCtrlController::class, 'storeSerie'])->name('storeSerie.store');
     Route::get('/ajoutSerie', [panneauCtrlController::class, 'ajoutSerie'])->name('panneauCtrl.ajoutSerie');
     Route::get('/searchSerie', [panneauCtrlController::class, 'searchBarSerie'])->name('searchBarSerie.index');
+    
+    Route::get('/gererSeries', [panneauCtrlController::class, 'gererSeries']);
+    Route::get('/gererSeries/saison/{serie}', [panneauCtrlController::class, 'gererSeriesSaison']);
+    Route::get('/gererSeries/saison/{serie}/episodes/{saison}', [panneauCtrlController::class, 'gererSeriesSaisonEpisode']);
+
+    Route::get('/edit/Serie/{Serie}', [SeriesController::class, 'showSerieInfo'])->name('serie.show');
+    Route::post('/panneauCtrl/update/serie',[SeriesController::class,'updateSerie']);
+    Route::get('/panneauCtrl/delete/serie/{Serie}',[SeriesController::class,'deleteSerie'])->name('delSerie');
+
+    ///saisons
+    Route::get('/edit/saison/{saison}', [saisonController::class, 'showSaisonInfo'])->name('saison.show');
+    Route::post('/panneauCtrl/update/saison',[saisonController::class,'updateSaison']);
+    Route::get('/panneauCtrl/delete/saison/{saison}',[saisonController::class,'deleteSaison'])->name('delSaison');
+    Route::post('/panneauCtrl/ajout/saison',[saisonController::class,'ajoutSaison'])->name('ajoutSaison');
+
+    ////episodes
+    Route::get('/edit/episode/{episode}', [episodeController::class, 'showEpisodeInfo'])->name('episode.show');
+    Route::post('/panneauCtrl/update/episode',[episodeController::class,'updateEpisode']);
+    Route::get('/panneauCtrl/delete/episode/{episode}',[episodeController::class,'deleteEpisode'])->name('delSerie');
+    Route::post('/panneauCtrl/ajout/episode',[episodeController::class,'ajoutEpisode'])->name('ajoutEpisode');
+
 
     
 

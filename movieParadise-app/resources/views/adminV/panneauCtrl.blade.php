@@ -36,7 +36,7 @@
           </div>
 
           <div class="col">
-            <a href="">Gérer les Séries </a>
+            <a href="/gererSeries">Gérer les Séries </a>
           </div>
 
       </div>

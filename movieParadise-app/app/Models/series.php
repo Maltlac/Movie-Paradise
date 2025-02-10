@@ -5,10 +5,13 @@ namespace App\Models;
 use App\Models\saison;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Kyslik\ColumnSortable\Sortable;
 
 class series extends Model
 {
     protected $guarded =[];
+    public $sortable = ['id', 'titre', 'dateSortie'];
+    use Sortable;
 
     public function SeriesPersonnes(){
         return $this->belongsToMany(Personnes::class)->limit(10);
@@ -22,4 +25,11 @@ class series extends Model
         return commantaire::where('series_id',$this->id)->get();
     }
 
+    public function SeriesActeurs(){
+        return $this->belongsToMany(Personnes::class);
+    }
+
+    public function SeriesPersonnesDel(){
+        return $this->belongsToMany(Personnes::class);
+    }
 }
