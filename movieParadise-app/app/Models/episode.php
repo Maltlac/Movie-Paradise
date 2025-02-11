@@ -11,4 +11,7 @@ class episode extends Model
     protected $guarded =[];
     public $sortable = ['id', 'titre', 'dateSortie'];
     use Sortable;
+    public static function nbEpisodes(){
+        return episode::count();
+    }
 }

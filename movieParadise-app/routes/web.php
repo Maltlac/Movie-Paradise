@@ -7,6 +7,7 @@ use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\saisonController;
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\contactController;
 use App\Http\Controllers\episodeController;
 use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\StreamingController;
@@ -31,6 +32,9 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('Home.show');
+
+Route::get('/contact', [contactController::class, 'contactForm'])->name('contact-form');;
+Route::post('/contact-form', [ContactController::class, 'storeContactForm'])->name('contact-form.store');
 
 Route::get('/test', [HomeController::class, 'test'])->name('test.show');
 
@@ -78,6 +82,7 @@ Route::post('/suppMalistePersonne',[PersonnesController::class,'suppMalistePerso
     Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::get('/panneauCtrl', [panneauCtrlController::class, 'index'])->name('panneauCtrl.index');
 
+    Route::get('/Statistique', [panneauCtrlController::class, 'stats']);
     ///Films
     Route::post('/ajoutFilm', [panneauCtrlController::class, 'storeFilm'])->name('storeFilm.store');
     Route::get('/ajoutFilm', [panneauCtrlController::class, 'ajoutFilm'])->name('panneauCtrl.ajoutFilm');

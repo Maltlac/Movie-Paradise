@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\film;
 use Illuminate\Http\Request;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
 
 class HomeController extends Controller
 {

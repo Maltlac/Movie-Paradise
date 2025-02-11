@@ -57,7 +57,7 @@
 
       <div class="row">
         <div class="col">
-          <a href="">Statistique</a>
+          <a href="/Statistique">Statistique</a>
         </div>
       </div>
     

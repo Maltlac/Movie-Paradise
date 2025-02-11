@@ -82,6 +82,35 @@
                                 </div>
                             @endforeach               
                         </div> 
+
+                        <h2 style="color:whiteSmoke">Les Films les plus vue ce moi-ci</h2>
+                        <div class="owl-carousel ">
+                          
+                            
+                            @foreach ($filmMV as $lesfilmMV)
+                            
+                                <div class="item">
+                                    <a id="imgCardStreaming" href="/film/{{ $lesfilmMV->id }}" class="card col-sm-4 ">
+                                        <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $lesfilmMV->image }}" alt="Card image cap">
+                                    </a>
+                                </div>
+                            @endforeach               
+                        </div>   
+
+                        @foreach ($toutesCateg as $categ)
+                            <h2 style="color:whiteSmoke">{{$categ->nomCateg}} </h2>
+                            <div class="owl-carousel ">
+                            
+                                
+                                @foreach ($FilmRecommander[$categ->nomCateg] as $films)
+                                        <div class="item">
+                                            <a id="imgCardStreaming" href="/film/{{ $films->id }}" class="card col-sm-4 ">
+                                                <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $films->image }}" alt="Card image cap">
+                                            </a>
+                                        </div>
+                                @endforeach               
+                            </div>   
+                        @endforeach
         </div>
 
 </div>

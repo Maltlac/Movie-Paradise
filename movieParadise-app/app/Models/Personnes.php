@@ -20,4 +20,7 @@ class Personnes extends Model
     public function realisateurFilms(){
         return $this->belongsTo(film::class);
     }
+    public static function nbPersonne(){
+        return Personnes::count();
+    }
 }

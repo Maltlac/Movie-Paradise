@@ -15,4 +15,7 @@ class categories extends Model
     public function categoriesSerie(){
         return $this->belongsToMany(series::class);
     }
+    public static function nbCateg(){
+        return categories::count();
+    }
 }

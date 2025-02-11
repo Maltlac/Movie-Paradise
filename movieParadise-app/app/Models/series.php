@@ -32,4 +32,7 @@ class series extends Model
     public function SeriesPersonnesDel(){
         return $this->belongsToMany(Personnes::class);
     }
+    public static function nbSeries(){
+        return series::count();
+    }
 }

@@ -23,8 +23,32 @@ class StreamingController extends Controller
     }
     public function index()
     {
+        $mostViewFilm= DB::select("SELECT film_id, COUNT(*) AS nombre_de_vues FROM film_vue WHERE EXTRACT(MONTH FROM created_at) = EXTRACT(MONTH FROM CURRENT_DATE) GROUP BY film_id ORDER BY nombre_de_vues DESC LIMIT 5;");
+       // dd($mostViewFilm[0]->film_id);
+        foreach ($mostViewFilm as $movie ) {
+            $filmMV[]=film::find($movie->film_id);
+        }
+        
+
+        
         $userId=Auth::user()->id;
         $user=User::find($userId);
+        $toutesCateg=DB::select("   SELECT categories_id, COUNT(categories_id) AS nbCateg,categories.nom  AS nomCateg
+                                    FROM categories_film, categories  
+                                    WHERE film_id IN(SELECT distinct film_id FROM film_vue WHERE user_id=$userId) 
+                                    AND categories.id = categories_film.categories_id
+                                    GROUP BY categories_id
+                                    ORDER BY  nbCateg desc
+                                    LIMIT 3");
+        foreach ($toutesCateg as $key ) {
+            $FilmRecommander[$key->nomCateg]=DB::select("SELECT * FROM films WHERE id IN(
+                                        SELECT film_id FROM categories_film 
+                                        WHERE categories_id=$key->categories_id AND film_id NOT IN (
+                                    SELECT distinct film_id FROM film_vue WHERE user_id=$userId )
+                )ORDER BY RAND() LIMIT 10");
+        }
+        
+        //dd($FilmRecommander);
         $film=film::inRandomOrder()->limit(20)->get();
         $serie=series::inRandomOrder()->limit(20)->get();
         $categ=categories::all();
@@ -44,6 +68,10 @@ class StreamingController extends Controller
             'lastAdd'=>$merge,
             'maListe'=>$maListe,
             'listeCateg'=>$categ,
+            'filmMV'=>$filmMV,
+            'FilmRecommander'=>$FilmRecommander,
+            'toutesCateg'=>$toutesCateg,
+
         ]);
     }
   
@@ -131,4 +159,5 @@ class StreamingController extends Controller
        $year=$request['year'];
         return redirect("/p/$p/categ/$categ/year/$year");
     }
+
 }

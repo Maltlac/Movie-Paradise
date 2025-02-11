@@ -7,6 +7,7 @@ use App\Models\series;
 use App\Models\episode;
 use App\Models\Personnes;
 use App\Models\categories;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Psy\Readline\Hoa\Console;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,6 @@ use Illuminate\Support\Facades\Http;
 
 class panneauCtrlController extends Controller
 {
-
     public $sortable = ['id', 'titre', 'dateSortie' ];
     public function __construct()
     {
@@ -357,6 +357,51 @@ class panneauCtrlController extends Controller
         $saison=saison::sortable()->paginate($items);
         
         return view('adminV/gererSeriesSaisonEpisode',compact('serie','items','saisonsSerie','episodes'));
+    }
+
+    public function stats(){
+        $moisAnnee=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+        $countDb =[
+            'film'=>film::nbFilm(),
+            'series'=>series::nbSeries(),
+            'episode'=>episode::nbEpisodes(),
+            'categ'=>categories::nbCateg(),
+            'artiste'=>Personnes::nbPersonne(),
+            'users'=>User::nbUser(),
+        ];
+
+        $users = User::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');     
+        $film = film::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');
+        $serie = series::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');
+        $artiste = Personnes::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');
+        
+        $labelsU = $users->keys();
+        $dataU = $users->values();
+
+        $labelsF = $film->keys();
+        $dataF = $film->values();
+
+        $labelsS = $serie->keys();
+        $dataS = $serie->values();
+
+        $labelsA = $artiste->keys();
+        $dataA = $artiste->values();
+        for ($i=0; $i <count($labelsU) ; $i++) { 
+            $labelsU[$i]=$moisAnnee[$labelsU[$i]-1];
+        }
+        for ($i=0; $i <count($labelsF) ; $i++) { 
+            $labelsF[$i]=$moisAnnee[$labelsF[$i]-1];
+        }
+        for ($i=0; $i <count($labelsS) ; $i++) { 
+            $labelsS[$i]=$moisAnnee[$labelsS[$i]-1];
+        }
+        for ($i=0; $i <count($labelsA) ; $i++) { 
+            $labelsA[$i]=$moisAnnee[$labelsA[$i]-1];
+        }
+
+
+
+        return view('adminV/statsSite', compact('countDb','labelsF','dataF','labelsU','dataU','labelsS','dataS','labelsA','dataA'));
     }
     
     

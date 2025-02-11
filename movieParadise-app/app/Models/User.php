@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.
@@ -66,5 +67,9 @@ class User extends Authenticatable
     }
     public function UserSerieVue(){
         return $this->belongsToMany(series::class,'series_vue');
+    }
+
+    public static function nbUser(){
+        return User::count();
     }
 }

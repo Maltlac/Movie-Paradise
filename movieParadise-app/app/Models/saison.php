@@ -11,4 +11,7 @@ class saison extends Model
     protected $guarded =[];
     public $sortable = ['id', 'titre', 'dateSortie','numeroSaison'];
     use Sortable;
+    public static function nbSaison(){
+        return saison::count();
+    }
 }

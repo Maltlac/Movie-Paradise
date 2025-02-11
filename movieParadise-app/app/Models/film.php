@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class film extends Model
 {
     use Sortable;
+    public $timestamps = true;
     protected $guarded =[];
     public $sortable = ['id', 'titre', 'dateSortie','duree'];
     public function filmsPersonnes(){
@@ -60,6 +61,9 @@ class film extends Model
     }
     public function filmsActeurs(){
         return $this->belongsToMany(Personnes::class);
+    }
+    public static function nbFilm(){
+        return film::count();
     }
 }
 
