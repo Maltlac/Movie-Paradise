@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Mailjet\Resources;
 use App\Models\Contact;
 use App\Mail\contactMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
+use Mailjet\LaravelMailjet\Facades\Mailjet;
+
 
 
 class contactController extends Controller
@@ -27,6 +30,7 @@ class contactController extends Controller
 
     public function storeContactForm(Request $request)
     {
+        $mj = new Mailjet(getenv('MAILJET_APIKEY'), getenv('MAILJET_APISECRET'),true,['version' => 'v3']);
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
@@ -36,8 +40,9 @@ class contactController extends Controller
         ]);
 
         $input = $request->all();
+        $formdata = $request->except('_token');
 
-        Contact::create($input);
+        $numeroDemande=Contact::create($input);
 
         //  Send mail to admin
         $data=[
@@ -45,26 +50,35 @@ class contactController extends Controller
             'email' => $input['email'],
             'subject' => $input['subject'],
             'message' => $input['message'],
+            'id'=>$numeroDemande->id,
         ];
-        $mailData = [
-            'title' => 'Mail from ItSolutionStuff.com',
-            'body' => $data
+        $formdata['id']=$numeroDemande->id;
+        $bodyToAdmin = [
+        'FromEmail' => "noreply@movie-paradise.fr",
+        'FromName' => "noreply",
+        'Recipients' => [
+            [
+            'Email' => "contact@movie-paradise.fr",
+            'Name' => "Admin"
+            ]
+        ],
+        'Subject' => "Demande de contact ",
+        'Html-part' => "<p>le numéro de demande : #".$numeroDemande->id." </p><br><p>Nom : ".$data['name']." </p><br> <p>Email : ".$data['email']." </p><br> <p>Objet : ".$data['subject']." </p><br> </p><br> <p>message : ".$data['message']." </p><br> "
         ];
-        Mail::to('contact@movie-paradise.fr')->send(new contactMail($mailData));
+        
 
-           
-        dd("Email is sent successfully.");
-        /*Mail::send('contactMail', array(
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'phone' => $input['phone'],
-            'subject' => $input['subject'],
-            'message' => $input['message'],
-        ), function($message) use ($request){
-            $message->from($request->email);
-            $message->to('contact@movie-paradise.fr', 'Admin')->subject($request->get('subject'));
-        });
+            $bodyToCustomer = [
+                'FromEmail' => "noreply@movie-paradise.fr",
+                'FromName' => "noreply",
+                'Subject' => $input['subject'],
+                'MJ-TemplateID' => 4805440,
+                'Vars' => json_decode(json_encode($formdata), true),
+                'MJ-TemplateLanguage' => true,
+                'Recipients' => [['Email' => $data['email']]]
+              ];
 
-        return redirect()->back()->with(['success' => 'Contact Form Submit Successfully']);*/
+        Mailjet::post(Resources::$Email, ['body' => $bodyToAdmin]);
+        Mailjet::post(Resources::$Email, ['body' => $bodyToCustomer]);
+        return redirect()->back()->with(['success' => 'Contact Form Submit Successfully']);
     }
 }

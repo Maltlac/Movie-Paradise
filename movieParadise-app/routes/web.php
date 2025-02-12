@@ -30,98 +30,99 @@ Route::get('/', function () {
     return view('home');
 });
 
+
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('Home.show');
-
-Route::get('/contact', [contactController::class, 'contactForm'])->name('contact-form');;
-Route::post('/contact-form', [ContactController::class, 'storeContactForm'])->name('contact-form.store');
-
 Route::get('/test', [HomeController::class, 'test'])->name('test.show');
 
 
-/**
- * this part is for the streaming vues
- */
-
- ////Streaming 
- Route::get('/streaming', [StreamingController::class, 'index'])->name('streaming.index');
- Route::get('/searchStreaming', [StreamingController::class, 'searchStreaming']);
- Route::get('autocomplete', [StreamingController::class, 'search']);
- Route::get('/p/{p}/categ/{categ}/year/{year}', [StreamingController::class, 'searchCateg']);
- Route::post('/searchCategVars', [StreamingController::class, 'searchCategVars']);
- ///Films
- Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
- Route::get('/film/{film}', [FilmController::class, 'voirfilm']);
- Route::post('/PostCommentFilm/{idFilm}',[commantaireController::class,'postCommentMovie']);
- Route::post('/ajoutMalisteFilm',[FilmController::class,'ajoutMalisteFilm'])->name('ajoutMalisteFilm.post');
- Route::post('/suppMalisteFilm',[FilmController::class,'suppMalisteFilm'])->name('suppMalisteFilm.Delete');
- ////Series
-Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name('series.show');
-Route::get('/serie/{serie}/saison/{saison}', [saisonController::class, 'voirSaison'])->name('saison.show');
-Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [episodeController::class, 'voirEpisode'])->name('episode.show');
-Route::post('/postCommentSerie/{idSeries}',[commantaireController::class,'postCommentSerie']);
-Route::post('/ajoutMalisteSerie',[SeriesController::class,'ajoutMalisteSerie'])->name('ajoutMalisteSerie.post');
-Route::post('/suppMalisteSerie',[SeriesController::class,'suppMalisteSerie'])->name('suppMalisteSerie.Delete');
-
-/**
- * this one is for the bio of the cast and crew
- */
-Route::get('/bio/{bio}', [PersonnesController::class, 'showBio'])->name('personnes.showBio');
-Route::post('/ajoutMalistePersonne',[PersonnesController::class,'ajoutMalistePersonne'])->name('ajoutMalistePersonne.post');
-Route::post('/suppMalistePersonne',[PersonnesController::class,'suppMalistePersonne'])->name('suppMalistePersonne.Delete');
-/**
- * this one is for the E-tickets
- */
-
+    Route::get('/contact', [contactController::class, 'contactForm'])->name('contact-form');;
+    Route::post('/contact-form', [ContactController::class, 'storeContactForm'])->name('contact-form.store');
  
- /**
-  * routes for the admin service
-  */
 
-  
-    Route::group(['middleware' => ['auth', 'admin']], function() {
-    Route::get('/panneauCtrl', [panneauCtrlController::class, 'index'])->name('panneauCtrl.index');
 
-    Route::get('/Statistique', [panneauCtrlController::class, 'stats']);
+    /**
+     * this part is for the streaming vues
+     */
+
+    ////Streaming 
+    Route::get('/streaming', [StreamingController::class, 'index'])->name('streaming.index');
+    Route::get('/searchStreaming', [StreamingController::class, 'searchStreaming']);
+    Route::get('autocomplete', [StreamingController::class, 'search']);
+    Route::get('/p/{p}/categ/{categ}/year/{year}', [StreamingController::class, 'searchCateg']);
+    Route::post('/searchCategVars', [StreamingController::class, 'searchCategVars']);
     ///Films
-    Route::post('/ajoutFilm', [panneauCtrlController::class, 'storeFilm'])->name('storeFilm.store');
-    Route::get('/ajoutFilm', [panneauCtrlController::class, 'ajoutFilm'])->name('panneauCtrl.ajoutFilm');
-    Route::get('/searchFilm', [panneauCtrlController::class, 'searchBarFilm'])->name('searchBarFilm.index');
-    Route::get('/gererFilm', [panneauCtrlController::class, 'gererFilm'])->name('gererFilm.index');
-    Route::get('/edit/film/{film}', [FilmController::class, 'showFilmInfo'])->name('film.show');
-    Route::post('/panneauCtrl/update/film',[FilmController::class,'updateFilm']);
-    Route::get('/panneauCtrl/delete/film/{film}',[FilmController::class,'deleteFilm'])->name('delFilm');
-    
+    Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
+    Route::get('/film/{film}', [FilmController::class, 'voirfilm']);
+    Route::post('/PostCommentFilm/{idFilm}',[commantaireController::class,'postCommentMovie']);
+    Route::post('/ajoutMalisteFilm',[FilmController::class,'ajoutMalisteFilm'])->name('ajoutMalisteFilm.post');
+    Route::post('/suppMalisteFilm',[FilmController::class,'suppMalisteFilm'])->name('suppMalisteFilm.Delete');
     ////Series
-    Route::post('/ajoutSerie', [panneauCtrlController::class, 'storeSerie'])->name('storeSerie.store');
-    Route::get('/ajoutSerie', [panneauCtrlController::class, 'ajoutSerie'])->name('panneauCtrl.ajoutSerie');
-    Route::get('/searchSerie', [panneauCtrlController::class, 'searchBarSerie'])->name('searchBarSerie.index');
-    
-    Route::get('/gererSeries', [panneauCtrlController::class, 'gererSeries']);
-    Route::get('/gererSeries/saison/{serie}', [panneauCtrlController::class, 'gererSeriesSaison']);
-    Route::get('/gererSeries/saison/{serie}/episodes/{saison}', [panneauCtrlController::class, 'gererSeriesSaisonEpisode']);
+    Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name('series.show');
+    Route::get('/serie/{serie}/saison/{saison}', [saisonController::class, 'voirSaison'])->name('saison.show');
+    Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [episodeController::class, 'voirEpisode'])->name('episode.show');
+    Route::post('/postCommentSerie/{idSeries}',[commantaireController::class,'postCommentSerie']);
+    Route::post('/ajoutMalisteSerie',[SeriesController::class,'ajoutMalisteSerie'])->name('ajoutMalisteSerie.post');
+    Route::post('/suppMalisteSerie',[SeriesController::class,'suppMalisteSerie'])->name('suppMalisteSerie.Delete');
 
-    Route::get('/edit/Serie/{Serie}', [SeriesController::class, 'showSerieInfo'])->name('serie.show');
-    Route::post('/panneauCtrl/update/serie',[SeriesController::class,'updateSerie']);
-    Route::get('/panneauCtrl/delete/serie/{Serie}',[SeriesController::class,'deleteSerie'])->name('delSerie');
-
-    ///saisons
-    Route::get('/edit/saison/{saison}', [saisonController::class, 'showSaisonInfo'])->name('saison.show');
-    Route::post('/panneauCtrl/update/saison',[saisonController::class,'updateSaison']);
-    Route::get('/panneauCtrl/delete/saison/{saison}',[saisonController::class,'deleteSaison'])->name('delSaison');
-    Route::post('/panneauCtrl/ajout/saison',[saisonController::class,'ajoutSaison'])->name('ajoutSaison');
-
-    ////episodes
-    Route::get('/edit/episode/{episode}', [episodeController::class, 'showEpisodeInfo'])->name('episode.show');
-    Route::post('/panneauCtrl/update/episode',[episodeController::class,'updateEpisode']);
-    Route::get('/panneauCtrl/delete/episode/{episode}',[episodeController::class,'deleteEpisode'])->name('delSerie');
-    Route::post('/panneauCtrl/ajout/episode',[episodeController::class,'ajoutEpisode'])->name('ajoutEpisode');
-
+    /**
+     * this one is for the bio of the cast and crew
+     */
+    Route::get('/bio/{bio}', [PersonnesController::class, 'showBio'])->name('personnes.showBio');
+    Route::post('/ajoutMalistePersonne',[PersonnesController::class,'ajoutMalistePersonne'])->name('ajoutMalistePersonne.post');
+    Route::post('/suppMalistePersonne',[PersonnesController::class,'suppMalistePersonne'])->name('suppMalistePersonne.Delete');
+    /**
+     * this one is for the E-tickets
+     */
 
     
+    /**
+     * routes for the admin service
+    */
 
-
-});
     
+        Route::group(['middleware' => ['auth', 'admin']], function() {
+        Route::get('/panneauCtrl', [panneauCtrlController::class, 'index'])->name('panneauCtrl.index');
 
+        Route::get('/Statistique', [panneauCtrlController::class, 'stats']);
+        ///Films
+        Route::post('/ajoutFilm', [panneauCtrlController::class, 'storeFilm'])->name('storeFilm.store');
+        Route::get('/ajoutFilm', [panneauCtrlController::class, 'ajoutFilm'])->name('panneauCtrl.ajoutFilm');
+        Route::get('/searchFilm', [panneauCtrlController::class, 'searchBarFilm'])->name('searchBarFilm.index');
+        Route::get('/gererFilm', [panneauCtrlController::class, 'gererFilm'])->name('gererFilm.index');
+        Route::get('/edit/film/{film}', [FilmController::class, 'showFilmInfo'])->name('film.show');
+        Route::post('/panneauCtrl/update/film',[FilmController::class,'updateFilm']);
+        Route::get('/panneauCtrl/delete/film/{film}',[FilmController::class,'deleteFilm'])->name('delFilm');
+        
+        ////Series
+        Route::post('/ajoutSerie', [panneauCtrlController::class, 'storeSerie'])->name('storeSerie.store');
+        Route::get('/ajoutSerie', [panneauCtrlController::class, 'ajoutSerie'])->name('panneauCtrl.ajoutSerie');
+        Route::get('/searchSerie', [panneauCtrlController::class, 'searchBarSerie'])->name('searchBarSerie.index');
+        
+        Route::get('/gererSeries', [panneauCtrlController::class, 'gererSeries']);
+        Route::get('/gererSeries/saison/{serie}', [panneauCtrlController::class, 'gererSeriesSaison']);
+        Route::get('/gererSeries/saison/{serie}/episodes/{saison}', [panneauCtrlController::class, 'gererSeriesSaisonEpisode']);
+
+        Route::get('/edit/Serie/{Serie}', [SeriesController::class, 'showSerieInfo'])->name('serie.show');
+        Route::post('/panneauCtrl/update/serie',[SeriesController::class,'updateSerie']);
+        Route::get('/panneauCtrl/delete/serie/{Serie}',[SeriesController::class,'deleteSerie'])->name('delSerie');
+
+        ///saisons
+        Route::get('/edit/saison/{saison}', [saisonController::class, 'showSaisonInfo'])->name('saison.show');
+        Route::post('/panneauCtrl/update/saison',[saisonController::class,'updateSaison']);
+        Route::get('/panneauCtrl/delete/saison/{saison}',[saisonController::class,'deleteSaison'])->name('delSaison');
+        Route::post('/panneauCtrl/ajout/saison',[saisonController::class,'ajoutSaison'])->name('ajoutSaison');
+
+        ////episodes
+        Route::get('/edit/episode/{episode}', [episodeController::class, 'showEpisodeInfo'])->name('episode.show');
+        Route::post('/panneauCtrl/update/episode',[episodeController::class,'updateEpisode']);
+        Route::get('/panneauCtrl/delete/episode/{episode}',[episodeController::class,'deleteEpisode'])->name('delSerie');
+        Route::post('/panneauCtrl/ajout/episode',[episodeController::class,'ajoutEpisode'])->name('ajoutEpisode');
+
+
+        
+
+
+    });
+    
 

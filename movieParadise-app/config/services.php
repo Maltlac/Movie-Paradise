@@ -35,4 +35,9 @@ return [
         'token' => env('TMDB_TOKEN'),
     ],
 
+    'mailjet' => [
+        'key' => env('MAILJET_APIKEY'),
+        'secret' => env('MAILJET_APISECRET'),
+    ],
+
 ];
