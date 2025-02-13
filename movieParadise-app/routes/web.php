@@ -13,6 +13,7 @@ use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\StreamingController;
 use App\Http\Controllers\commantaireController;
 use App\Http\Controllers\panneauCtrlController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 
 /*
@@ -34,6 +35,12 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('Home.show');
 Route::get('/test', [HomeController::class, 'test'])->name('test.show');
+
+    ///PassWord route
+    Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+    Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+    Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+    Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 
     Route::get('/contact', [contactController::class, 'contactForm'])->name('contact-form');;

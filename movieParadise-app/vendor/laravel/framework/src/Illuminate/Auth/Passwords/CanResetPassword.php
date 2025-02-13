@@ -3,6 +3,7 @@
 namespace Illuminate\Auth\Passwords;
 
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use App\Models\User;
 
 trait CanResetPassword
 {
