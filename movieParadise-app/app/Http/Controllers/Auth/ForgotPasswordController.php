@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Mailjet\LaravelMailjet\Facades\Mailjet;
-  
+
+use function PHPUnit\Framework\isNull;
+
 class ForgotPasswordController extends Controller
 {
       /**
@@ -71,7 +73,19 @@ class ForgotPasswordController extends Controller
        * @return response()
        */
       public function showResetPasswordForm($token) { 
-         return view('auth/passwords/forgetPasswordLink', ['token' => $token]);
+        $tokenValide=DB::select("Select * FROM password_resets WHERE token= '".$token."' limit 1");
+        $dt = Carbon::now()->addHour(3);
+
+       
+          if (isNull($token[0]) || $tokenValide[0]->created_at>$dt  ) {
+            $tokenValide[0]->delete();
+            return abort(419);
+          }else{
+            return view('auth/passwords/forgetPasswordLink', ['token' => $token]);
+          }
+        
+        
+         
       }
   
       /**

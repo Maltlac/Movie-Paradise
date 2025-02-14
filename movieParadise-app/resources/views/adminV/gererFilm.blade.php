@@ -52,6 +52,7 @@
                                 <th class="w-auto">@sortablelink('titre')</th>
                                 <th>@sortablelink('duree','Durée')</th>
                                 <th>@sortablelink('dateSortie','Date de sortie')</th>
+                                <th>@sortablelink('active','Film actif')</th>
                                 <th>View</th>
                             </tr>
                         </thead>
@@ -67,7 +68,9 @@
                                 <td>{{ $data->titre }}</td>
                                 <td>{{ $data->duree }}</td>
                                 <td>{{ $data->dateSortie }}</td>
+                                <td><?php if($data->active) echo"oui";  else echo "non"?></td>
                                 <td><a href="film/{{$data->id}} " class="btn btn-sm btn-success"><i class="fa fa-search"></i></a></td>
+                               
                             </tr>
                             @endforeach
                             
@@ -112,7 +115,7 @@
                          <input type="text" class="form-control text-white" id="film-titre" name="titre" placeholder="Enter titre" value="" maxlength="50" required="">
                      </div>
                  </div>
-                 
+                 <br>
                  <!-- resume -->
                  <div class="form-group">
                      <label class="col-sm-2 control-label">Résumé</label>
@@ -120,7 +123,7 @@
                          <textarea id="film-resume" name="resume" required="" placeholder="Enter Details" class="form-control text-white h-100" style="font-size: 1rem;"></textarea>
                      </div>
                  </div>
-
+                 <br>
                  <!-- date sorti -->
                  <div class="form-group">
                     <label class="col-sm-2 control-label d-inline">Date de sortie :</label>
@@ -129,19 +132,25 @@
                         <input type="date" name="dateSortie" id="film-dateSortie" required="">
                     </div>
                 </div>
-
+                <br>
                 <!--Time picker -->
                 <div class="form-group pmd-textfield pmd-textfield-floating-label">
                     <label class="control-label" for="timepicker">Durée du film</label>
                     <input type="text" class="form-control text-white" id="film-duree" name="duree" required="">
                 </div>
+                <br>
+                 <!--Film actif streaming -->
+                <div class="form-group pmd-textfield pmd-textfield-floating-label">
+                    <label class="control-label" for="timepicker">Film visible dans la partie streaming</label>
+                    <input type="checkbox" name="active" id="active-movie">
+                </div>
 
                 <!-- footer -->
-                 <div class="modal-footer">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Save changes
                     </button>
-                  </div>
+                </div>
              </form>
         </div>
         
@@ -192,7 +201,13 @@ setTimeout(function() { $("#hideDiv").fadeOut(1500); }, 5000)
               $('#film-titre').val(data.titre);
               $('#film-resume').val(data.resume);
               $('#film-duree').val(data.duree);
+              if (data.active==1) {
+                $('#active-movie').prop('checked', true);
+              } else {
+                $('#active-movie').prop('checked', false);
+              }             
               $('#film-dateSortie').val(data.dateSortie);
+
               console.log(data)
           })
        });

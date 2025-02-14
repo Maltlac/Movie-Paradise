@@ -24,7 +24,6 @@ class StreamingController extends Controller
     public function index()
     {
         $mostViewFilm= DB::select("SELECT film_id, COUNT(*) AS nombre_de_vues FROM film_vue WHERE EXTRACT(MONTH FROM created_at) = EXTRACT(MONTH FROM CURRENT_DATE) GROUP BY film_id ORDER BY nombre_de_vues DESC LIMIT 5;");
-       // dd($mostViewFilm[0]->film_id);
         foreach ($mostViewFilm as $movie ) {
             $filmMV[]=film::find($movie->film_id);
         }
@@ -41,20 +40,19 @@ class StreamingController extends Controller
                                     ORDER BY  nbCateg desc
                                     LIMIT 3");
         foreach ($toutesCateg as $key ) {
-            $FilmRecommander[$key->nomCateg]=DB::select("SELECT * FROM films WHERE id IN(
+            $FilmRecommander[$key->nomCateg]=DB::select("SELECT * FROM films WHERE active=1 AND id IN(
                                         SELECT film_id FROM categories_film 
-                                        WHERE categories_id=$key->categories_id AND film_id NOT IN (
-                                    SELECT distinct film_id FROM film_vue WHERE user_id=$userId )
+                                        WHERE categories_id=$key->categories_id 
                 )ORDER BY RAND() LIMIT 10");
         }
         
         //dd($FilmRecommander);
-        $film=film::inRandomOrder()->limit(20)->get();
+        $film=film::inRandomOrder()->where("active",1)->limit(20)->get();
         $serie=series::inRandomOrder()->limit(20)->get();
         $categ=categories::all();
-        $lastAdd=film::latest()->take(10)->get()->toArray();
+        $lastAdd=film::latest()->where("active",1)->take(10)->get()->toArray();
         $lastAdd2=series::latest()->take(10)->get()->toArray();
-        $listeFilm=$user->UserFilm()->get()->toArray();
+        $listeFilm=$user->UserFilm()->where("active",1)->get()->toArray();
         $listeSerie=$user->UserSerie()->get()->toArray();
         $maListe=array_merge($listeFilm,$listeSerie);
         $merge = array_merge($lastAdd2,$lastAdd);

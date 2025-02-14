@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\profilController;
 use App\Http\Controllers\saisonController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\contactController;
@@ -47,7 +48,20 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
     Route::post('/contact-form', [ContactController::class, 'storeContactForm'])->name('contact-form.store');
  
 
+    /**
+     * Profil route
+     */
+    Route::get('/profil/Commentaire', [profilController::class, 'profilComments'])->name("profil.commentaire");
+    Route::get('/profil/artiste', [profilController::class, 'profilArtiste'])->name("profil.Artiste");
+    Route::get('/profil/film', [profilController::class, 'profilFilm'])->name("profil.film");
+    Route::get('/profil/cinema', [profilController::class, 'profilCinema'])->name("profil.cinema");
+    Route::get('/profil/parametre', [profilController::class, 'profilParametre'])->name("profil.parametre");
 
+    Route::post('/update/profil',[profilController::class, 'updateProfil'])->name("update.profil");
+
+    Route::get('/edit/commentaire/{commentaire}', [commantaireController::class, 'showComInfo'])->name('commentaire.show');
+    Route::post('/update/commentaire',[commantaireController::class,'updateCommentaire']);
+    Route::get('/delete/commentaire/{commentaire}',[commantaireController::class,'deleteCommentaire'])->name('delCommentaire');
     /**
      * this part is for the streaming vues
      */
@@ -60,12 +74,12 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
     Route::post('/searchCategVars', [StreamingController::class, 'searchCategVars']);
     ///Films
     Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
-    Route::get('/film/{film}', [FilmController::class, 'voirfilm']);
+    Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name("voir.film");
     Route::post('/PostCommentFilm/{idFilm}',[commantaireController::class,'postCommentMovie']);
     Route::post('/ajoutMalisteFilm',[FilmController::class,'ajoutMalisteFilm'])->name('ajoutMalisteFilm.post');
     Route::post('/suppMalisteFilm',[FilmController::class,'suppMalisteFilm'])->name('suppMalisteFilm.Delete');
     ////Series
-    Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name('series.show');
+    Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name("voir.serie");
     Route::get('/serie/{serie}/saison/{saison}', [saisonController::class, 'voirSaison'])->name('saison.show');
     Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [episodeController::class, 'voirEpisode'])->name('episode.show');
     Route::post('/postCommentSerie/{idSeries}',[commantaireController::class,'postCommentSerie']);

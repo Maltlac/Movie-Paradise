@@ -36,4 +36,21 @@ class commantaireController extends Controller
       commantaire::create($data);
       return redirect("/serie/$idSeries");
     }
+    public function showComInfo($id)
+    {
+        $commentaire = commantaire::find($id);
+  
+        return response()->json($commentaire);
+    }
+    public function updateCommentaire(Request $request){
+      $commentaire = commantaire::find($request->comUpdateId);
+      $commentaire->Corp= $request->corp;
+      $commentaire->save();
+      return redirect()->back()->withErrors(['Commentaire modifié avec succès']);
+    }
+
+    public function deleteCommentaire($id){
+      commantaire::find($id)->delete();
+      return redirect()->back()->withErrors(['Commentaire supprimé avec succès']);
+    }
 }

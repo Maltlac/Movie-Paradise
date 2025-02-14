@@ -14,7 +14,7 @@ class film extends Model
     use Sortable;
     public $timestamps = true;
     protected $guarded =[];
-    public $sortable = ['id', 'titre', 'dateSortie','duree'];
+    public $sortable = ['id', 'titre', 'dateSortie','duree','active'];
     public function filmsPersonnes(){
         return $this->belongsToMany(Personnes::class)->limit(10);
     }

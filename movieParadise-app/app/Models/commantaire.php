@@ -9,4 +9,5 @@ class commantaire extends Model
 {
     protected $guarded =[];
 
+    
 }

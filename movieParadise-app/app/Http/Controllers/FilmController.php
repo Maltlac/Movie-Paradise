@@ -68,8 +68,17 @@ class FilmController extends Controller
         return response()->json($film);
     }
     public function updateFilm(Request $request){
-        $time=$request->duree;
-        DB::statement('UPDATE films SET titre = "'.$request->titre.'",resume="'.$request->resume.'",dateSortie="'.date("Y-m-d ",strtotime($request->dateSortie)).'",duree="'.$time.'" WHERE id ='.$request->filmUpdate_id);
+        $film=film::find($request->filmUpdate_id);
+        if ($request->active==true) {
+           $film->active=1;
+        }else{
+            $film->active=0;
+        }
+        $film->titre=$request->titre;
+        $film->resume=$request->resume;
+        $film->dateSortie=date("Y-m-d ",strtotime($request->dateSortie));
+        $film->duree=$request->duree;
+        $film->save();
         return redirect()->back()->withErrors(['Changements sauvegarder']);;
 
     }

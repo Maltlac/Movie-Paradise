@@ -73,7 +73,7 @@
                             <div class="dropstart ">
                                 <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> {{ Auth::user()->name }}</button>
                                 <ul class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#"> <i class="fa fa-user" aria-hidden="true"></i> Profil</a></li>
+                                    <li><a class="dropdown-item" href="{{route('profil.commentaire')}}"> <i class="fa fa-user" aria-hidden="true"></i> Profil</a></li>
                                     <li><a class="dropdown-item" href="/contact"> <i class="fa fa-envelope-o"></i> Nous contacter</a></li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="fa fa-sign-out" aria-hidden="true"></i>  {{ __('Logout') }} </a>
