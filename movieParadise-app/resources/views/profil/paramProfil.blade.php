@@ -1,5 +1,4 @@
 @extends('profil.layoutprofil')
-@vite(['resources/css/profilStyle.css'])
 
 @section('second_content')
 

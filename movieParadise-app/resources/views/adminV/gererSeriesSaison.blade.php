@@ -2,7 +2,7 @@
 @section('content')
 
 
-@vite(['resources/css/styleAdmin.css'])
+@vite(['resources\css\styleAdmin.css'])
 <body>
 <div class="container">
     <div class="row">
