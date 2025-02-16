@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->date('dateSortie');
             $table->text('urlTrailler')->nullable();
+            $table->integer('active')->nullable();
             $table->timestamps();
 
             $table->index('realisateurs_id');

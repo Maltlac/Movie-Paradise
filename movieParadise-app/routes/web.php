@@ -9,6 +9,7 @@ use App\Http\Controllers\profilController;
 use App\Http\Controllers\saisonController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\contactController;
+use App\Http\Controllers\ebilletController;
 use App\Http\Controllers\episodeController;
 use App\Http\Controllers\PersonnesController;
 use App\Http\Controllers\StreamingController;
@@ -43,9 +44,14 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
     Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
     Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
-
-    Route::get('/contact', [contactController::class, 'contactForm'])->name('contact-form');;
+    ///// contact form route
+    Route::get('/contact', [contactController::class, 'contactForm'])->name('contact-form');
     Route::post('/contact-form', [ContactController::class, 'storeContactForm'])->name('contact-form.store');
+
+    //////ebillets route
+    Route::get('/home/ebillet', [ebilletController::class, 'home'])->name('ebillet.home');
+    Route::get('/salle/cinema/{cinema}/', [ebilletController::class, 'regionCinema']);
+    Route::get('/salle/cinema/seance/{url}', [ebilletController::class, 'seanceCinema'])->name("seance.cinema");
  
 
     /**
@@ -56,12 +62,13 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
     Route::get('/profil/film', [profilController::class, 'profilFilm'])->name("profil.film");
     Route::get('/profil/cinema', [profilController::class, 'profilCinema'])->name("profil.cinema");
     Route::get('/profil/parametre', [profilController::class, 'profilParametre'])->name("profil.parametre");
-
     Route::post('/update/profil',[profilController::class, 'updateProfil'])->name("update.profil");
 
     Route::get('/edit/commentaire/{commentaire}', [commantaireController::class, 'showComInfo'])->name('commentaire.show');
     Route::post('/update/commentaire',[commantaireController::class,'updateCommentaire']);
     Route::get('/delete/commentaire/{commentaire}',[commantaireController::class,'deleteCommentaire'])->name('delCommentaire');
+
+
     /**
      * this part is for the streaming vues
      */
@@ -101,8 +108,7 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
      * routes for the admin service
     */
 
-    
-        Route::group(['middleware' => ['auth', 'admin']], function() {
+    Route::group(['middleware' => ['auth', 'admin']], function() {
         Route::get('/panneauCtrl', [panneauCtrlController::class, 'index'])->name('panneauCtrl.index');
 
         Route::get('/Statistique', [panneauCtrlController::class, 'stats']);
@@ -139,11 +145,6 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
         Route::post('/panneauCtrl/update/episode',[episodeController::class,'updateEpisode']);
         Route::get('/panneauCtrl/delete/episode/{episode}',[episodeController::class,'deleteEpisode'])->name('delSerie');
         Route::post('/panneauCtrl/ajout/episode',[episodeController::class,'ajoutEpisode'])->name('ajoutEpisode');
-
-
-        
-
-
     });
     
 

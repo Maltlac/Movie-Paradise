@@ -59,11 +59,17 @@ class film extends Model
     public function FilmUserVue(){
         return $this->belongsToMany(User::class,'film_vue');
     }
+
     public function filmsActeurs(){
         return $this->belongsToMany(Personnes::class);
     }
+
     public static function nbFilm(){
         return film::count();
+    }
+
+    public static function filmAffiche(){
+        return ;
     }
 }
 
