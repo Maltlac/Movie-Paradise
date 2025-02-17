@@ -70,8 +70,11 @@ class SeriesController extends Controller
     }
 
     public function updateSerie(Request $request){
-        //dd($request);
-        DB::statement('UPDATE series SET titre = "'.$request->titre.'",resume="'.$request->resume.'",dateSortie="'.date("Y-m-d ",strtotime($request->dateSortie)).'" WHERE id ='.$request->serieUpdate_id);
+        $serie=Series::find($request->serieUpdate_id);
+        $serie->titre=$request->titre;
+        $serie->resume=$request->resume;
+        $serie->dateSortie=date("Y-m-d ",strtotime($request->dateSortie));
+        $serie->save();    
         return redirect()->back()->withErrors(['Changements sauvegarder']);;
 
     }

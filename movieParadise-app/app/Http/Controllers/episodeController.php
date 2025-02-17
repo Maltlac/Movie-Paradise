@@ -34,8 +34,13 @@ class episodeController extends Controller
     }
 
     public function updateEpisode(Request $request){
-        //dd($request);
-        DB::statement('UPDATE episodes SET titre = "'.$request->titre.'",resume="'.$request->resume.'",dateSortie="'.date("Y-m-d ",strtotime($request->dateSortie)).'",duree="'.$request->duree.'",numeroEpisode='.$request->numeroEpisode.'  WHERE id ='.$request->serieUpdate_id);
+        $episode=episode::find($request->serieUpdate_id);
+        $episode->titre=$request->titre;
+        $episode->resume=$request->resume;
+        $episode->dateSortie=date("Y-m-d ",strtotime($request->dateSortie));
+        $episode->duree=$request->duree;
+        $episode->numeroEpisode=$request->numeroEpisode;
+        $episode->save();
         return redirect()->back()->withErrors(['Changements sauvegarder']);;
 
     }

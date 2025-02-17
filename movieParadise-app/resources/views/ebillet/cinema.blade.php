@@ -2,23 +2,19 @@
 
 @section('content')
 
-<div class="container">
-    <table class="table table-bordered">
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-        </tr>
+<div class="container bg-light rounded shadow-sm border border-dark">
+    <table class="table table-striped">
         @foreach($data as $post)
-        <tr>
-            <td><img src="{{ $post['image'] }} " alt="" style="width:100px;"> </td>
-            <td><a href="{{route("seance.cinema",$post['lien'])}}">{{ $post['nom'] }}</a> </td>
-            <td>{{ $post['adresse'] }}</td>
-            <td>{{ $post['salle'] }}</td>
+        <tr scope="row" style="height:175px" class="media position-relative">
+            <td><img src="{{ $post['image'] }} " alt="" style="width:150px;" > </td>
+            <td><a href="{{route("seance.cinema",$post['lien'])}}"  class="text-reset stretched-link" >{{ $post['nom'] }}</a> <br> {{ $post['adresse'] }} </td>
+            <td> Nomnbre de salle : <br>{{ $post['salle'] }}</td>
         </tr>
         @endforeach
     </table>
+    {{ $data->links() }}
 </div>
    
-{{ $data->links() }}
+
 
 @endsection

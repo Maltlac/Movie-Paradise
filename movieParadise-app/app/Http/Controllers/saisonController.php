@@ -34,8 +34,12 @@ class saisonController extends Controller
     }
 
     public function updateSaison(Request $request){
-        //dd($request);
-        DB::statement('UPDATE saisons SET titre = "'.$request->titre.'",resume="'.$request->resume.'",dateSortie="'.date("Y-m-d ",strtotime($request->dateSortie)).'", numeroSaison='.$request->numeroSaison.' WHERE id ='.$request->serieUpdate_id);
+        $saison=saison::find($request->serieUpdate_id);
+        $saison->titre=$request->titre;
+        $saison->resume=$request->resume;
+        $saison->dateSortie=date("Y-m-d ",strtotime($request->dateSortie));
+        $saison->numeroSaison=$request->numeroSaison;
+        $saison->save();
         return redirect()->back()->withErrors(['Changements sauvegarder']);;
 
     }

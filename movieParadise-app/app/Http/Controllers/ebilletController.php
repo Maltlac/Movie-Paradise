@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\Paginator;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
 
 class ebilletController extends Controller
 {
@@ -177,5 +178,10 @@ class ebilletController extends Controller
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+
+
+    public function reservationEbillet(Request $request){
+        dd($request);
     }
 }

@@ -1,14 +1,38 @@
 @extends('layouts.app')
-
 @section('content')
-<div class="container">
-  <h1>Selectionner une ville</h1>
-  <div class="mdl-more gd small-crop">
-    <ul>
+
+  
+  <div class="container bg-light rounded shadow-sm border border-dark">
+      <div class="row">
+        <div class="col-sm text-center">
+          <h1>Selectionner un département : </h1>
+
+        </div>
+        
+      </div>
+        @php
+          $i=0;
+        @endphp
+
         @foreach ($links as $lien)
-            <li class="mdl-more-li"><a href="{{$lien["lien"]}}">{{$lien["dep"]}} </a></li>
+          @if ($i==0)
+            <div class="row">
+          @endif
+
+            <div class="col-sm">
+              <a href="{{$lien["lien"]}}" class="text-reset" >{{$lien["dep"]}} </a>
+            </div>
+
+          @if ($i==3)
+            </div>
+            @php
+            $i=0;
+            @endphp
+          @else
+              @php
+                  $i++;
+              @endphp
+          @endif
         @endforeach
-    </ul>
   </div>
-</div>
 @endsection

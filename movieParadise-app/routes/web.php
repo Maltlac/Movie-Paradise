@@ -52,6 +52,7 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
     Route::get('/home/ebillet', [ebilletController::class, 'home'])->name('ebillet.home');
     Route::get('/salle/cinema/{cinema}/', [ebilletController::class, 'regionCinema']);
     Route::get('/salle/cinema/seance/{url}', [ebilletController::class, 'seanceCinema'])->name("seance.cinema");
+    Route::post('/biller/reserver', [ebilletController::class, 'reservationEbillet'])->name("reserver.billet");
  
 
     /**

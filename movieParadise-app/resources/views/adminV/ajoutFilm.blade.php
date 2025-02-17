@@ -1,19 +1,16 @@
 @extends('layouts.app')
 @section('content')
-<?php use App\Models\film;
-?>
+@vite("resources/css/styleAdmin.css");
 
 <div class="container">
     <div class="row">
         <div class="panel panel-default">
-            <div class="panel-heading d-flex align-items-baseline justify-content-between">
-                <h3>Films </h3>
+            <div class="panel-heading">
+                <span class="text-white">Rechercher des films :</span>
+                <input type="text" class="form-controller" id="search" name="search" style="background-color:white">
             </div>
             <div class="panel-body">
-
-                <div class="form-group">
-                    <input type="text" class="form-controller" id="search" name="search" style="background-color:white">
-                </div>
+                
 
                 <form action="ajoutFilm" method="POST">
                     @csrf
@@ -34,7 +31,9 @@
                         </tbody>
                         
                     </table>
-                    <button class="btn btn-primary">Ajouter</button>
+                    <div class="panel-footer">
+                        <button class="btn btn-primary">Ajouter</button>
+                    </div>
                 </form>
             </div>
         </div>
