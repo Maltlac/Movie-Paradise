@@ -4,26 +4,22 @@
 
     <div class="container">
 
-        <div id="custom-search-input">
-                <div class="input-group">
-                    <form action="/searchStreaming" method="get" style="width:100%">
-                        <input id="search" name="search" type="text" class="form-control " placeholder="Search" style="color:whitesmoke;width:97%"  autocomplete="off"/>
-                        <button class="btn btn-outline-secondary bg-white border-start-0 border ms-n3" type="submit" style="width:3%">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                            </svg>
-                        </button>
-                    </form>
-
-                </div>
-
-            </div>
+        <form action="/searchStreaming" method="get" class="form-inline">
+            <div class="row g-3">
+                <div class="col-sm-7">
+                    <input id="search" name="search" type="search" class="form-control " placeholder="Search" style="color:whitesmoke;" autocomplete="off"/>
+                  </div>
+                  <div class="col-sm">
+                    <button class="btn bg-light  " type="submit"><i class="fa fa-search"></i> </button>
+                </div>   
+            </div>                             
+        </form>
 
             
         
 
         @if (count($data[0])!=0)
-            <h2 style="color:whiteSmoke">Films</h2>
+            <h2 style="color:whiteSmoke">Films ({{count($data[0])}}) </h2>
             <div class="owl-carousel owl-theme">
            
                 @foreach ($data[0] as $lesFilms2)
@@ -39,7 +35,7 @@
         @endif  
         @if (count($data[1])!=0)
 
-            <h2 style="color:whiteSmoke">Series</h2>
+            <h2 style="color:whiteSmoke">Series ({{count($data[1])}}) </h2>
             <div class="owl-carousel owl-theme">
             
                 
@@ -55,7 +51,7 @@
         @endif  
         @if (count($data[2])!=0)
 
-            <h2 style="color:whiteSmoke">Artistes</h2>
+            <h2 style="color:whiteSmoke">Artistes ({{count($data[2])}}) </h2>
             <div class="owl-carousel owl-theme">
             
                 

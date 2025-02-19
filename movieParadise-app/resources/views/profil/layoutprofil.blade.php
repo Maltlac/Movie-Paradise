@@ -31,9 +31,7 @@
                   <!-- BEGIN profile-header-tab -->
                   <ul class="profile-header-tab nav nav-tabs bg-dark.bg-gradient" style="background-color: rgb(207, 207, 207)">
                      <li class="nav-item"><a id="nav1" href="{{route('profil.parametre')}}"  class="nav-link_ ">Paramètres</a></li>
-                     <li class="nav-item"><a id="nav2" href="{{route('profil.cinema')}}"  class="nav-link_">Mes cinémas favories</a></li>
-                     <li class="nav-item"><a id="nav3" href="{{route('profil.film')}}" class="nav-link_">Film/Series</a></li>
-                     <li class="nav-item"><a id="nav4" href="{{route('profil.Artiste')}}"  class="nav-link_">Artistes</a></li>
+
                      <li class="nav-item"><a id="nav5" href="{{route('profil.commentaire')}}"  class="nav-link_">Comentaires({{$nbcoms}}) </a></li>
                   </ul>
                   <!-- END profile-header-tab -->

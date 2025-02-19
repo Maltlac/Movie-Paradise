@@ -6,6 +6,9 @@
 @endphp
 <div class="container bg-light rounded shadow-sm border border-dark">
     <table class="table table-striped">
+        <thead>
+            <th colspan="3"> <h1 id="nomcine">{{$nomcine}} </h1> </th>
+        </thead>
         @foreach ($data as $data2)
             @foreach($data2 as $post)
             <tr style="height:250px">
@@ -44,75 +47,92 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Réservation billets</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Réservation billets : </h5> 
+          <h5 class="modal-title" id="cineR"> </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body d-inline">
-            <form id="filmUpdateForm" name="filmUpdateForm" class=" d-inline" action="{{route("reserver.billet")}} " method="POST">
+        <div class="modal-body">
+
+
+            <form id="filmUpdateForm" name="filmUpdateForm" class="" action="{{route("reserver.billet")}} " method="POST">
+                
                 @csrf
+                <input type="hidden" name="cine" id="cine" >
                 <input type="hidden" name="titre" id="titreFilm" >
                 <input type="hidden" name="date" id="dateSeance" >
                 <input type="hidden" name="heure" id="dateSeanceH">
+                <input type="hidden" id="totalPlace" name="totalPlace">
                 <div class="center">
-                    <p>PLEIN 11.20€ :  </p>
-                    <div class="input-group">
-                        
-                          <span class="input-group-btn">
-                              <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[1]">
-                                <span class="glyphicon glyphicon-minus">-</span>
-                              </button>
-                          </span>
-                          <input type="text" name="quant[1]" class="form-control input-number bg-light" value="0" min="0" max="10" style="max-width: 80px">
-                          <span class="input-group-btn">
-                              <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[1]">
-                                  <span class="glyphicon glyphicon-plus">+</span>
-                              </button>
-                          </span>
-                      </div>      
-                </div>
+                    <div class="row">
+                        <div class="col">
+                            <p>Film : </p>
+                            <p>Heure : </p>
+                            <p>Date : </p>
+                            <p>PLEIN 11.20€ :  </p><br>
+                            <p>MOINS 18 ANS 7.80 € :  </p><br>
+                            <p>ETUDIANT 7.80 € :  </p>
 
-                <div class="center">
-                    <p>MOINS 18 ANS 7.80 € :  </p>
-                    <div class="input-group float-left">
-                        
-                          <span class="input-group-btn">
-                              <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
-                                <span class="glyphicon glyphicon-minus">-</span>
-                              </button>
-                          </span>
-                          <input type="text" name="quant[2]" class="form-control input-number bg-light " value="0" min="0" max="10" style="max-width: 80px">
-                          <span class="input-group-btn">
-                              <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
-                                  <span class="glyphicon glyphicon-plus">+</span>
-                              </button>
-                          </span>
-                      </div>      
-                </div>
 
-                <div class="center">
-                    <p >ETUDIANT 7.80 € :  </p>
-                    <div class="input-group">
+                          </div>
+
+                        <div class="col">
+                            <p id="filmS" ></p>
+                            <p id="heureS" ></p>
+                            <p id="dateS" ></p>
+                            <div class="input-group">
                         
-                          <span class="input-group-btn">
-                              <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[3]">
-                                <span class="glyphicon glyphicon-minus">-</span>
-                              </button>
-                          </span>
-                          <input type="text" name="quant[3]" class="form-control input-number bg-light" value="0" min="0" max="10" style="max-width: 80px">
-                          <span class="input-group-btn">
-                              <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[3]">
-                                  <span class="glyphicon glyphicon-plus">+</span>
-                              </button>
-                          </span>
-                      </div>      
-                </div>
-<br>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[1]" required="">
+                                      <span class="glyphicon glyphicon-minus">-</span>
+                                    </button>
+                                </span>
+                                <input type="text" name="quant[1]" class="form-control input-number bg-light" value="0" min="0" max="10" style="max-width: 80px">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[1]">
+                                        <span class="glyphicon glyphicon-plus">+</span>
+                                    </button>
+                                </span>
+                            </div>   
+                            <br>
+                            <div class="input-group float-left">
+                        
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
+                                      <span class="glyphicon glyphicon-minus">-</span>
+                                    </button>
+                                </span>
+                                <input type="text" name="quant[2]" class="form-control input-number bg-light " value="0" min="0" max="10" style="max-width: 80px">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                        <span class="glyphicon glyphicon-plus">+</span>
+                                    </button>
+                                </span>
+                            </div> 
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger btn-number" data-type="minus" data-field="quant[3]">
+                                      <span class="glyphicon glyphicon-minus">-</span>
+                                    </button>
+                                </span>
+                                <input type="text" name="quant[3]" class="form-control input-number bg-light" value="0" min="0" max="10" style="max-width: 80px">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[3]">
+                                        <span class="glyphicon glyphicon-plus">+</span>
+                                    </button>
+                                </span>
+                            </div>   
+
+                        </div>   
+                    </div>  
+                    
+                       
+
                 <div class="d-inline">
 
-                        <p class="d-inline" >Total :</p>
-                        <p class="d-inline" id="totalPlaceP" >0</p>
-                        <input type="hidden" id="totalPlace" name="totalPlace" style="max-width: 80px" class="d-inline">
-                        <p class="d-inline">€</p>
+                        <p class="d-inline h5" >Total :</p>
+                        <p class="d-inline h5" id="totalPlaceP" >0</p>
+                        <p class="d-inline h5">€</p>
 
                 </div>
 
@@ -120,7 +140,7 @@
                 <!-- footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Réserver
+                    <button type="submit" class="btn btn-primary" id="saveBtn" value="create" disabled>Réserver
                     </button>
                 </div>
              </form>
@@ -128,7 +148,7 @@
         
       </div>
     </div>
-  </div>
+</div>
 
   <script>
      $(document).ready(function () {
@@ -136,6 +156,11 @@
        $('body').on('click', '#seanceResa', function () {
 
             $('#resaModal').modal('show');
+            $('#cine').val($('#nomcine').text());
+            $('#cineR').text($('#nomcine').text());
+            $('#filmS').text($(this).data('titre'));
+            $('#dateS').text($(this).data('date'));
+            $('#heureS').text($(this).data('heure'));
             $('#titreFilm').val($(this).data('titre'));
             $('#dateSeance').val($(this).data('date'));
             $('#dateSeanceH').val($(this).data('heure'));
@@ -183,6 +208,11 @@
         tot=Math.round(tot * 100) / 100;
         $("input[name='totalPlace']").val(tot)
         $('#totalPlaceP').text(tot)
+        if (tot==0) {
+            $("#saveBtn").prop('disabled', true)
+        }else{
+            $("#saveBtn").prop('disabled', false)
+        }
 
         
 
@@ -233,7 +263,5 @@
     });
   </script>
 
-<style>
 
-</style>
 @endsection

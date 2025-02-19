@@ -39,7 +39,7 @@ class ForgotPasswordController extends Controller
               'email' => 'required|email|exists:users',
           ]);
           $token=Str::random(64);
-          $tokenMAil ="http://127.0.0.1:8000/reset-password/".$token;
+          $tokenMAil ="https://movieparadise.site/reset-password/".$token;
           
   
           DB::table('password_resets')->insert([

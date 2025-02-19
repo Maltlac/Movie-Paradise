@@ -70,7 +70,7 @@
                 <h1>Comments ({{count($com)}})</h1>
                 <?php $countUser=0?>
                 @foreach ($com as $unCom)
-                    <div class="comment mt-4 text-justify float-left">
+                    <div class="comment mt-4 text-justify float-left w-100">
                         <h4> {{$UsersCom[$countUser]->username}} </h4>
                         <span>-{{ strftime("%d %B %G", strtotime($unCom->created_at))}} </span>
                         <br>
@@ -100,19 +100,19 @@
                             <span class="selected-rating">0</span><small> / 5</small>
                             </h2>
                             <button type="button" class="btnrating btn btn-default btn-lg" data-attr="1" id="rating-star-1" name="rating">
-                                <i class="fa fa-star" aria-hidden="true">★</i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
                             </button>
                             <button type="button" class="btnrating btn btn-default btn-lg" data-attr="2" id="rating-star-2" name="rating">
-                                <i class="fa fa-star" aria-hidden="true">★</i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
                             </button>
                             <button type="button" class="btnrating btn btn-default btn-lg" data-attr="3" id="rating-star-3" name="rating">
-                                <i class="fa fa-star" aria-hidden="true">★</i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
                             </button>
                             <button type="button" class="btnrating btn btn-default btn-lg" data-attr="4" id="rating-star-4" name="rating">
-                                <i class="fa fa-star" aria-hidden="true">★</i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
                             </button>
                             <button type="button" class="btnrating btn btn-default btn-lg" data-attr="5" id="rating-star-5" name="rating">
-                                <i class="fa fa-star" aria-hidden="true">★</i>
+                                <i class="fa fa-star" aria-hidden="true"></i>
                             </button>
                         </div>
                           

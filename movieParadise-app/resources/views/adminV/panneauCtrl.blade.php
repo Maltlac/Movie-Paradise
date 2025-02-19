@@ -41,19 +41,7 @@
 
       </div>
 
-      <div class="row">
-        <div class="col">
-          profils admin
-        </div>
-
-        <div class="col">
-            <a href="">Ajout admin </a>
-          </div>
-
-          <div class="col">
-            <a href="">Gérer les admins </a>
-          </div>
-      </div>
+      
 
       <div class="row">
         <div class="col">

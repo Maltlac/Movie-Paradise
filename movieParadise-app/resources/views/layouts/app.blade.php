@@ -42,7 +42,7 @@
                     <img src="/images/LogoSite.jpg" style="height:50px;" class="pr-4">
                     <div class="pl-1 " style=" color: whitesmoke;">Movie Paradise</div> 
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapseo" data-bs-target="#navbarSupportedContent" aria-contrls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 

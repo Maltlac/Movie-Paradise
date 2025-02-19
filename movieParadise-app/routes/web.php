@@ -79,7 +79,7 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
     Route::get('/searchStreaming', [StreamingController::class, 'searchStreaming']);
     Route::get('autocomplete', [StreamingController::class, 'search']);
     Route::get('/p/{p}/categ/{categ}/year/{year}', [StreamingController::class, 'searchCateg']);
-    Route::post('/searchCategVars', [StreamingController::class, 'searchCategVars']);
+    Route::get('/searchCategVars', [StreamingController::class, 'searchCategVars']);
     ///Films
     Route::get('/films', [FilmController::class, 'voirfilms'])->name('films.index');
     Route::get('/film/{film}', [FilmController::class, 'voirfilm'])->name("voir.film");
@@ -88,8 +88,8 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
     Route::post('/suppMalisteFilm',[FilmController::class,'suppMalisteFilm'])->name('suppMalisteFilm.Delete');
     ////Series
     Route::get('/serie/{serie}', [SeriesController::class, 'voirSerie'])->name("voir.serie");
-    Route::get('/serie/{serie}/saison/{saison}', [saisonController::class, 'voirSaison'])->name('saison.show');
-    Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [episodeController::class, 'voirEpisode'])->name('episode.show');
+    Route::get('/serie/{serie}/saison/{saison}', [saisonController::class, 'voirSaison']);
+    Route::get('/serie/{serie}/saison/{saison}/episode/{episode}', [episodeController::class, 'voirEpisode']);
     Route::post('/postCommentSerie/{idSeries}',[commantaireController::class,'postCommentSerie']);
     Route::post('/ajoutMalisteSerie',[SeriesController::class,'ajoutMalisteSerie'])->name('ajoutMalisteSerie.post');
     Route::post('/suppMalisteSerie',[SeriesController::class,'suppMalisteSerie'])->name('suppMalisteSerie.Delete');
@@ -144,7 +144,7 @@ Route::get('/test', [HomeController::class, 'test'])->name('test.show');
         ////episodes
         Route::get('/edit/episode/{episode}', [episodeController::class, 'showEpisodeInfo'])->name('episode.show');
         Route::post('/panneauCtrl/update/episode',[episodeController::class,'updateEpisode']);
-        Route::get('/panneauCtrl/delete/episode/{episode}',[episodeController::class,'deleteEpisode'])->name('delSerie');
+        Route::get('/panneauCtrl/delete/episode/{episode}',[episodeController::class,'deleteEpisode'])->name('delEpisode');
         Route::post('/panneauCtrl/ajout/episode',[episodeController::class,'ajoutEpisode'])->name('ajoutEpisode');
     });
     

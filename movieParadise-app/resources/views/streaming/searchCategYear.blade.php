@@ -1,20 +1,22 @@
 @extends('layouts.app')
 @section('content')
-
+@php
+    setlocale(LC_TIME, "fr_FR", "French");
+@endphp
 
 <div  style="display:grid;color:white;  grid-template-columns: auto 80%;">
     <div style="grid-column: 1/2;grid-row: 1">
         <div style="border-color:black;border-size 2px;">
-            <h4>Catégories</h4>
+            <h4>Catégories :</h4>
             @foreach($listeCateg as $categ)
-                <a href="/p/film/categ/{{$categ->id}}/year/tous">{{$categ->nom}} </a> <br>
+                <a href="/p/film/categ/{{$categ->id}}/year/tous" class="text-reset link-underline-opacity-0">{{$categ->nom}} </a> <br>
             @endforeach 
         </div>
     </div>
     
     <div style="grid-column: 2/2;grid-row: 1; margin-right:50px">
         <h2 style="color:whiteSmoke">Votre recherche:</h2> <br>
-            <form action="/searchCategVars" method="post">
+            <form action="/searchCategVars" method="get">
                 @csrf
                 Filtrer par sous-catégorie:
                 <select name="p" id="pSelect"  style="color: black">
@@ -56,22 +58,50 @@
                 </button>
                   <br><br>
             </form> 
+
+
+                
                 @if (count($search)>0)
-                    @foreach ($search as $filmSerie)
-                        <div class="item">
-                            @if($p=="film") 
-                            <a id="imgCardStreamingCateg" href="/film/{{ $filmSerie->id }}" class="card col-sm-4 ">
-                            @endif
-                            @if($p=="series") 
-                            <a id="imgCardStreamingCateg" href="/serie/{{ $filmSerie->id }}" class="card col-sm-4 ">
-                            @endif  
-                                <img class="card-img-center " src="https://image.tmdb.org/t/p/w200{{ $filmSerie->image }}" alt="Card image cap">
-                            </a>
+                   
+                        <div class="table-responsive-md w-75 ">
+                            <table class="table table-light" style="    border-collapse: separate; border-spacing:0 20px;">
+                                <tbody>
+                                    @foreach ($search as $filmSerie)
+                                        <tr class="">
+                                            <td scope="row">
+                                                @if($p=="film") 
+                                                <a id="imgCardStreamingCateg" href="/film/{{ $filmSerie->id }}" class="card col-sm-4 stretched-link ">
+                                                @endif
+                                                @if($p=="series") 
+                                                <a id="imgCardStreamingCateg" href="/serie/{{ $filmSerie->id }}" class="btn  card col-sm-4 stretched-link">
+                                                @endif  
+                                                    <img class="img-thumbnail " src="https://image.tmdb.org/t/p/w200{{ $filmSerie->image }}" >
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <h4>{{$filmSerie->titre}} </h4>
+                                                <p>Date de sortie :  {{strftime("%d %B %G", strtotime($filmSerie->dateSortie)) }} </p>
+                                                @if($p=="series") 
+                                                <a id="imgCardStreamingCateg" href="/serie/{{ $filmSerie->id }}" class="card col-sm-4 ">
+                                                @endif  
+                                                
+                                                <p>Synopsis:  {{$filmSerie->resume}} </p>
+                                                
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            {{$search->links()}}
                         </div>
-                    @endforeach
+                   
+                    
                 @else
                     <h3>Aucun résultas</h3>
                 @endif
+
+                
                
                     
     </div>

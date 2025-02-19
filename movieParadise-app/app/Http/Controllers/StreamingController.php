@@ -129,15 +129,15 @@ class StreamingController extends Controller
         sort($sortedYear);
         if ($p=="film") {
             if($year=="tous"){
-                $requete=$categ->categoriesFilm()->get();
+                $requete=$categ->categoriesFilm()->paginate(10);
             }else{
-                $requete=$categ->categoriesFilm()->whereYear("dateSortie",'=',$year)->get();
+                $requete=$categ->categoriesFilm()->whereYear("dateSortie",'=',$year)->paginate(10);
             }
         }else if($p=="series"){
             if($year=="tous"){
-                $requete=$categ->categoriesSerie()->get();
+                $requete=$categ->categoriesSerie()->paginate(10);
             }else{
-                $requete=$categ->categoriesSerie()->whereYear("dateSortie",'=',$year)->get();
+                $requete=$categ->categoriesSerie()->whereYear("dateSortie",'=',$year)->paginate(10);
             }      
         }
 

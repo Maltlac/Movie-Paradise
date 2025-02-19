@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use GuzzleHttp\Client;
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\Paginator;
-use Symfony\Component\DomCrawler\Crawler;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Mailjet\Resources;
+use App\Models\ebillet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\DomCrawler\Crawler;
+use Mailjet\LaravelMailjet\Facades\Mailjet;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ebilletController extends Controller
 {
@@ -88,7 +95,7 @@ class ebilletController extends Controller
         $crawler = new Crawler( $content );
         
         $_this = $this;
-        
+        $nomcine=$crawler->filter("div.theater-cover-title")->text();
         $data[] = $crawler->filter('div.movie-card-theater')
                         ->each(function (Crawler $node, $i) use($_this) {
                             return $_this->getNodeContentSeance($node);
@@ -105,7 +112,7 @@ class ebilletController extends Controller
         $data=array_filter($data);
         $data = $this->paginate($data, 1);
         $data->withPath('');   
-        return view('ebillet.seance', compact('data'));    
+        return view('ebillet.seance', compact('data','nomcine'));    
         
     }
 
@@ -182,6 +189,60 @@ class ebilletController extends Controller
 
 
     public function reservationEbillet(Request $request){
-        dd($request);
+       // $mj = new Mailjet(getenv('MAILJET_APIKEY'), getenv('MAILJET_APISECRET'),true,['version' => 'v3']);
+
+        $ebillet=new ebillet;
+        $ebillet->user_id=Auth::user()->id;
+        $ebillet->ticket1=$request->quant[1];
+        $ebillet->ticket2=$request->quant[2];
+        $ebillet->ticket3=$request->quant[3];
+        $ebillet->cine=$request->cine;
+        $ebillet->titreFilm=$request->titre;
+        $ebillet->seance= $request->date."".$request->heure;
+        $ebillet->total=$request->totalPlace;
+        $ebillet->save();
+        
+        $formdata=[
+            'id'=>$ebillet->id,
+            'name'=>Auth::user()->name,
+            'billet1'=>"Nombre de billets plein tarif".$request->quant[1],
+            'billet2'=>"Nombre de billets moins de 18ans".$request->quant[2],
+            'billet3'=>"Nombre de billets etudiant".$request->quant[3],
+            'cine'=>$request->cine,
+            'titreFilm'=>$request->titre,
+            'seance'=> $request->date." ".$request->heure,
+            'total'=>$request->totalPlace."€",
+            'date'=>Carbon::now(),
+            'ticket1'=>$request->quant[1],
+            'ticket2'=>$request->quant[2],
+            'ticket3'=>$request->quant[3],
+        ];
+        $formdata1=[
+            'id'=>$ebillet->id,
+            'name'=>Auth::user()->name,
+            'billet1'=>"Nombre de billets plein tarif".$request->quant[1],
+            'billet2'=>"Nombre de billets moins de 18ans".$request->quant[2],
+            'billet3'=>"Nombre de billets etudiant".$request->quant[3],
+            'cine'=>$request->cine,
+            'titre'=>$request->titre,
+            'seance'=> $request->date." ".$request->heure,
+            'total'=>$request->totalPlace."€",
+            'date'=>Carbon::now(),
+        ];
+
+
+          
+          $bodyResetMDP = [
+              'FromEmail' => "noreply@movie-paradise.fr",
+              'FromName' => "noreply",
+              'Subject' => "Confirmation de commande",
+              'MJ-TemplateID' => 4822770,
+              'Vars' => json_decode(json_encode($formdata1), true),
+              'MJ-TemplateLanguage' => true,
+              'Recipients' => [['Email' => Auth::user()->email]]
+            ];
+
+       $stat=Mailjet::post(Resources::$Email, ['body' => $bodyResetMDP]);
+        return view("ebillet.commandeConfirm", compact('formdata'))->with('message', 'Merci pour votre commande');
     }
 }
