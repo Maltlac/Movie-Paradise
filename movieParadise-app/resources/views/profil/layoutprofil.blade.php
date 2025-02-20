@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@vite(['resources\css\profilStyle.css'])
+
+<link href="css/profilStyle.css" rel="stylesheet">
 @section('content')
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">

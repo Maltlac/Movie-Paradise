@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
-@vite("resources/css/styleAdmin.css");
+
+<link href="css/styleAdmin.css" rel="stylesheet">
 
 <div class="container">
     <div class="row">

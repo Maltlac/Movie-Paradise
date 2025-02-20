@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-@vite(['resources\css\statAdmin.css'])
+<link href="css/statAdmin.css" rel="stylesheet">
 <div class="container">
     
     <div class="row">

@@ -32,6 +32,7 @@
     
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="css/commentsStyle.css" rel="stylesheet">
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body >
