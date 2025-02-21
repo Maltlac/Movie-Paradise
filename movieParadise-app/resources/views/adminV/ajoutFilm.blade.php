@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<link href="css/styleAdmin.css" rel="stylesheet">
+<link href="/css/styleAdmin.css" rel="stylesheet">
 
 <div class="container">
     <div class="row">

@@ -2,7 +2,7 @@
 @section('content')
 
 
-<link href="css/styleAdmin.css" rel="stylesheet">
+<link href="/css/styleAdmin.css" rel="stylesheet">
 <body>
 <div class="container">
     <div class="row">

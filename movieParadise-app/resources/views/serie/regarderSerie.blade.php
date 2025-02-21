@@ -3,7 +3,7 @@
 <?php  setlocale(LC_TIME, "fr_FR", "French");?>
 @section('content')
 
-<link href="css/commentsStyle.css" rel="stylesheet">
+<link href="/css/commentsStyle.css" rel="stylesheet">
 <div class="container" style=" color: whitesmoke;">
    <h1>{{ $serie->titre }}</h1>
    

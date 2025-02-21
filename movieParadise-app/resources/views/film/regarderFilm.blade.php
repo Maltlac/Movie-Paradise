@@ -1,6 +1,6 @@
 @extends('layouts.app')
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="css/commentsStyle.css" rel="stylesheet">
+<link href="/css/commentsStyle.css" rel="stylesheet">
 <?php  setlocale(LC_TIME, "fr_FR", "French");?>
 @section('content')
 <div class="container" style=" color: whitesmoke;">
