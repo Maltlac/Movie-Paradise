@@ -12,7 +12,7 @@ input[type="text"]:focus,
 select.form-control:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
-  background-color: rgb(177, 186, 196);
+  background-color: #222222;
 }
 
 body{
@@ -201,7 +201,7 @@ body{
 }
 
 .profile-content {
-    background-color: rgb(177, 186, 196);
+    background-color: #222222;
     padding: 25px;
     border-radius: 4px
 }
@@ -277,7 +277,7 @@ body{
     border: none;
     padding-top: 7px;
     padding-bottom: 7px;
-    color: #242a30;
+    color: #222222;
     background: 0 0
 }
 

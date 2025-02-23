@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use GuzzleHttp\Client;
 use Mailjet\Resources;
 use App\Models\ebillet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\DomCrawler\Crawler;

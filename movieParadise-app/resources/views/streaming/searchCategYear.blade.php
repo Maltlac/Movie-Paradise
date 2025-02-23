@@ -4,17 +4,9 @@
     setlocale(LC_TIME, "fr_FR", "French");
 @endphp
 
-<div  style="display:grid;color:white;  grid-template-columns: auto 80%;">
-    <div style="grid-column: 1/2;grid-row: 1">
-        <div style="border-color:black;border-size 2px;">
-            <h4>Catégories :</h4>
-            @foreach($listeCateg as $categ)
-                <a href="/p/film/categ/{{$categ->id}}/year/tous" class="text-reset link-underline-opacity-0">{{$categ->nom}} </a> <br>
-            @endforeach 
-        </div>
-    </div>
+
     
-    <div style="grid-column: 2/2;grid-row: 1; margin-right:50px">
+    <div class="container">
         <h2 style="color:whiteSmoke">Votre recherche:</h2> <br>
             <form action="/searchCategVars" method="get">
                 @csrf
@@ -81,10 +73,6 @@
                                             <td>
                                                 <h4>{{$filmSerie->titre}} </h4>
                                                 <p>Date de sortie :  {{strftime("%d %B %G", strtotime($filmSerie->dateSortie)) }} </p>
-                                                @if($p=="series") 
-                                                <a id="imgCardStreamingCateg" href="/serie/{{ $filmSerie->id }}" class="card col-sm-4 ">
-                                                @endif  
-                                                
                                                 <p>Synopsis:  {{$filmSerie->resume}} </p>
                                                 
                                             </td>
@@ -106,6 +94,5 @@
                     
     </div>
 
-</div>
 
 @endsection 

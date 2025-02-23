@@ -29,13 +29,12 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+
+Route::get('/', [StreamingController::class, 'index']);
 
 
 Auth::routes();
-Route::get('/home', [HomeController::class, 'index'])->name('Home.show');
+
 Route::get('/test', [HomeController::class, 'test'])->name('test.show');
 
     ///PassWord route

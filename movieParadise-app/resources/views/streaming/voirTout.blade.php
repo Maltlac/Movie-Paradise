@@ -1,16 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<div  style="display:grid;color:white;  grid-template-columns: auto 80%;">
-        <div style="grid-column: 1/2;grid-row: 1">
-            <div style="border-color:black;border-size 2px;">
-                <h4>Catégories</h4>
-                @foreach($listeCateg as $categ)
-                    <a href="/p/film/categ/{{$categ->id}}/year/tous">{{$categ->nom}} </a> <br>
-                @endforeach 
-            </div>
-        </div>
-        
-        <div style="grid-column: 2/2;grid-row: 1; margin-right:50px">
+
+
+
+        <div class="container">
 
 
                 <form action="/searchStreaming" method="get" class="form-inline">
@@ -21,8 +14,10 @@
                           <div class="col-sm">
                             <button class="btn bg-light  " type="submit"><i class="fa fa-search"></i> </button>
                         </div>   
+
                     </div>                             
                 </form>
+
 
                         
                       <h2 style="color:whiteSmoke">Ma liste</h2>
@@ -113,7 +108,7 @@
                         @endforeach
         </div>
 
-</div>
+
 
 
    
@@ -133,7 +128,7 @@
 
             responsive: {
                 0: {
-                    items: 1
+                    items: 2
                 },
                 500: {
                     items: 2

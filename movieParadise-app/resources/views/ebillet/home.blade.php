@@ -2,7 +2,7 @@
 @section('content')
 
   
-  <div class="container bg-light rounded shadow-sm border border-dark">
+  <div class="container rounded shadow-sm border border-dark text-white" style="background-color: #222222">
       <div class="row">
         <div class="col-sm text-center">
           <h1>Selectionner un département : </h1>

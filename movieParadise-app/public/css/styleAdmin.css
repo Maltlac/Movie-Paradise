@@ -5,7 +5,7 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.08);
 }
 .panel .panel-heading{
-    background: #1a242f;
+    background: #222222;
     padding: 15px;
     border-radius: 0;
 }
@@ -32,7 +32,7 @@
 }
 .panel .panel-body .table thead tr th{
     color: #fff;
-    background: #1a242f;
+    background: #222222;
     font-size: 17px;
     font-weight: 700;
     padding: 12px;
@@ -69,7 +69,7 @@
 .panel .panel-body .table tbody .action-list li a:hover{ box-shadow: 0 0 5px #ddd; }
 .panel .panel-footer{
     color: #fff;
-    background: #1a242f;
+    background: #222222;
     font-size: 16px;
     line-height: 33px;
     padding: 25px 15px;

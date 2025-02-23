@@ -37,27 +37,35 @@
 </head>
 <body >
     <div id="app" >
-        <nav class="navbar navbar-expand-md navbar-light shadow-sm" id="headerApp" style="background-color: #1a242f; height:67px" >
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark" id="headerApp">
             <div class="container" style="display: contents">
-                <a class="navbar-brand d-flex"  href="{{ url('/') }}">
-                    <img src="/images/LogoSite.jpg" style="height:50px;" class="pr-4">
-                    <div class="pl-1 " style=" color: whitesmoke;">Movie Paradise</div> 
+                
+                <a class="navbar-brand d-flex"  href="{{route("streaming.index")}}">
+                    <img src="/images/LogoSite.jpg" style="height:70px; mix-blend-mode: multiply;" class="pr-1">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapseo" data-bs-target="#navbarSupportedContent" aria-contrls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+
                 
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        
-                        
-                    </ul>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto me-5">
-                        
+                <div class="collapse navbar-collapse d-flex" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Catégories
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            @foreach($listeCateg as $categ)
+                                <li><a class="dropdown-item" href="/p/film/categ/{{$categ->id}}/year/tous">{{$categ->nom}} </a></li>
+                            @endforeach 
+                          <li></li>
+                        </ul>
+                      </li>
+                    </ul>
+                </div>
+
+                <ul class="navbar-nav ms-auto me-5">
+                    
+                    
                           @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -71,9 +79,10 @@
                                 </li>
                             @endif
                         @else
-                            <div class="dropstart ">
-                                <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> {{ Auth::user()->name }}</button>
-                                <ul class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="dropdownMenuButton1">
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> {{ Auth::user()->name }}</button>
+                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark ">
+                                    <li><a class="dropdown-item" href="{{route("ebillet.home")}} "><i class="fa fa-ticket" aria-hidden="true"></i>Réserver un E-billet </a></li>
                                     <li><a class="dropdown-item" href="{{route('profil.commentaire')}}"> <i class="fa fa-user" aria-hidden="true"></i> Profil</a></li>
                                     <li><a class="dropdown-item" href="/contact"> <i class="fa fa-envelope-o"></i> Nous contacter</a></li>
                                     <li>
@@ -94,10 +103,8 @@
                             
                         @endguest
                         <div class="btn-group">
-                            
-                    </ul>
+                </ul>           
 
-                </div>
             </div>
         </nav>
         
@@ -107,3 +114,10 @@
     </div>
 </body>
 </html>
+
+<style>
+    .dropdown-menu-right { 
+    right: 0; 
+    left: auto; 
+}
+</style>

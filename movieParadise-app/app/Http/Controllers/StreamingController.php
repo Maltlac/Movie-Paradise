@@ -49,23 +49,21 @@ class StreamingController extends Controller
         //dd($FilmRecommander);
         $film=film::inRandomOrder()->where("active",1)->limit(20)->get();
         $serie=series::inRandomOrder()->limit(20)->get();
-        $categ=categories::all();
+
         $lastAdd=film::latest()->where("active",1)->take(10)->get()->toArray();
         $lastAdd2=series::latest()->take(10)->get()->toArray();
         $listeFilm=$user->UserFilm()->where("active",1)->get()->toArray();
         $listeSerie=$user->UserSerie()->get()->toArray();
         $maListe=array_merge($listeFilm,$listeSerie);
         $merge = array_merge($lastAdd2,$lastAdd);
-        $categ=categories::all();
+
         shuffle($merge);
         shuffle($maListe);
         return view('/streaming/voirTout',[
             'film'=>$film,
             'serie'=>$serie,
-            'categ'=>$categ,
             'lastAdd'=>$merge,
             'maListe'=>$maListe,
-            'listeCateg'=>$categ,
             'filmMV'=>$filmMV,
             'FilmRecommander'=>$FilmRecommander,
             'toutesCateg'=>$toutesCateg,

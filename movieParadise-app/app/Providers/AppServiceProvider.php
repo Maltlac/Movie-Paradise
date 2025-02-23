@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-
+use App\Models\categories;
 use Cookie;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Pagination\Paginator;
@@ -26,8 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        URL::forceScheme('https');
+        //URL::forceScheme('https');
         Paginator::useBootstrap();
+        view()->share('listeCateg', categories::all());
     }
     
 }

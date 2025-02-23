@@ -76,7 +76,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer">
+                <div class="panel-footer" style="margin-top:-16px">
                     <div class="row">
                             
                             @if ($films->hasPages())
