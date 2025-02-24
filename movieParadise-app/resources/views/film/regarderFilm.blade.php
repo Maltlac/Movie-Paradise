@@ -23,7 +23,11 @@
    <div>durée du film: {{ $film->duree }}</div>
 
     <div>Acteurs:
-            <?php
+            
+            @php
+                
+            
+            
                 $i = 0;
                 $len = count($film->filmsPersonnes);
                 foreach ($film->filmsPersonnes as $acteur) { 
@@ -36,7 +40,7 @@
                     }
                     $i++;
             }
-            ?>
+            @endphp
         
      </div>
      <div>Catégories: 

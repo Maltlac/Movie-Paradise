@@ -43,10 +43,6 @@
                 <a class="navbar-brand d-flex"  href="{{route("streaming.index")}}">
                     <img src="/images/LogoSite.jpg" style="height:70px; mix-blend-mode: multiply;" class="pr-1">
                 </a>
-
-                
-
-
                 <div class="collapse navbar-collapse d-flex" id="navbarNavDarkDropdown">
                     <ul class="navbar-nav">
                       <li class="nav-item dropdown">
@@ -62,11 +58,11 @@
                       </li>
                     </ul>
                 </div>
-
                 <ul class="navbar-nav ms-auto me-5">
-                    
-                    
                           @guest
+
+
+                    
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>

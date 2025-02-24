@@ -28,14 +28,16 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/test', [HomeController::class, 'test'])->name('test.show');
 
 
-Route::get('/', [StreamingController::class, 'index']);
 
 
 Auth::routes();
 
-Route::get('/test', [HomeController::class, 'test'])->name('test.show');
+    Route::get('/', [StreamingController::class, 'index']);
+    Route::get('/home', [StreamingController::class, 'index']);
+    
 
     ///PassWord route
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
