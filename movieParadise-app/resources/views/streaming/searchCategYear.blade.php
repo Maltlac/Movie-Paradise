@@ -6,7 +6,7 @@
 
 
     
-    <div class="container">
+    <div class="container text-white">
         <h2 style="color:whiteSmoke">Votre recherche:</h2> <br>
             <form action="/searchCategVars" method="get">
                 @csrf

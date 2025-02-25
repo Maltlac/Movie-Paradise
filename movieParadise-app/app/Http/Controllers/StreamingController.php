@@ -64,7 +64,7 @@ class StreamingController extends Controller
             'serie'=>$serie,
             'lastAdd'=>$merge,
             'maListe'=>$maListe,
-            'filmMV'=>$filmMV ,
+            'filmMV'=>$filmMV ?? "" ,
             'FilmRecommander'=>$FilmRecommander?? "",
             'toutesCateg'=>$toutesCateg,
 

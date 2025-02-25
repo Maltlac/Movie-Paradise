@@ -4,9 +4,9 @@
 <main class="login-form">
   <div class="cotainer">
       <div class="row justify-content-center">
-          <div class="col-md-8">
-              <div class="card">
-                  <div class="card-header">Reset Password</div>
+          <div class="col-md-6">
+              <div class="card bg-dark text-white">
+                  <div class="card-header bg-secondary">Mot de passe oublié</div>
                   <div class="card-body">
   
                     @if (Session::has('message'))
@@ -26,9 +26,10 @@
                                   @endif
                               </div>
                           </div>
+                          <br>
                           <div class="col-md-6 offset-md-4">
                               <button type="submit" class="btn btn-primary">
-                                  Send Password Reset Link
+                                  envoyer le liens 
                               </button>
                           </div>
                       </form>

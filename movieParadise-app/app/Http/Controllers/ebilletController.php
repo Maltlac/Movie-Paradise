@@ -99,7 +99,7 @@ class ebilletController extends Controller
                             return $_this->getNodeContentSeance($node);
                         }
                     );
-        for ($i=1; $i < 7; $i++) { 
+        for ($i=1; $i < 3; $i++) { 
             $url='https://www.allocine.fr/seance/d-'.$i.'/salle_gen_csalle='.$urlCode.'.html';
             $response = $this->client->get($url); 
             $content = $response->getBody()->getContents();
@@ -218,9 +218,9 @@ class ebilletController extends Controller
         $formdata1=[
             'id'=>$ebillet->id,
             'name'=>Auth::user()->name,
-            'billet1'=>"Nombre de billets plein tarif".$request->quant[1],
-            'billet2'=>"Nombre de billets moins de 18ans".$request->quant[2],
-            'billet3'=>"Nombre de billets etudiant".$request->quant[3],
+            'billetUn'=>"Nombre de billets plein tarif :".$request->quant[1],
+            'billetDeux'=>"Nombre de billets moins de 18ans: ".$request->quant[2],
+            'billetTrois'=>"Nombre de billets etudiant :".$request->quant[3],
             'cine'=>$request->cine,
             'titre'=>$request->titre,
             'seance'=> $request->date." ".$request->heure,

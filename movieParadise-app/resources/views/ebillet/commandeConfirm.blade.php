@@ -63,7 +63,7 @@
   
               
   
-              <p class="mt-4 pt-2 mb-0">Want any help? <a href="/contact" style="color: #f37a27;">Please contact us</a></p>
+              <p class="mt-4 pt-2 mb-0">Besoin d'aide ? <a href="/contact" style="color: #f37a27;">Contacter nous</a></p>
   
             </div>
           </div>

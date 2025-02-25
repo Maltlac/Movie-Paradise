@@ -5,7 +5,7 @@
     <div class="row mt-5 mb-5">
         <div class="col-8 offset-2 mt-5">
             <div class="card">
-                <div class="card-header bg-info">
+                <div class="card-header bg-secondary">
                     <h3 class="text-white"></h3>
                 </div>
                 <div class="card-body">

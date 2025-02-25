@@ -127,8 +127,8 @@
             loop: true,
 
             responsive: {
-                0: {
-                    items: 2
+                350: {
+                    items: 1.5
                 },
                 500: {
                     items: 2
@@ -140,13 +140,13 @@
                     items: 4
                 },
                 1250: {
-                    items: 5
+                    items: 4
                 },
                 1500: {
-                    items: 6
+                    items: 5
                 },
-                1700: {
-                    items: 7
+                1800: {
+                    items: 6
                 }
             }
         })
