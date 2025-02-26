@@ -77,7 +77,7 @@
                                 </div>
                             @endforeach               
                         </div> 
-
+                        @if ($filmMV!="")
                         <h2 style="color:whiteSmoke">Les Films les plus vue ce moi-ci</h2>
                         <div class="owl-carousel ">
                           
@@ -91,6 +91,8 @@
                                 </div>
                             @endforeach               
                         </div>   
+                        @endif
+                        
 
                         @foreach ($toutesCateg as $categ)
                             <h2 style="color:whiteSmoke">{{$categ->nomCateg}} </h2>
