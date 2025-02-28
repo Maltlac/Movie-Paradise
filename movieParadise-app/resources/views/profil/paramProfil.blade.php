@@ -13,7 +13,7 @@
              <table class="table table-profile">
                <form action="{{route('update.profil')}} " method="post">
                   @csrf
-                  <tbody>
+                  <tbody style=" color: whitesmoke;">
                      <tr class="highlight">
                         <td class="field">Name : </td>
                         <td><input type="text" name="name" id="name"  class="form-control" required maxlength="50" value="{{ Auth::user()->name }}"></td>
