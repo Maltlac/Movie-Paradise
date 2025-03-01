@@ -92,34 +92,10 @@
                     @csrf
                     <div class="form-group">
                         <h4>Leave a comment</h4>
-                        <div class="form-group" id="rating-ability-wrapper">
-                            <label class="control-label" for="rating">
-                            <span class="field-label-info"></span>
-                            <input type="hidden" id="selected_rating" name="selected_rating" value="" required="required">
-                            </label>
-                            <h2 class="bold rating-header" style="">Note
-                            <span class="selected-rating">0</span><small> / 5</small>
-                            </h2>
-                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="1" id="rating-star-1" name="rating">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="2" id="rating-star-2" name="rating">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="3" id="rating-star-3" name="rating">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="4" id="rating-star-4" name="rating">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btnrating btn btn-default btn-lg" data-attr="5" id="rating-star-5" name="rating">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </button>
-                        </div>
                           
 
                         <label for="message">Message</label>
-                        <textarea name="msg" id="msg" cols="30" rows="5" class="form-control" style="background-color: black; color: whitesmoke;"></textarea>
+                        <textarea name="msg" id="msg" cols="30" rows="5" class="form-control" style="background-color: black; color: whitesmoke;" required></textarea>
                     </div>
                    
                     

@@ -13,14 +13,14 @@
              <table class="table table-profile">
                <form action="{{route('update.profil')}} " method="post">
                   @csrf
-                  <tbody style=" color: whitesmoke;">
+                  <tbody >
                      <tr class="highlight">
-                        <td class="field">Name : </td>
-                        <td><input type="text" name="name" id="name"  class="form-control" required maxlength="50" value="{{ Auth::user()->name }}"></td>
+                        <td class="field" style=" color: whitesmoke;">Name : </td>
+                        <td><input type="text" name="name" id="name"  class="form-control" required maxlength="50" value="{{ Auth::user()->name }}" style=" color: whitesmoke;"></td>
                      </tr>
                      <tr class="highlight">
-                        <td class="field">Mood : </td>
-                        <td><input type="text" name="mood" id="mood"  class="form-control" required maxlength="50" value="{{ Auth::user()->info }}"></td>
+                        <td class="field" style=" color: whitesmoke;">Mood : </td>
+                        <td><input type="text" name="mood" id="mood"  class="form-control" required maxlength="50" value="{{ Auth::user()->info }}" style=" color: whitesmoke;"></td>
                      </tr>
                      <tr class="highlight">
                         <td class="field">&nbsp;</td>
