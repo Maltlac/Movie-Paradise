@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Personnes;
+use Illuminate\Support\Facades\DB;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Model;
@@ -68,8 +69,17 @@ class film extends Model
         return film::count();
     }
 
-    public static function filmAffiche(){
-        return ;
+    public static function filmR($userId){
+        $toutesCateg= categories::categsFilmR($userId);
+        foreach ($toutesCateg as $key ) {
+            $FilmRecommander[$key->nomCateg]=DB::select("SELECT * FROM films WHERE active=1 AND id IN(
+                    SELECT film_id FROM categories_film 
+                    WHERE categories_id=$key->categories_id 
+            )ORDER BY RAND() LIMIT 10");
+        }
+        return $FilmRecommander;
     }
+
+
 }
 

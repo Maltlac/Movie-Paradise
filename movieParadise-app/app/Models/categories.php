@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class categories extends Model
 {
@@ -17,5 +18,14 @@ class categories extends Model
     }
     public static function nbCateg(){
         return categories::count();
+    }
+    public static function categsFilmR($userId){
+        return DB::select("SELECT categories_id, COUNT(categories_id) AS nbCateg,categories.nom  AS nomCateg
+        FROM categories_film, categories  
+        WHERE film_id IN(SELECT distinct film_id FROM film_vue WHERE user_id=$userId) 
+        AND categories.id = categories_film.categories_id
+        GROUP BY categories_id
+        ORDER BY  nbCateg desc
+        LIMIT 3");
     }
 }

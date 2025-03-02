@@ -32,21 +32,10 @@ class StreamingController extends Controller
         
         $userId=Auth::user()->id;
         $user=User::find($userId);
-        $toutesCateg=DB::select("   SELECT categories_id, COUNT(categories_id) AS nbCateg,categories.nom  AS nomCateg
-                                    FROM categories_film, categories  
-                                    WHERE film_id IN(SELECT distinct film_id FROM film_vue WHERE user_id=$userId) 
-                                    AND categories.id = categories_film.categories_id
-                                    GROUP BY categories_id
-                                    ORDER BY  nbCateg desc
-                                    LIMIT 3");
-        foreach ($toutesCateg as $key ) {
-            $FilmRecommander[$key->nomCateg]=DB::select("SELECT * FROM films WHERE active=1 AND id IN(
-                                        SELECT film_id FROM categories_film 
-                                        WHERE categories_id=$key->categories_id 
-                )ORDER BY RAND() LIMIT 10");
-        }
-        
-        //dd($FilmRecommander);
+
+      
+        $FilmRecommander= film::filmR($userId);
+        $toutesCateg= categories::categsFilmR($userId);
         $film=film::inRandomOrder()->where("active",1)->limit(20)->get();
         $serie=series::inRandomOrder()->limit(20)->get();
 
@@ -62,11 +51,11 @@ class StreamingController extends Controller
         return view('/streaming/voirTout',[
             'film'=>$film,
             'serie'=>$serie,
-            'lastAdd'=>$merge,
-            'maListe'=>$maListe,
+            'lastAdd'=>$merge??"",
+            'maListe'=>$maListe??"",
             'filmMV'=>$filmMV ?? "" ,
             'FilmRecommander'=>$FilmRecommander?? "",
-            'toutesCateg'=>$toutesCateg,
+            'toutesCateg'=>$toutesCateg?? "",
 
         ]);
     }
