@@ -24,7 +24,11 @@ class ForgotPasswordController extends Controller
        */
       public function showForgetPasswordForm()
       {
-         return view('auth/passwords/forgetPassword');
+         $listeCateg = [];
+
+         return view('auth/passwords/forgetPassword', [
+            'listeCateg' => $listeCateg,
+         ]);
       }
   
       /**
@@ -32,12 +36,11 @@ class ForgotPasswordController extends Controller
        *
        * @return response()
        */
-      public function submitForgetPasswordForm(Request $request)
-      {
-        $mj = new Mailjet(getenv('MAILJET_APIKEY'), getenv('MAILJET_APISECRET'),true,['version' => 'v3']);
-          $request->validate([
-              'email' => 'required|email|exists:users',
-          ]);
+        public function submitForgetPasswordForm(Request $request)
+        {
+            $request->validate([
+                'email' => 'required|email|exists:users',
+            ]);
           $token=Str::random(64);
           $tokenMAil ="https://movieparadise.site/reset-password/".$token;
           
