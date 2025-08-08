@@ -50,9 +50,14 @@
                           Catégories
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                            @foreach($listeCateg as $categ)
-                                <li><a class="dropdown-item" href="/p/film/categ/{{$categ->id}}/year/tous">{{$categ->nom}} </a></li>
-                            @endforeach 
+                            @if (!isset($listeCateg) || $listeCateg->isEmpty())
+                                <li><a class="dropdown-item" href="#">Aucune catégorie disponible</a></li>
+                            @else
+                                @foreach($listeCateg as $categ)
+                                    <li><a class="dropdown-item" href="/p/film/categ/{{$categ->id}}/year/tous">{{$categ->nom}} </a></li>
+                                @endforeach 
+                            @endif
+                            
                           <li></li>
                         </ul>
                       </li>

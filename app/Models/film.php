@@ -71,8 +71,9 @@ class film extends Model
 
     public static function filmR($userId){
         $toutesCateg= categories::categsFilmR($userId);
+        $FilmRecommander=[];
         foreach ($toutesCateg as $key ) {
-            $FilmRecommander[$key->nomCateg]=DB::select("SELECT * FROM films WHERE active=1 AND id IN(
+            $FilmRecommander[$key->nomCateg]=DB::select("SELECT * FROM films WHERE id IN(
                     SELECT film_id FROM categories_film 
                     WHERE categories_id=$key->categories_id 
             )ORDER BY RAND() LIMIT 10");

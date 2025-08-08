@@ -9,14 +9,22 @@ use App\Models\Personnes;
 use App\Models\categories;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Psy\Readline\Hoa\Console;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
 
 class panneauCtrlController extends Controller
 {
     public $sortable = ['id', 'titre', 'dateSortie' ];
+    private $tmdbToken = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZmZjNjcyZTM0ZDIzYzRjODk0ODc2NTJmY2NlZmQyOCIsIm5iZiI6MTY3Nzc3MTUyMC40ODg5OTk4LCJzdWIiOiI2NDAwYzMwMDI3OGQ4YTAwODAyYzdmMDAiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.OS_q64Bv7fCzFw_ax6kxkXU7u6GPTGk4rHd6Z8Y3lRY';
+
+    private function tmdbGet($url)
+    {
+        return Http::withOptions(['verify' => false])
+            ->withHeaders(['Authorization' => $this->tmdbToken])
+            ->get("https://api.themoviedb.org/3/{$url}")
+            ->json();
+    }
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -29,7 +37,6 @@ class panneauCtrlController extends Controller
     public function ajoutFilm(){
         return view("adminV/ajoutFilm");
     }
-
     public function ajoutSerie(){
         return view("adminV/ajoutSerie");
     }
@@ -37,57 +44,57 @@ class panneauCtrlController extends Controller
     public function storeFilm(Request $request){
 
         $films = $request->input('tmdb_film_id');
-
         if (empty($films)) {
             return abort(403);
         }
+
         foreach ($films as $filmId) {
-            $film=Http::get("https://api.themoviedb.org/3/movie/$filmId?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json(); 
-            $traillerYtb=Http::get("https://api.themoviedb.org/3/movie/$filmId/videos?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json()['results'];
-            $credits =Http::get("https://api.themoviedb.org/3/movie/$filmId/credits?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-            $idTMDBrealisateur=0;
+            $film = $this->tmdbGet("movie/{$filmId}?language=fr-FR");
+            $traillerYtb = $this->tmdbGet("movie/{$filmId}/videos?language=fr-FR")['results'];
+            $credits = $this->tmdbGet("movie/{$filmId}/credits?language=fr-FR");
+
+            $idTMDBrealisateur = 0;
             foreach($credits['crew'] as $findDirector){
                 if ($findDirector['job']=="Director") {
-                    $directorName=$findDirector['original_name'];
-                    $idTMDBrealisateur=$findDirector['id'];
+                    $directorName = $findDirector['original_name'];
+                    $idTMDBrealisateur = $findDirector['id'];
                     break;
                 }
             }
             if (empty($directorName)) {
-                $directorName="N/A";
-            }else{
+                $directorName = "N/A";
+            } else {
                 if (Personnes::Where('name','=',$directorName)->count() > 0) {
-                    $realisateurId=Personnes::whereName($directorName)->first();
-                }else{
-                    $realInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBrealisateur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-                    $realisateurId=Personnes::firstOrCreate([
+                    $realisateurId = Personnes::whereName($directorName)->first();
+                } else {
+                    $realInfo = $this->tmdbGet("person/{$idTMDBrealisateur}?language=fr-FR");
+                    $realisateurId = Personnes::firstOrCreate([
                         'name'=>$realInfo['name'],
                         'bio'=>$realInfo['biography'],
                         'image'=>$realInfo['profile_path'],
                         'dateNaissance'=>$realInfo['birthday']
                     ]);
-                }  
-            }
-           
-
-            $castFilm=null;
-            for ($i=0; $i < 30; $i++) { 
-                if (!empty($credits['cast'][$i])) {
-                    $castFilm[]=$credits['cast'][$i];
                 }
-                
             }
-            
+
+            $castFilm = null;
+            for ($i=0; $i < 30; $i++) {
+                if (!empty($credits['cast'][$i])) {
+                    $castFilm[] = $credits['cast'][$i];
+                }
+            }
+
             foreach ($traillerYtb as $trYtb) {
                 if ($trYtb['site']=="YouTube") {
-                    $trailler=$trYtb['key'];
+                    $trailler = $trYtb['key'];
                 }
             }
-            
-            $time=$film['runtime'];
+
+            $time = $film['runtime'];
             $hours = floor($time / 60);
             $minutes = ($time % 60);
-            $data=[
+
+            $data = [
                 'titre'=>$film['title'],
                 'realisateurs_id'=>$realisateurId->id,
                 'duree'=>"$hours:$minutes:00",
@@ -97,89 +104,83 @@ class panneauCtrlController extends Controller
                 'urlTrailler'=>$trailler,
                 'tmdb_id'=>$filmId
             ];
-          
-            $id_film=film::create($data);
-            $id_film=DB::getPdo()->lastInsertId();
 
-            foreach ($castFilm as $acteur) {
-                $idTMDBacteur=$acteur['id'];
-                if (Personnes::Where('name','=',$acteur['name'])->count() > 0) {
-                    $acteurId=Personnes::whereName($acteur['name'])->first();
-                }else{
-                    $acteurInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBacteur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-                    $acteurId=Personnes::firstOrCreate([
-                        'name'=>$acteurInfo['name'],
-                        'bio'=>$acteurInfo['biography'],
-                        'image'=>$acteurInfo['profile_path'],
-                        'dateNaissance'=>$acteurInfo['birthday']
-                    ]);
-                }        
-                DB::insert('Insert into film_personnes (film_id,personnes_id) VALUES(?,?)', [$id_film ,$acteurId->id]);
+            $id_film = film::create($data);
+            $id_film = DB::getPdo()->lastInsertId();
+
+            if(!empty($castFilm)){
+                foreach ($castFilm as $acteur) {
+                    $idTMDBacteur = $acteur['id'];
+                    if (Personnes::Where('name','=',$acteur['name'])->count() > 0) {
+                        $acteurId = Personnes::whereName($acteur['name'])->first();
+                    } else {
+                        $acteurInfo = $this->tmdbGet("person/{$idTMDBacteur}?language=fr-FR");
+                        $acteurId = Personnes::firstOrCreate([
+                            'name'=>$acteurInfo['name'],
+                            'bio'=>$acteurInfo['biography'],
+                            'image'=>$acteurInfo['profile_path'],
+                            'dateNaissance'=>$acteurInfo['birthday']
+                        ]);
+                    }
+                    DB::insert('Insert into film_personnes (film_id,personnes_id) VALUES(?,?)', [$id_film ,$acteurId->id]);
+                }
             }
-            
+
             foreach ($film['genres'] as $genreFilm) {
-                $categId=categories::firstOrCreate([
+                $categId = categories::firstOrCreate([
                     'nom'=>$genreFilm['name']
                 ]);
-
-                $categId=categories::whereNom($genreFilm['name'])->first();
+                $categId = categories::whereNom($genreFilm['name'])->first();
                 DB::insert('Insert into categories_film (film_id,categories_id) VALUES(?,?)', [$id_film ,$categId->id]);
             }
         }
         return view("adminV/ajoutFilm");
-        
     }
 
     public function storeSerie(Request $request){
-
         $series = $request->input('tmdb_serie_id');
-        
         if (empty($series)) {
             return abort(403);
         }
-        
+
         foreach ($series as $serieId) {
-            
-            $serie=Http::get("https://api.themoviedb.org/3/tv/$serieId?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json(); 
-            $traillerYtb=Http::get("https://api.themoviedb.org/3/tv/$serieId/videos?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json()['results'];
-            $credits =Http::get("https://api.themoviedb.org/3/tv/$serieId/credits?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-            $createur=Http::get("https://api.themoviedb.org/3/person/".$serie['created_by'][0]['id']."?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
+            $serie = $this->tmdbGet("tv/{$serieId}?language=fr-FR");
+            $traillerYtb = $this->tmdbGet("tv/{$serieId}/videos?language=fr-FR")['results'];
+            $credits = $this->tmdbGet("tv/{$serieId}/credits?language=fr-FR");
+            $createur = $this->tmdbGet("person/".$serie['created_by'][0]['id']."?language=fr-FR");
+
             if (empty($createur)) {
-                $createur="N/A";
-            }else{
+                $createur = "N/A";
+            } else {
                 if (Personnes::Where('name','=',$createur['name'])->count() > 0) {
-                    $createur=Personnes::whereName($createur['name'])->first();
-                }else{
-                    $createur=Personnes::firstOrCreate([
+                    $createur = Personnes::whereName($createur['name'])->first();
+                } else {
+                    $createur = Personnes::firstOrCreate([
                         'name'=>$createur['name'],
                         'bio'=>$createur['biography'],
                         'image'=>$createur['profile_path'],
                         'dateNaissance'=>$createur['birthday']
                     ]);
-                }  
-            }
-
-           
-
-            $castFilm=null;
-            for ($i=0; $i < 30; $i++) { 
-                if (!empty($credits['cast'][$i])) {
-                    $castFilm[]=$credits['cast'][$i];
                 }
-                
             }
-            
+
+            $castFilm = null;
+            for ($i=0; $i < 30; $i++) {
+                if (!empty($credits['cast'][$i])) {
+                    $castFilm[] = $credits['cast'][$i];
+                }
+            }
+
             foreach ($traillerYtb as $trYtb) {
                 if ($trYtb['site']=="YouTube") {
-                    $trailler=$trYtb['key'];
+                    $trailler = $trYtb['key'];
                 }
             }
             if (empty($trailler)) {
-                $trailler="N/A";
+                $trailler = "N/A";
             }
-            
-            
-            $data=[
+
+            $data = [
                 'titre'=>$serie['name'],
                 'createur_id'=>$createur->id,
                 'resume'=>$serie['overview'],
@@ -189,13 +190,13 @@ class panneauCtrlController extends Controller
                 'tmdb_id'=>$serieId
             ];
 
-            $id_serie=series::create($data);
-            $id_serie=DB::getPdo()->lastInsertId();
+            $id_serie = series::create($data);
+            $id_serie = DB::getPdo()->lastInsertId();
 
             foreach ($serie['seasons'] as $saison) {
-                $saisonNb=0;
+                $saisonNb = 0;
                 if ($saison['air_date']!="") {
-                    $dataSaison=[
+                    $dataSaison = [
                         'titre'=>$saison['name'],
                         'resume'=>$saison['overview'],
                         'image'=>$saison['poster_path'],
@@ -204,19 +205,17 @@ class panneauCtrlController extends Controller
                         'tmdb_id'=>$saison['id'],
                         'series_id'=>$id_serie,
                     ];
-                    $saisonNb=$saison['season_number'];
+                    $saisonNb = $saison['season_number'];
                 }
-                
-                
-               
+
                 if ($saisonNb>0) {
-                    $saisonId=saison::create($dataSaison);
-                    $saisonId=DB::getPdo()->lastInsertId();
-                    $episodes=Http::get("https://api.themoviedb.org/3/tv/$serieId/season/$saisonNb?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-                   
+                    $saisonId = saison::create($dataSaison);
+                    $saisonId = DB::getPdo()->lastInsertId();
+                    $episodes = $this->tmdbGet("tv/{$serieId}/season/{$saisonNb}?language=fr-FR");
+
                     if (isset($episodes['id'])) {
                         foreach ($episodes['episodes'] as $episode) {
-                            $dataEp=[
+                            $dataEp = [
                                 'titre'=>$episode['name'],
                                 'resume'=>$episode['overview'],
                                 'image'=>$episode['still_path'],
@@ -227,141 +226,117 @@ class panneauCtrlController extends Controller
                             ];
                             episode::create($dataEp);
                         }
-                    }                
+                    }
                 }
            }
 
-            foreach ($castFilm as $acteur) {
-                $idTMDBacteur=$acteur['id'];
-                if (Personnes::Where('name','=',$acteur['name'])->count() > 0) {
-                    $acteurId=Personnes::whereName($acteur['name'])->first();
-                }else{
-                    $acteurInfo =Http::get("https://api.themoviedb.org/3/person/$idTMDBacteur?api_key=cffc672e34d23c4c89487652fccefd28&language=fr-FR")->json();
-                    $acteurId=Personnes::firstOrCreate([
-                        'name'=>$acteurInfo['name'],
-                        'bio'=>$acteurInfo['biography'],
-                        'image'=>$acteurInfo['profile_path'],
-                        'dateNaissance'=>$acteurInfo['birthday']
-                    ]);
-                }        
-                DB::insert('Insert into personnes_series (series_id,personnes_id) VALUES(?,?)', [$id_serie ,$acteurId->id]);
+            if(!empty($castFilm)){
+                foreach ($castFilm as $acteur) {
+                    $idTMDBacteur = $acteur['id'];
+                    if (Personnes::Where('name','=',$acteur['name'])->count() > 0) {
+                        $acteurId = Personnes::whereName($acteur['name'])->first();
+                    } else {
+                        $acteurInfo = $this->tmdbGet("person/{$idTMDBacteur}?language=fr-FR");
+                        $acteurId = Personnes::firstOrCreate([
+                            'name'=>$acteurInfo['name'],
+                            'bio'=>$acteurInfo['biography'],
+                            'image'=>$acteurInfo['profile_path'],
+                            'dateNaissance'=>$acteurInfo['birthday']
+                        ]);
+                    }
+                    DB::insert('Insert into personnes_series (series_id,personnes_id) VALUES(?,?)', [$id_serie ,$acteurId->id]);
+                }
             }
-            
+
             foreach ($serie['genres'] as $genrSerie) {
-                $categId=categories::firstOrCreate([
+                $categId = categories::firstOrCreate([
                     'nom'=>$genrSerie['name']
                 ]);
-
-                $categId=categories::whereNom($genrSerie['name'])->first();
+                $categId = categories::whereNom($genrSerie['name'])->first();
                 DB::insert('Insert into categories_series(series_id,categories_id) VALUES(?,?)', [$id_serie ,$categId->id]);
             }
         }
         return view("adminV/ajoutSerie");
-        
     }
-
 
     public function searchBarFilm(Request $search){
         setlocale(LC_TIME, "fr_FR", "French");
-        $output="";
-        $films= Http::get("https://api.themoviedb.org/3/search/movie?api_key=cffc672e34d23c4c89487652fccefd28&query=$search->search&language=fr-FR")
-            ->json()['results'];
-            
-            
-            if($films)
-            {
-                
-                foreach($films as $film){
-                    $output.='<tr id="'.$film['id'].'">'.
-                    '<td> <img src="https://image.tmdb.org/t/p/w200'.$film['poster_path'].'"style="width: 100px"></td>'.
-                    '<td>'.$film['title'].'</td>'.
-                    '<td>'.$film['overview'].'</td>'.
-                    '<td>'. strftime("%d %B %G", strtotime($film['release_date'])).'</td>'.
-                    '<td>'.$film['vote_average']*10 .'%</td>'.
-                    '<td>   <input type="checkbox" name="tmdb_film_id[]" value="'.$film['id'].'"></td>'.
-                    '</tr>';
-                }
-                
-               
-                
-            return Response($output);
-            }
+        $output = "";
+        $films = $this->tmdbGet("search/movie?query=" . urlencode($search->search) . "&language=fr-FR")['results'];
 
+        if($films) {
+            foreach($films as $film){
+                $output .= '<tr id="'.$film['id'].'">'.
+                '<td><img src="https://image.tmdb.org/t/p/w200'.$film['poster_path'].'" style="width: 100px"></td>'.
+                '<td>'.$film['title'].'</td>'.
+                '<td>'.$film['overview'].'</td>'.
+                '<td>'.strftime("%d %B %G", strtotime($film['release_date'])).'</td>'.
+                '<td>'.$film['vote_average']*10 .'%</td>'.
+                '<td><input type="checkbox" name="tmdb_film_id[]" value="'.$film['id'].'"></td>'.
+                '</tr>';
+            }
+            return Response($output);
+        }
     }
 
     public function searchBarSerie(Request $search){
         setlocale(LC_TIME, "fr_FR", "French");
-        $output="";
-        $series= Http::get("https://api.themoviedb.org/3/search/tv?api_key=cffc672e34d23c4c89487652fccefd28&query=$search->search&language=fr-FR")
-            ->json()['results'];
-            
-            
-            if($series)
-            {
-                
-                foreach($series as $serie){
-                    $output.='<tr id="'.$serie['id'].'">'.
-                    '<td> <img src="https://image.tmdb.org/t/p/w200'.$serie['poster_path'].'"style="width: 100px"></td>'.
-                    '<td>'.$serie['name'].'</td>'.
-                    '<td>'.$serie['overview'].'</td>'.
-                    '<td>'. strftime("%d %B %G", strtotime($serie['first_air_date'])).'</td>'.
-                    '<td>'.$serie['vote_average']*10 .'%</td>'.
-                    '<td>   <input type="checkbox" name="tmdb_serie_id[]" value="'.$serie['id'].'"></td>'.
-                    '</tr>';
-                }
-                
-               
-                
-            return Response($output);
-            }
+        $output = "";
+        $series = $this->tmdbGet("search/tv?query=" . urlencode($search->search) . "&language=fr-FR")['results'];
 
+        if($series) {
+            foreach($series as $serie){
+                $output .= '<tr id="'.$serie['id'].'">'.
+                '<td><img src="https://image.tmdb.org/t/p/w200'.$serie['poster_path'].'" style="width: 100px"></td>'.
+                '<td>'.$serie['name'].'</td>'.
+                '<td>'.$serie['overview'].'</td>'.
+                '<td>'.strftime("%d %B %G", strtotime($serie['first_air_date'])).'</td>'.
+                '<td>'.$serie['vote_average']*10 .'%</td>'.
+                '<td><input type="checkbox" name="tmdb_serie_id[]" value="'.$serie['id'].'"></td>'.
+                '</tr>';
+            }
+            return Response($output);
+        }
     }
-        
+
     public function gererFilm(Request $request){
-        $items = $request->items ?? 10;  
+        $items = $request->items ?? 10;
         if (request()->has('search')) {
-            $films=film::where('titre', 'LIKE', '%'. $request->search. '%')->sortable()->paginate($items);
+            $films = film::where('titre', 'LIKE', '%'. $request->search. '%')->sortable()->paginate($items);
+        } else {
+            $films = film::sortable()->paginate($items);
         }
-        else{
-            $films=film::sortable()->paginate($items);
-        }
-        
         return view('adminV/gererFilm',compact('films','items'));
     }
 
     public function gererSeries(Request $request){
-        $items = $request->items ?? 10;  
+        $items = $request->items ?? 10;
         if (request()->has('search')) {
-            $series=series::where('titre', 'LIKE', '%'. $request->search. '%')->sortable()->paginate($items);
+            $series = series::where('titre', 'LIKE', '%'. $request->search. '%')->sortable()->paginate($items);
+        } else {
+            $series = series::sortable()->paginate($items);
         }
-        else{
-            $series=series::sortable()->paginate($items);
-        }
-        
         return view('adminV/gererSeries',compact('series','items'));
     }
 
     public function gererSeriesSaison(Request $request, $id){
-        $items = $request->items ?? 10;  
-        $serie =series::find($id);
-        $saisonsSerie=saison::where('series_id',$serie->id)->sortable()->paginate($items);
-        $saison=saison::sortable()->paginate($items);
-        
+        $items = $request->items ?? 10;
+        $serie = series::find($id);
+        $saisonsSerie = saison::where('series_id',$serie->id)->sortable()->paginate($items);
         return view('adminV/gererSeriesSaison',compact('serie','items','saisonsSerie'));
     }
+
     public function gererSeriesSaisonEpisode(Request $request,$idSerie, $idSaison){
-        $items = $request->items ?? 10;  
-        $serie =series::find($idSerie);
-        $saisonsSerie=saison::find($idSaison);
-        $episodes=episode::where('saisons_id',$saisonsSerie->id)->sortable()->paginate($items);
-        $saison=saison::sortable()->paginate($items);
-        
+        $items = $request->items ?? 10;
+        $serie = series::find($idSerie);
+        $saisonsSerie = saison::find($idSaison);
+        $episodes = episode::where('saisons_id',$saisonsSerie->id)->sortable()->paginate($items);
         return view('adminV/gererSeriesSaisonEpisode',compact('serie','items','saisonsSerie','episodes'));
     }
 
     public function stats(){
         $moisAnnee=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-        $countDb =[
+        $countDb = [
             'film'=>film::nbFilm(),
             'series'=>series::nbSeries(),
             'episode'=>episode::nbEpisodes(),
@@ -370,41 +345,25 @@ class panneauCtrlController extends Controller
             'users'=>User::nbUser(),
         ];
 
-        $users = User::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');     
+        $users = User::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');
         $film = film::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');
         $serie = series::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');
         $artiste = Personnes::select(DB::raw("COUNT(*) as count"), DB::raw("Month(created_at) as month_name"))->whereYear('created_at', date('Y'))->groupBy(DB::raw("Month(created_at)"))->pluck('count', 'month_name');
-        
+
         $labelsU = $users->keys();
         $dataU = $users->values();
-
         $labelsF = $film->keys();
         $dataF = $film->values();
-
         $labelsS = $serie->keys();
         $dataS = $serie->values();
-
         $labelsA = $artiste->keys();
         $dataA = $artiste->values();
-        for ($i=0; $i <count($labelsU) ; $i++) { 
-            $labelsU[$i]=$moisAnnee[$labelsU[$i]-1];
-        }
-        for ($i=0; $i <count($labelsF) ; $i++) { 
-            $labelsF[$i]=$moisAnnee[$labelsF[$i]-1];
-        }
-        for ($i=0; $i <count($labelsS) ; $i++) { 
-            $labelsS[$i]=$moisAnnee[$labelsS[$i]-1];
-        }
-        for ($i=0; $i <count($labelsA) ; $i++) { 
-            $labelsA[$i]=$moisAnnee[$labelsA[$i]-1];
-        }
 
-
+        for ($i=0; $i <count($labelsU) ; $i++) { $labelsU[$i]=$moisAnnee[$labelsU[$i]-1]; }
+        for ($i=0; $i <count($labelsF) ; $i++) { $labelsF[$i]=$moisAnnee[$labelsF[$i]-1]; }
+        for ($i=0; $i <count($labelsS) ; $i++) { $labelsS[$i]=$moisAnnee[$labelsS[$i]-1]; }
+        for ($i=0; $i <count($labelsA) ; $i++) { $labelsA[$i]=$moisAnnee[$labelsA[$i]-1]; }
 
         return view('adminV/statsSite', compact('countDb','labelsF','dataF','labelsU','dataU','labelsS','dataS','labelsA','dataA'));
     }
-    
-    
-
-    
 }

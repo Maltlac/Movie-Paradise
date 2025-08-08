@@ -93,20 +93,13 @@ class ebilletController extends Controller
         $crawler = new Crawler( $content );
         
         $_this = $this;
-        $nomcine=$crawler->filter("div.theater-cover-title")->text();
+        $nomcine=$crawler->filter("div.header-theater-title")->text();
         $data[] = $crawler->filter('div.movie-card-theater')
                         ->each(function (Crawler $node, $i) use($_this) {
                             return $_this->getNodeContentSeance($node);
                         }
                     );
-        for ($i=1; $i < 3; $i++) { 
-            $url='https://www.allocine.fr/seance/d-'.$i.'/salle_gen_csalle='.$urlCode.'.html';
-            $response = $this->client->get($url); 
-            $content = $response->getBody()->getContents();
-            $crawler = new Crawler( $content ); 
-            $_this = $this; 
-            $data[] = $crawler->filter('div.movie-card-theater')->each(function (Crawler $node, $i) use($_this) {return $_this->getNodeContentSeance($node);});
-        }
+
         $data=array_filter($data);
         $data = $this->paginate($data, 1);
         $data->withPath('');   
