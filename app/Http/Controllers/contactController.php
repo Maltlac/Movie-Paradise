@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Mailjet\Resources;
 use App\Models\Contact;
 use App\Mail\contactMail;
@@ -20,17 +19,17 @@ class contactController extends Controller
         $this->middleware('auth');
     }
     
-    public function contactForm(){
-        $userId=Auth::user()->id;
-        $user=User::find($userId);
-        return view('contact',[
-            'user'=>$user,
+    public function contactForm()
+    {
+        $user = Auth::user();
+
+        return view('contact', [
+            'user' => $user,
         ]);
     }
 
     public function storeContactForm(Request $request)
     {
-        $mj = new Mailjet(getenv('MAILJET_APIKEY'), getenv('MAILJET_APISECRET'),true,['version' => 'v3']);
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',

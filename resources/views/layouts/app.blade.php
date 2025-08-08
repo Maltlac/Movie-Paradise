@@ -50,9 +50,11 @@
                           Catégories
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                            @foreach($listeCateg as $categ)
-                                <li><a class="dropdown-item" href="/p/film/categ/{{$categ->id}}/year/tous">{{$categ->nom}} </a></li>
-                            @endforeach 
+                            @isset($listeCateg)
+                                @foreach($listeCateg as $categ)
+                                    <li><a class="dropdown-item" href="/p/film/categ/{{$categ->id}}/year/tous">{{$categ->nom}} </a></li>
+                                @endforeach
+                            @endisset
                           <li></li>
                         </ul>
                       </li>
